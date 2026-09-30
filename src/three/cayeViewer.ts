@@ -45,7 +45,12 @@ export function createCayeViewer(canvas: HTMLCanvasElement, lowTier: boolean) {
     screen: centreOf(caye.parts.screen),
     burrs: centreOf(caye.parts.burrs),
     spout: centreOf(caye.parts.spout),
+    cup: centreOf(caye.cup.group),
   }
+  // every machine part remembers its resting height so `away` can lift them all off the cup
+  const baseY = new Map(Object.values(caye.parts).map((o) => [o, o.position.y]))
+  const { cup } = caye
+  const cupY = cup.group.position.y
 
   const rt = new THREE.WebGLRenderTarget(2, 2, { depthBuffer: true, type: THREE.UnsignedByteType })
   const outline = createOutlineMaterial()
@@ -60,15 +65,40 @@ export function createCayeViewer(canvas: HTMLCanvasElement, lowTier: boolean) {
   const buf = new THREE.Vector2()
 
   /** Pose driven by the section's ScrollTrigger (GSAP tweens these plain numbers) */
-  const state = { yaw: -0.75, pitch: 0.12, dist: 7, fx: 0, fy: 0, fz: 0, lift: 0, spin: 0 }
+  const state = {
+    yaw: -0.75, pitch: 0.12, dist: 7, fx: 0, fy: 0, fz: 0,
+    lift: 0, spin: 0,
+    /** finale: cup 0..1 appears, pour 0..1 thread reaches the cup, fill 0..1 coffee level,
+        stop 0..1 thread lets go from the top, away 0..1 machine rises out, leaving the cup */
+    cup: 0, pour: 0, fill: 0, stop: 0, away: 0,
+  }
+  const EPS = 0.0001
   let fit = 1 // extra distance on narrow canvases so the full machine still fits
   const target = new THREE.Vector3()
 
   function render() {
     pivot.rotation.set(state.pitch, state.yaw, 0)
+    const up = state.away * state.away * 4
+    baseY.forEach((y, o) => (o.position.y = y + up))
     // hoppers slide up and back like a drawer, uncovering the burrs
-    caye.parts.hoppers.position.set(0, state.lift * 0.3, -state.lift * 1.0)
+    caye.parts.hoppers.position.y += state.lift * 0.3
+    caye.parts.hoppers.position.z = -state.lift * 1.0
     caye.parts.burrs.children.forEach((b, i) => (b.rotation.y = (i ? -1 : 1) * state.spin))
+
+    // cup drops onto the grid, coffee rises, the two threads fall then let go
+    cup.group.scale.setScalar(Math.max(state.cup, EPS))
+    cup.group.position.y = cupY + (1 - state.cup) * 0.12
+    const level = state.fill * 0.085
+    cup.liquid.scale.y = Math.max(level, EPS)
+    const surface = cup.liquidBase + level
+    const top = caye.cup.streamTop - state.stop * (caye.cup.streamTop - surface)
+    const len = state.pour * (top - surface)
+    cup.streams.forEach((m) => {
+      m.position.y = top
+      m.scale.y = Math.max(len, EPS)
+      m.visible = state.pour > 0 && state.stop < 1
+    })
+
     // focus point follows the model's rotation; camera sits straight in front of it
     target.set(state.fx, state.fy, state.fz).applyEuler(pivot.rotation)
     camera.position.set(target.x, target.y + 0.1 * state.dist, target.z + state.dist * fit)

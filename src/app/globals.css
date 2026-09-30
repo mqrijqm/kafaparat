@@ -1316,7 +1316,7 @@ body.is-light .spec-card .head {
 /* Pinned line-art model with notes left and right */
 .caye-stage {
   position: relative;
-  height: 420lvh;
+  height: 720lvh;
 }
 .caye-stage-sticky {
   position: sticky;
@@ -1368,7 +1368,7 @@ body.is-light .spec-card .head {
 }
 @media (max-width: 899px) {
   .caye-stage {
-    height: 360lvh;
+    height: 620lvh;
   }
   .caye-stage-sticky {
     grid-template-columns: 1fr 1fr;
@@ -1391,6 +1391,33 @@ body.is-light .spec-card .head {
   }
 }
 
+/* Finale: text under the lone cup */
+.caye-finale {
+  position: absolute;
+  left: 50%;
+  bottom: 9lvh;
+  width: min(34rem, 100% - 2rem);
+  transform: translateX(-50%);
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+}
+.caye-finale h3 {
+  font-size: clamp(2.25rem, 4.5vw, 4rem);
+  line-height: 0.95;
+}
+.caye-finale p {
+  margin-top: 1rem;
+  font-size: var(--text-l);
+}
+@media (max-width: 899px) {
+  /* mobile: the canvas sits in the upper half, so the line follows right under the cup */
+  .caye-finale {
+    top: calc(50lvh + var(--header-h) / 2 + 3rem);
+    bottom: auto;
+  }
+}
+
 /* Shared photo + copy blocks */
 .caye-photo {
   position: relative;
@@ -1398,7 +1425,8 @@ body.is-light .spec-card .head {
   aspect-ratio: 4 / 5;
   background: var(--bg-2);
 }
-.caye-photo img {
+.caye-photo img,
+.caye-photo video {
   display: block;
   width: 100%;
   height: 100%;
@@ -1488,19 +1516,27 @@ body.is-light .spec-card .head {
   padding-block: 6rem 8rem;
   border-top: 1px solid var(--line);
 }
+.caye-film {
+  aspect-ratio: 1600 / 726;
+  margin-top: 3.5rem;
+}
+@media (min-width: 900px) {
+  .caye-film {
+    margin-top: 5rem;
+  }
+}
 .caye-spaces ul {
   display: grid;
-  gap: 3rem 1.25rem;
-  margin-top: 3.5rem;
+  gap: 1.5rem 1.25rem;
+  margin-top: 2rem;
 }
 @media (min-width: 900px) {
   .caye-spaces ul {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    margin-top: 5rem;
   }
-  .caye-spaces li:nth-child(2) {
-    margin-top: 5rem;
-  }
+}
+.caye-spaces .space-meta {
+  border-top: 1px solid var(--line-strong);
 }
 .space-meta {
   display: grid;
@@ -1541,6 +1577,55 @@ body.is-light .spec-card .head {
 }
 .caye-details li:last-child img {
   object-position: 72% 50%;
+}
+
+/* Bean strip — last breath before the footer */
+.bean-strip {
+  overflow: hidden;
+  padding: 2rem 0 5rem;
+}
+.bean-row {
+  display: flex;
+  justify-content: center;
+  gap: clamp(1rem, 3vw, 2.75rem);
+  width: 120%;
+  margin-left: -10%;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--line);
+}
+.bean-wrap {
+  display: block;
+  flex: none;
+}
+.bean {
+  display: block;
+  width: clamp(1.1rem, 2.2vw, 1.75rem);
+  height: auto;
+  overflow: visible;
+  fill: none;
+  stroke: var(--brass);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+.bean-wrap:nth-child(3n) .bean {
+  stroke: var(--fg-5);
+}
+.bean-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1.25rem;
+  color: var(--fg-4);
+}
+.bean-caption .caye-logo {
+  width: 4.5rem;
+}
+@media (max-width: 899px) {
+  .bean-caption {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 
 /* CTA — centred */

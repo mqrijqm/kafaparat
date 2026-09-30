@@ -26,11 +26,91 @@ function Photo({ src, alt, className = '' }: { src: string; alt: string; classNa
   )
 }
 
+/** Muted loop that only plays while on screen (and never under reduced motion). */
+function LoopVideo({ src, poster }: { src: string; poster: string }) {
+  const ref = useRef<HTMLVideoElement>(null)
+  useEffect(() => {
+    const v = ref.current!
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        if (!v.src) v.src = src // nothing is downloaded until it is near the viewport
+        v.play().catch(() => {})
+      } else v.pause()
+    }, { rootMargin: '25% 0px' })
+    io.observe(v)
+    return () => io.disconnect()
+  }, [src])
+  return <video ref={ref} poster={poster} muted loop playsInline preload="none" aria-hidden />
+}
+
+/** Line-art coffee bean (brass stroke), drawn in a 40×56 box. */
+function Bean() {
+  return (
+    <svg viewBox="0 0 40 56" className="bean" aria-hidden>
+      <ellipse cx="20" cy="28" rx="17" ry="25" />
+      <path d="M20 4c-7 8 7 16 0 24s7 16 0 24" />
+    </svg>
+  )
+}
+
+/** Minimal closing strip before the footer: beans tumble in, then roll with the scroll. */
+function BeanStrip() {
+  const t = useCopy().caye.beans
+  const root = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const ctx = gsap.context(() => {
+      const beans = gsap.utils.toArray<HTMLElement>('.bean-wrap')
+      gsap.from(beans, {
+        y: -140,
+        rotation: () => gsap.utils.random(-180, 180),
+        opacity: 0,
+        duration: 1.1,
+        ease: 'bounce.out',
+        stagger: { each: 0.06, from: 'random' },
+        scrollTrigger: { trigger: root.current, start: 'top 80%', toggleActions: 'play none none reverse' },
+      })
+      // after landing they keep rolling as you scroll: each bean turns, the row drifts sideways
+      gsap.to('.bean-row', {
+        xPercent: -8,
+        ease: 'none',
+        scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
+      })
+      beans.forEach((b, i) =>
+        gsap.to(b.querySelector('svg'), {
+          rotation: (i % 2 ? -1 : 1) * 200,
+          ease: 'none',
+          scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
+        }),
+      )
+    }, root)
+    return () => ctx.revert()
+  }, [])
+  return (
+    <div ref={root} className="bean-strip">
+      <div className="bean-row">
+        {Array.from({ length: 15 }, (_, i) => (
+          <span key={i} className="bean-wrap">
+            <Bean />
+          </span>
+        ))}
+      </div>
+      <div className="bean-caption text-ui">
+        <span>{t.line}</span>
+        <Logo />
+        <span>{t.place}</span>
+      </div>
+    </div>
+  )
+}
+
 /** Pinned block: the line-art machine turns with scroll, four notes appear left and right. */
 function ModelStage() {
   const t = useCopy().caye
   const root = useRef<HTMLDivElement>(null)
   const canvas = useRef<HTMLCanvasElement>(null)
+  const finale = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const el = root.current!
@@ -68,30 +148,43 @@ function ModelStage() {
             { f: F.burrs, dist: 2.6, yaw: 0.3, pitch: 0.6, lift: 1 },
             { f: F.spout, dist: 2.4, yaw: -0.55, pitch: 0.02, lift: 0 },
           ]
-          const MOVE = 0.09 // travel between stops (timeline units, whole block = 1)
-          const HOLD = 0.1 // time spent on each part
+          const MOVE = 0.055 // travel between stops (timeline units, whole block = 1)
+          const HOLD = 0.065 // time spent on each part
           const tl = gsap.timeline({
             defaults: { ease: 'power2.inOut' },
             scrollTrigger: { trigger: el, start: 'top top', end: 'bottom bottom', scrub: 0.8 },
             onUpdate: v.render,
           })
-          const go = (at: number, dur: number, f: { x: number; y: number; z: number }, p: Omit<(typeof stops)[number], 'f'>) =>
+          const go = (at: number, dur: number, f: { x: number; y: number; z: number }, p: Partial<typeof v.state>) =>
             tl.to(v.state, { fx: f.x, fy: f.y, fz: f.z, ...p, duration: dur }, at)
 
           // notes: all quietly present, the active one lit
-          tl.fromTo(notes, { opacity: 0, y: 16 }, { opacity: 0.3, y: 0, duration: 0.05, stagger: 0.01, ease: 'power2.out' }, 0.02)
-          let t = 0.08
+          tl.fromTo(notes, { opacity: 0, y: 16 }, { opacity: 0.3, y: 0, duration: 0.04, stagger: 0.008, ease: 'power2.out' }, 0.01)
+          let t = 0.06
           stops.forEach(({ f, ...p }, i) => {
             go(t, MOVE, f, p)
             tl.to(notes[i], { opacity: 1, duration: MOVE * 0.6 }, t + MOVE * 0.4)
+            // the burrs turn while the camera rests on them
+            if (i === 2) tl.fromTo(v.state, { spin: 0 }, { spin: Math.PI * 2, duration: MOVE + HOLD, ease: 'none' }, t + MOVE * 0.5)
             t += MOVE + HOLD
             if (i < stops.length - 1) tl.to(notes[i], { opacity: 0.3, duration: MOVE * 0.6 }, t)
           })
-          // the burrs turn while the camera rests on them (stop 3)
-          tl.fromTo(v.state, { spin: 0 }, { spin: Math.PI * 2, duration: MOVE + HOLD * 2, ease: 'none' }, 0.08 + 2 * (MOVE + HOLD) - HOLD * 0.5)
-          // pull back out to the whole machine, finishing its turn
-          go(t, 0.14, F.overview, { dist: 7, yaw: -0.75 + Math.PI * 2, pitch: 0.12, lift: 0 })
-          tl.to(notes, { opacity: 1, duration: 0.06 }, t + 0.06)
+          // pull back out to the whole machine, finishing its turn; all notes light up
+          const Y = Math.PI * 2
+          go(t, 0.08, F.overview, { dist: 7, yaw: -0.75 + Y, pitch: 0.12, lift: 0 })
+          tl.to(notes, { opacity: 1, duration: 0.03 }, t + 0.04)
+
+          // FINALE — notes leave, camera drops to the grid, a cup arrives and the machine pours
+          tl.to(notes, { opacity: 0, y: -12, duration: 0.03, stagger: 0.005 }, 0.64)
+          go(0.65, 0.07, F.cup, { dist: 1.9, yaw: -0.2 + Y, pitch: 0.12 })
+          tl.to(v.state, { cup: 1, duration: 0.04, ease: 'back.out(1.6)' }, 0.69)
+            .to(v.state, { pour: 1, duration: 0.02, ease: 'power1.in' }, 0.73)
+            .to(v.state, { fill: 1, duration: 0.08, ease: 'power1.out' }, 0.74)
+            .to(v.state, { stop: 1, duration: 0.03, ease: 'power1.in' }, 0.81)
+          // the machine lifts away: only the cup is left, closer and seen from above (crema)
+          tl.to(v.state, { away: 1, duration: 0.07, ease: 'power2.in' }, 0.84)
+          go(0.84, 0.08, { x: F.cup.x, y: F.cup.y - 0.05, z: F.cup.z }, { dist: 1.1, yaw: 0.35 + Y, pitch: 0.42 })
+          tl.fromTo(finale.current, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.04, ease: 'power2.out' }, 0.9)
           tl.set({}, {}, 1)
         }, el)
       },
@@ -122,6 +215,14 @@ function ModelStage() {
         <ul className="caye-notes left">{t.model.left.map((n, i) => note(n, i))}</ul>
         <canvas ref={canvas} className="caye-canvas" aria-hidden />
         <ul className="caye-notes right">{t.model.right.map((n, i) => note(n, i + 2))}</ul>
+        <div ref={finale} className="caye-finale">
+          <h3>
+            {t.finale.title[0]}
+            <br />
+            {t.finale.title[1]}
+          </h3>
+          <p>{t.finale.lead}</p>
+        </div>
       </div>
     </div>
   )
@@ -162,7 +263,7 @@ export function Caye() {
           },
         )
         gsap.fromTo(
-          p.querySelector('img'),
+          p.querySelector('img, video'),
           { scale: 1.25 },
           { scale: 1.02, duration: 1.6, ease: 'expo.out', scrollTrigger: { trigger: p, start: 'top 85%', toggleActions: 'play none none reverse' } },
         )
@@ -240,21 +341,21 @@ export function Caye() {
         </div>
       </div>
 
-      {/* Spaces — left-aligned title, three bars */}
+      {/* Spaces — left title, one real loop from the CAYE film, three bars as text */}
       <div className="caye-spaces">
         <h3 className="caye-title" data-reveal>
           <span>{t.spaces.title[0]}</span>
           <span>{t.spaces.title[1]}</span>
         </h3>
+        <div className="caye-photo caye-film">
+          <LoopVideo src={CAYE.spacesVideo} poster={CAYE.spacesPoster} />
+        </div>
         <ul>
           {t.spaces.items.map(([h, p], i) => (
-            <li key={h}>
-              <Photo src={CAYE.spaces[i]} alt={h} className="wide" />
-              <div className="space-meta" data-reveal>
-                <span className="text-ui">{String(i + 1).padStart(2, '0')}</span>
-                <h4>{h}</h4>
-                <p>{p}</p>
-              </div>
+            <li key={h} className="space-meta" data-reveal>
+              <span className="text-ui">{String(i + 1).padStart(2, '0')}</span>
+              <h4>{h}</h4>
+              <p>{p}</p>
             </li>
           ))}
         </ul>
@@ -292,6 +393,8 @@ export function Caye() {
           <IconArrowUpRight />
         </a>
       </div>
+
+      <BeanStrip />
     </section>
   )
 }

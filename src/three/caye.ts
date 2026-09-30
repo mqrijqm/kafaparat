@@ -10,7 +10,32 @@ import { partMaterial } from './materials'
 export type Caye = {
   root: THREE.Group
   parts: Record<string, THREE.Object3D>
+  /** Espresso cup on the drip tray + the two coffee threads, animated by the viewer */
+  cup: { group: THREE.Group; liquid: THREE.Mesh; streams: THREE.Mesh[]; streamTop: number; liquidBase: number }
 }
+
+/** Espresso cup + saucer (lathe profiles), handle and a liquid disc that fills it. */
+function buildCup() {
+  const group = new THREE.Group()
+  group.name = 'cup'
+  const lathe = (pts: [number, number][], name: string) =>
+    mesh(new THREE.LatheGeometry(pts.map(([x, y]) => new THREE.Vector2(x, y)), 32), name)
+  const saucer = lathe([[0, 0], [0.15, 0.004], [0.165, 0.02], [0.155, 0.022], [0.07, 0.012], [0, 0.012]], 'saucer')
+  // cup wall: outside up, lip, inside down
+  const cup = lathe([[0, 0.012], [0.06, 0.012], [0.07, 0.03], [0.09, 0.1], [0.098, 0.135], [0.09, 0.135], [0.083, 0.1], [0.064, 0.036], [0, 0.034]], 'cup')
+  const handle = mesh(new THREE.TorusGeometry(0.035, 0.009, 8, 16, Math.PI * 1.2), 'cup-handle')
+  handle.rotation.z = -Math.PI * 0.6
+  handle.position.set(0.105, 0.085, 0)
+  // liquid: unit-height disc growing from the cup floor
+  const liquidGeo = new THREE.CylinderGeometry(0.086, 0.066, 1, 32)
+  liquidGeo.translate(0, 0.5, 0)
+  const liquid = mesh(liquidGeo, 'espresso')
+  liquid.position.y = 0.036
+  liquid.scale.y = 0.0001 // empty until the viewer pours (also keeps the cup's bounding box honest)
+  group.add(saucer, cup, handle, liquid)
+  return { group, liquid }
+}
+
 
 function mesh(geometry: THREE.BufferGeometry, name: string) {
   geometry.computeVertexNormals()
@@ -283,6 +308,9 @@ export function buildCaye(): Caye {
   rightNozzle.position.set(0.055, -0.335, 0.72)
   spout.add(rightNozzle)
 
+  // lifted so an espresso cup fits between the nozzles and the drip grid
+  spout.position.y = 0.16
+
   addWand(wands, -0.48, 'left-wand')
   addWand(wands, 0.48, 'right-wand')
 
@@ -354,6 +382,22 @@ export function buildCaye(): Caye {
     burrs.add(set)
   }
 
+  // Espresso cup on the grid under the spout (hidden until the viewer brings it in)
+  const cupParts = buildCup()
+  cupParts.group.position.set(0, -0.427, 0.7)
+  root.add(cupParts.group)
+  // two coffee threads from the nozzle tips; unit length, hanging down from their top
+  const streamTop = -0.335 + 0.16 - 0.055 // nozzle tip, spout lifted
+  const streams = [-0.045, 0.045].map((x, i) => {
+    const g = new THREE.CylinderGeometry(0.006, 0.006, 1, 8)
+    g.translate(0, -0.5, 0)
+    const m = mesh(g, `stream-${i}`)
+    m.position.set(x, streamTop, 0.72)
+    m.scale.y = 0.0001
+    root.add(m)
+    return m
+  })
+
   root.updateMatrixWorld(true)
 
   const bounds = new THREE.Box3().setFromObject(root)
@@ -374,5 +418,9 @@ export function buildCaye(): Caye {
     burrs,
   }
 
-  return { root, parts }
+  return {
+    root,
+    parts,
+    cup: { group: cupParts.group, liquid: cupParts.liquid, streams, streamTop, liquidBase: -0.427 + 0.036 },
+  }
 }

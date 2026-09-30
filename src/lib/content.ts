@@ -59,9 +59,11 @@ export const CAYE = {
   logo: '/brand/caye-logo.svg',
   hero: '/media/caye-hero.webp',
   pour: '/media/caye-pour.webp',
-  milk: '/media/caye-milk.webp',
-  spaces: ['/media/caye-bar.webp', '/media/caye-hotel.webp', '/media/caye-roastery.webp'],
-  details: ['/media/caye-screen.webp', '/media/caye-side.webp', '/media/caye-hoppers.webp', '/media/caye-burr.webp'],
+  milk: '/media/caye-milkpour.webp',
+  // stills + loop cut from the official CAYE film (media-src/caye-video/hero-en.mp4)
+  spacesVideo: '/media/caye-double.mp4',
+  spacesPoster: '/media/caye-double-poster.webp',
+  details: ['/media/caye-v-burrs.webp', '/media/caye-v-beans.webp', '/media/caye-v-inside.webp', '/media/caye-v-milk.webp'],
 }
 
 export const ATELIER_IMAGES = ['/media/crema-swirl.webp', '/media/crema-grain.webp', '/media/burr-top.webp']
@@ -188,6 +190,10 @@ const bs = {
         ['Dvostruki izlaz', 'Dva espressa odjednom, u ritmu šanka.'],
       ],
     },
+    finale: {
+      title: ['Vrhunska kafa.', 'Svaki put.'],
+      lead: 'Prva šoljica u smjeni i hiljadita imaju isti ukus.',
+    },
     hero: {
       label: 'Oblik',
       title: 'Arhitektura od čelika.',
@@ -197,7 +203,7 @@ const bs = {
       label: 'Ekstrakcija',
       title: 'Krema kao iz ruku baristke.',
       lead: 'Temperatura, pritisak i doza drže se isto od prve do posljednje šoljice u smjeni. Flat white, espresso ili lungo, na jedan dodir.',
-      captions: ['Espresso', 'Flat white'],
+      captions: ['Espresso', 'Mlijeko'],
     },
     spaces: {
       title: ['Jedna mašina.', 'Tri šanka.'],
@@ -209,8 +215,12 @@ const bs = {
     },
     details: {
       title: ['Detalji', 'koji rade tiho.'],
-      lead: 'Sve što osoblje dodiruje je na dohvat ruke. Sve ostalo je iza čelika.',
-      items: ['Ekran', 'Profil', 'Spremnici', 'Žrvnjevi'],
+      lead: 'Keramički žrvnjevi, svježe zrno i mlijeko koje se pjeni samo. Sve ostalo radi iza čelika.',
+      items: ['Žrvnjevi', 'Zrno', 'Unutrašnjost', 'Mlijeko'],
+    },
+    beans: {
+      line: 'Od zrna do šoljice',
+      place: 'Kafaparat × CAYE, Sarajevo',
     },
     cta: {
       title: 'CAYE na vašem šanku.',
@@ -343,6 +353,10 @@ const en: Copy = {
         ['Double spout', 'Two espressos at once, at the pace of the bar.'],
       ],
     },
+    finale: {
+      title: ['Exceptional coffee.', 'Every time.'],
+      lead: 'The first cup of the shift tastes like the thousandth.',
+    },
     hero: {
       label: 'Form',
       title: 'Architecture in steel.',
@@ -352,7 +366,7 @@ const en: Copy = {
       label: 'Extraction',
       title: 'Crema like a barista pulled it.',
       lead: 'Temperature, pressure and dose hold steady from the first cup of the shift to the last. Flat white, espresso or lungo, one touch.',
-      captions: ['Espresso', 'Flat white'],
+      captions: ['Espresso', 'Milk'],
     },
     spaces: {
       title: ['One machine.', 'Three bars.'],
@@ -364,8 +378,12 @@ const en: Copy = {
     },
     details: {
       title: ['Details', 'that work quietly.'],
-      lead: 'Everything the staff touches is within reach. Everything else lives behind steel.',
-      items: ['Screen', 'Profile', 'Hoppers', 'Burrs'],
+      lead: 'Ceramic burrs, fresh beans and milk that froths itself. Everything else works behind steel.',
+      items: ['Burrs', 'Beans', 'Inside', 'Milk'],
+    },
+    beans: {
+      line: 'From bean to cup',
+      place: 'Kafaparat × CAYE, Sarajevo',
     },
     cta: {
       title: 'CAYE on your bar.',
