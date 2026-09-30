@@ -12,7 +12,7 @@
   --fg-3: #b4b1af;
   --fg-4: #93908d;
   --fg-5: #615e5b;
-  --light: #dad5d0;
+  --light: #c6a266;
 
   --brass: #c9a36a;
   --champagne: #e6cfa4;
@@ -273,7 +273,10 @@ body {
   font-weight: 800;
 }
 .is-light-section .section-text p {
-  color: var(--bg-4);
+  color: #3a2c17;
+}
+.is-light-section .section-text h2 {
+  color: #231a0c;
 }
 
 /* Hero */
@@ -460,7 +463,7 @@ body {
   transition: color 0.25s;
 }
 body.is-light .labels {
-  color: var(--bg-4);
+  color: #3a2c17;
 }
 .labels li {
   opacity: 0;

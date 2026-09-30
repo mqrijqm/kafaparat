@@ -74,16 +74,19 @@ export const PALETTE_DARK = {
   outline: '#0f0e0d',
   outlineBlend: 0.4,
   contourBlend: 0.65,
+  sheen: 0,
 }
 
+// "Light" chapters are gold: line-art in warm dark brown on a brushed-gold field
 export const PALETTE_LIGHT = {
-  bg: '#dad5d0',
-  world: '#dad5d0',
-  shadow: '#dad5d0',
-  rim: '#dad5d0',
-  outline: '#000000',
-  outlineBlend: 0.35,
-  contourBlend: 0.35,
+  bg: '#c6a266',
+  world: '#c6a266',
+  shadow: '#c6a266',
+  rim: '#c6a266',
+  outline: '#1c1307',
+  outlineBlend: 0.3,
+  contourBlend: 0.3,
+  sheen: 1,
 }
 
 export function createOutlineMaterial() {
@@ -101,6 +104,7 @@ export function createOutlineMaterial() {
       uShadow: { value: hex('#000000') },
       uRim: { value: hex('#000000') },
       uOutline: { value: hex('#000000') },
+      uSheen: { value: 0 },
     },
     vertexShader: /* glsl */ `
       varying vec2 vUv;
@@ -111,6 +115,7 @@ export function createOutlineMaterial() {
       uniform vec2 uRes;
       uniform float uThreshold, uThickness, uOutlineBlend, uContourBlend;
       uniform vec3 uBg, uWorld, uShadow, uRim, uOutline;
+      uniform float uSheen;
       varying vec2 vUv;
       void main() {
         vec2 t = uThickness / uRes;
@@ -134,6 +139,9 @@ export function createOutlineMaterial() {
           vec3 line = mix(uOutline, paint, uOutlineBlend);
           col = mix(paint, line, outline);
         }
+        // metallic sheen: soft highlight upper-center, falling off to the edges
+        float d = distance(vUv, vec2(0.55, 0.62));
+        col *= 1.0 + uSheen * (0.16 - 0.32 * d * d);
         gl_FragColor = vec4(col, 1.0);
       }
     `,
@@ -158,4 +166,5 @@ export function applyPalette(mat: THREE.ShaderMaterial, p: Palette) {
   u.uOutline.value.copy(hex(p.outline))
   u.uOutlineBlend.value = p.outlineBlend
   u.uContourBlend.value = p.contourBlend
+  u.uSheen.value = p.sheen
 }
