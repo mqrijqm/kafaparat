@@ -1,5 +1,21 @@
-import { ACCENTS, ANATOMY, ATELIER, BREWS, FEATURES, MATERIALS } from '@/lib/content'
-import { IconArrowRight } from './icons'
+'use client'
+
+import { ACCENTS, ATELIER_IMAGES, BREWS, FEATURES, PARTNER_EMAIL } from '@/lib/content'
+import { useCopy } from '@/lib/i18n'
+import { IconArrowRight, IconArrowUpRight } from './icons'
+
+/** Wraps units (µm, g, mm, s) so uppercase UI text leaves them alone. */
+export function Units({ text }: { text: string }) {
+  return text.split(/(µm|µm|(?:mm|g|s))/).map((part, i) =>
+    i % 2 ? (
+      <span key={i} className="unit">
+        {part}
+      </span>
+    ) : (
+      part
+    ),
+  )
+}
 
 function StickyText({ title, lead }: { title: string[]; lead: string }) {
   return (
@@ -8,7 +24,7 @@ function StickyText({ title, lead }: { title: string[]; lead: string }) {
         <div className="section-text fixed-text">
           <h2>
             {title.map((t, i) => (
-              <span key={t}>
+              <span key={i}>
                 {t}
                 {i < title.length - 1 && <br />}
               </span>
@@ -22,71 +38,86 @@ function StickyText({ title, lead }: { title: string[]; lead: string }) {
 }
 
 export function Anatomy() {
+  const t = useCopy()
   return (
     <section id="anatomy" data-chapter="anatomy" className="is-light-section relative px-[var(--gutter)]" style={{ height: '400lvh' }}>
-      <StickyText title={ANATOMY.title} lead={ANATOMY.lead} />
+      <StickyText title={t.anatomy.title} lead={t.anatomy.lead} />
     </section>
   )
 }
 
 export function Features() {
+  const t = useCopy()
   return (
     <div id="features">
-      {FEATURES.map((f) => (
-        <section
-          key={f.id}
-          id={f.id}
-          data-chapter={f.id}
-          className="section feature-section"
-          style={{ ['--c' as string]: ACCENTS[f.accent] }}
-        >
-          <div className="section-inner">
-            <div className="section-text">
-              <h2>{f.title}</h2>
-              <p>{f.lead}</p>
-              <ul className="bullets text-ui">
-                {f.bullets.map((b) => (
-                  <li key={b}>
-                    <IconArrowRight />
-                    {b}
-                  </li>
-                ))}
-              </ul>
+      {FEATURES.map((f, n) => {
+        const c = t.features[f.id]
+        return (
+          <section
+            key={f.id}
+            id={f.id}
+            data-chapter={f.id}
+            className="section feature-section"
+            style={{ ['--c' as string]: ACCENTS[f.accent] }}
+          >
+            <div className="section-inner">
+              <div className="section-text">
+                <span className="eyebrow text-ui">
+                  {String(n + 1).padStart(2, '0')} / {String(FEATURES.length).padStart(2, '0')}
+                </span>
+                <h2>{c.title}</h2>
+                <p>{c.lead}</p>
+                <ul className="bullets text-ui">
+                  {c.bullets.map((b, i) => (
+                    <li key={i}>
+                      <IconArrowRight />
+                      <Units text={b} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-          </div>
-        </section>
-      ))}
+          </section>
+        )
+      })}
     </div>
   )
 }
 
 export function Materials() {
+  const t = useCopy()
   return (
     <section id="materials" data-chapter="materials" className="is-light-section relative px-[var(--gutter)]" style={{ height: '400lvh' }}>
-      <StickyText title={MATERIALS.title} lead={MATERIALS.lead} />
+      <StickyText title={t.materials.title} lead={t.materials.lead} />
     </section>
   )
 }
 
 export function Atelier() {
+  const t = useCopy()
   return (
     <section id="atelier" data-chapter="atelier" className="atelier relative px-[var(--gutter)]" style={{ height: '200lvh' }}>
       <div className="sticky top-0 h-[100lvh]">
         <div className="section-inner">
           <div className="section-text">
             <h2>
-              {ATELIER.title[0]}
+              {t.atelier.title[0]}
               <br />
-              {ATELIER.title[1]}
+              {t.atelier.title[1]}
             </h2>
-            <p>{ATELIER.lead}</p>
+            <p>{t.atelier.lead}</p>
           </div>
           <div className="atelier-grid">
-            {ATELIER.images.map((im) => (
-              <figure key={im.src}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={im.src} alt={im.caption} loading="lazy" decoding="async" />
-                <figcaption className="text-ui">{im.caption}</figcaption>
+            {ATELIER_IMAGES.map((src, i) => (
+              <figure key={src}>
+                <div className="frame">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={src} alt={t.atelier.captions[i]} loading="lazy" decoding="async" />
+                </div>
+                <figcaption className="text-ui">
+                  <span>{String(i + 1).padStart(2, '0')}</span>
+                  {t.atelier.captions[i]}
+                </figcaption>
               </figure>
             ))}
           </div>
@@ -97,18 +128,19 @@ export function Atelier() {
 }
 
 export function Start() {
+  const t = useCopy()
   return (
     <section id="start" data-chapter="start" className="start relative px-[var(--gutter)]" style={{ height: '200lvh' }}>
       <div className="absolute inset-x-0 bottom-0 h-[100lvh] px-[var(--gutter)]">
         <div className="section-inner">
-          <h2>Start grinding</h2>
-          <p>Find your setting for every brew.</p>
+          <h2>{t.start.title}</h2>
+          <p>{t.start.lead}</p>
           <ul className="brew-grid text-ui">
-            {BREWS.map((b) => (
-              <li key={b.label}>
+            {BREWS.map((b, i) => (
+              <li key={i}>
                 <a href="#" style={{ ['--c' as string]: ACCENTS[b.accent] }}>
                   <span className="dot" />
-                  {b.label}
+                  {t.start.brews[i]}
                   <span className="um mono">{b.microns} µm</span>
                   <IconArrowRight />
                 </a>
@@ -121,19 +153,23 @@ export function Start() {
   )
 }
 
-const FOOTER = [
-  { h: 'Product', links: ['MOLA No.1', 'Travel roll', 'Spare burrs', 'Gift card'] },
-  { h: 'Atelier', links: ['About', 'Workshop', 'Journal', 'Stockists'] },
-  { h: 'Support', links: ['Care guide', 'Warranty', 'Shipping', 'Contact'] },
-]
-
 export function Footer() {
+  const t = useCopy()
+  const f = t.footer
   return (
     <footer className="site-footer">
       <div className="container-x !px-0">
+        <div id="partnership" className="partner-band">
+          <span className="text-ui">{f.partner.h}</span>
+          <p>{f.partner.lead}</p>
+          <a href={`mailto:${PARTNER_EMAIL}`} className="btn-partner text-ui">
+            {PARTNER_EMAIL}
+            <IconArrowUpRight />
+          </a>
+        </div>
         <div className="inner">
-          <div className="flex gap-16 flex-wrap">
-            {FOOTER.map((c) => (
+          <div className="footer-cols">
+            {f.cols.map((c) => (
               <div key={c.h}>
                 <h6 className="text-ui">{c.h}</h6>
                 <ul>
@@ -147,16 +183,16 @@ export function Footer() {
             ))}
           </div>
           <div>
-            <h6 className="text-ui">Notes from the atelier</h6>
-            <p className="text-fg-3 max-w-[20rem] leading-6">Brewing guides and new batches, four times a year.</p>
+            <h6 className="text-ui">{f.news.h}</h6>
+            <p className="footer-lead">{f.news.lead}</p>
             <form className="newsletter text-ui">
-              <input type="email" placeholder="Email address" aria-label="Email address" />
-              <button type="submit">Subscribe</button>
+              <input type="email" placeholder={f.news.placeholder} aria-label={f.news.placeholder} />
+              <button type="submit">{f.news.submit}</button>
             </form>
           </div>
         </div>
-        <div className="flex justify-between text-fg-4 text-sm pb-2">
-          <span>© 2026 MOLA Atelier</span>
+        <div className="footer-base text-ui">
+          <span>{f.rights}</span>
           <span className="mono">45.4642° N, 9.1900° E</span>
         </div>
       </div>

@@ -1,27 +1,35 @@
 import type { Metadata, Viewport } from 'next'
-import { Archivo, JetBrains_Mono } from 'next/font/google'
+import { JetBrains_Mono } from 'next/font/google'
+import localFont from 'next/font/local'
 import SmoothScroll from '@/components/SmoothScroll'
+import { LangProvider } from '@/lib/i18n'
+import { COPY } from '@/lib/content'
 import './globals.css'
 
-const archivo = Archivo({
-  variable: '--font-archivo',
-  subsets: ['latin'],
-  axes: ['wdth'],
+// Display + reading face: a light high-contrast serif
+const zolina = localFont({
+  src: './fonts/ZolinaLight.woff2',
+  variable: '--font-zolina',
+  weight: '300',
+  display: 'swap',
 })
 
 const mono = JetBrains_Mono({
   variable: '--font-jetbrains',
-  subsets: ['latin'],
+  subsets: ['latin', 'latin-ext'],
 })
+
+const { meta } = COPY.bs
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
-  title: 'MOLA No.1 — Precision hand grinder',
-  description:
-    'A precision hand coffee grinder machined from steel, brass and walnut. Forty-one parts, one gesture.',
+  title: meta.title,
+  description: meta.description,
   openGraph: {
-    title: 'MOLA No.1 — Precision hand grinder',
-    description: 'Forty-one parts. One gesture.',
+    title: meta.title,
+    description: meta.description,
+    locale: 'bs_BA',
+    alternateLocale: ['en_US'],
     images: ['/media/og-image.jpg'],
   },
 }
@@ -32,9 +40,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${archivo.variable} ${mono.variable}`}>
+    <html lang="bs" className={`${zolina.variable} ${mono.variable}`}>
       <body>
-        <SmoothScroll>{children}</SmoothScroll>
+        <LangProvider>
+          <SmoothScroll>{children}</SmoothScroll>
+        </LangProvider>
       </body>
     </html>
   )

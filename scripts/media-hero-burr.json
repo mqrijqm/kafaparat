@@ -1,0 +1,20 @@
+{
+  "style": "Ultra-realistic luxury product macro photography, like a high-end Swiss watch movement campaign. Polished and brushed champagne gold and warm brass metal, crisp machined edges, fine concentric lathe turning marks, soft golden studio lighting from the upper left, deep rich shadows, no text, no logos, no watermark.",
+  "items": [
+    {
+      "name": "hero-burr-a",
+      "aspect": "1:1",
+      "prompt": "Perfectly top-down orthographic view straight into a precision coffee grinder burr mechanism, a single perfect circle centered in frame and filling about 90% of it, on a pure black background. Outer knurled gold ring, then a ring of sharp spiral cutting teeth sweeping toward the centre, then concentric machined gold rings and a central polished steel-and-gold bearing hub with a tiny engraved index scale. A few roasted coffee beans and fine grounds rest in the inner bowl. Radially symmetric, jewel-like, mechanical, elegant."
+    },
+    {
+      "name": "hero-burr-b",
+      "aspect": "1:1",
+      "prompt": "Exact overhead view, camera perfectly perpendicular, of an exposed golden grinding mechanism shaped as one perfect circle centered on a pure black background, filling about 90% of the frame. Layered like a watch movement: outer fluted gold bezel, a gold conical burr with dozens of razor-sharp helical cutting teeth spiralling inward, three polished screw bosses, a gold gear ring with fine teeth, and a mirror-polished central spindle. Strong radial symmetry, precision engineering, opulent gold metallic finish."
+    },
+    {
+      "name": "hero-burr-c",
+      "aspect": "1:1",
+      "prompt": "Top-down flat-lay of a circular gold precision burr, looking straight down its axis, one perfect circle centered on a pure black background filling about 90% of the frame. Deeply machined spiral blades in brushed gold with bright polished cutting edges catching light, stepped serrations on each blade, a dark inner throat with a polished gold hub at the exact centre. Minimal, sculptural, premium, rich gold and bronze tones."
+    }
+  ]
+}

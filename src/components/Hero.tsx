@@ -3,31 +3,32 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { useLenis } from 'lenis/react'
-import { HERO } from '@/lib/content'
+import { useCopy, useLang } from '@/lib/i18n'
 import { IconArrowDown, IconCheck, IconPlus } from './icons'
 
-function Chars({ text }: { text: string }) {
+function Chars({ text, tail }: { text: string; tail?: React.ReactNode }) {
   // chars are inline-blocks for the reveal; the word wrapper keeps the browser from breaking mid-word
   return (
     <span className="word">
       {text.split('').map((c, i) => (
         <span key={i} className="char">
-          {c}
+          {c === ' ' ? ' ' : c}
         </span>
       ))}
+      {tail}
     </span>
   )
 }
 
-/** Cycles the last word: old chars collapse, new ones stretch in (like the reference "animate the ___."). */
-function WordCycler() {
+/**
+ * Cycles the last word: old chars collapse, new ones stretch in (like the reference "animate the ___.").
+ * The slot is owned by GSAP (innerHTML), never by React, so re-renders can't fight the animation.
+ */
+function WordCycler({ words }: { words: string[] }) {
   const slot = useRef<HTMLSpanElement>(null)
   const dot = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    let i = 0
-    let alive = true
     const render = (w: string) => {
       slot.current!.innerHTML = w
         .split('')
@@ -35,15 +36,20 @@ function WordCycler() {
         .join('')
       return slot.current!.querySelectorAll('.c')
     }
+    render(words[0])
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    let i = 0
+    let alive = true
+    let tl: gsap.core.Timeline | undefined
     const loop = () => {
       if (!alive) return
       const out = slot.current!.querySelectorAll('.c')
-      const tl = gsap.timeline({ onComplete: () => gsap.delayedCall(1.4, loop) })
+      tl = gsap.timeline({ onComplete: () => void gsap.delayedCall(1.4, loop) })
       tl.to(out, { opacity: 0, scaleX: 0, duration: 0.15, stagger: { each: 0.025, from: 'end' }, ease: 'power2.in' })
       tl.to(dot.current, { scaleX: 6, color: '#f6efe6', duration: 0.15, ease: 'power2.out' }, '<')
       tl.add(() => {
-        i = (i + 1) % HERO.words.length
-        const chars = render(HERO.words[i])
+        i = (i + 1) % words.length
+        const chars = render(words[i])
         gsap.fromTo(
           chars,
           { scaleX: 0, x: 10, opacity: 0 },
@@ -56,18 +62,14 @@ function WordCycler() {
     return () => {
       alive = false
       start.kill()
+      tl?.kill()
+      gsap.killTweensOf(loop)
     }
-  }, [])
+  }, [words])
 
   return (
     <>
-      <span ref={slot} className="word-slot">
-        {HERO.words[0].split('').map((c, i) => (
-          <span key={i} className="c">
-            {c}
-          </span>
-        ))}
-      </span>
+      <span ref={slot} className="word-slot" />
       <span ref={dot} className="word-dot">
         .
       </span>
@@ -76,21 +78,28 @@ function WordCycler() {
 }
 
 export function Hero() {
+  const t = useCopy()
+  const { lang } = useLang()
   return (
     <div className="section hero">
       <div className="section-inner">
         <div className="section-text">
-          <h1>
-            {HERO.title.map((line, i) => (
+          <h1 key={lang}>
+            {t.hero.title.map((line, i) => (
               <span key={line}>
-                <Chars text={line} />
-                {i === HERO.title.length - 1 ? <span className="dot">.</span> : <br />}
-                {i < HERO.title.length - 1 && ' '}
+                {i === t.hero.title.length - 1 ? (
+                  <Chars text={line} tail={<span className="dot">.</span>} />
+                ) : (
+                  <>
+                    <Chars text={line} />
+                    <br />{' '}
+                  </>
+                )}
               </span>
             ))}
           </h1>
           <p className="hero-lead">
-            {HERO.lead} <WordCycler />
+            {t.hero.lead} <WordCycler words={t.hero.words} />
           </p>
         </div>
       </div>
@@ -100,13 +109,14 @@ export function Hero() {
 
 export function HeadingLinks() {
   const lenis = useLenis()
+  const t = useCopy()
   const [added, setAdded] = useState(false)
   return (
     <div className="heading-links text-ui">
       <div className="group">
         <div className="price-pill mono">
-          {HERO.price}
-          <button aria-label="Add to reservation" onClick={() => setAdded(true)}>
+          {t.hero.price}
+          <button aria-label={t.hero.add} onClick={() => setAdded(true)}>
             {added ? <IconCheck className="w-4 h-4" /> : <IconPlus className="w-4 h-4" />}
           </button>
         </div>
@@ -114,7 +124,7 @@ export function HeadingLinks() {
           className="ui-button text-ui"
           onClick={() => lenis?.scrollTo(window.innerHeight * 3, { duration: 2.5, easing: (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2) })}
         >
-          Discover
+          {t.hero.discover}
           <span className="arrow-loop">
             <IconArrowDown className="w-full h-full" />
             <IconArrowDown className="w-full h-full" />
@@ -122,9 +132,9 @@ export function HeadingLinks() {
         </button>
       </div>
       <div className="hallmark">
-        <span>Hallmarked by hand</span>
+        <span>{t.hero.hallmark}</span>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/media/hallmark.webp" alt="MOLA hallmark" />
+        <img src="/media/hallmark.webp" alt="Kafaparat" />
       </div>
     </div>
   )

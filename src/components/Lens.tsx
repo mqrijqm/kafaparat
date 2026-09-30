@@ -8,7 +8,7 @@ import { getLensEl, stage } from '@/three/stage'
 
 /*
   The 400×400 "lens" that sits inside the 3D scene (CSS3D), exactly over the bezel:
-  segmented ring, 193 tick marks, feature photos, and 2D canvases (easing lines, dotted grid, bean).
+  segmented ring, 193 tick marks, feature photos, and 2D canvases (hero burr, dotted grid, bean).
 */
 
 const TICKS = 193
@@ -33,22 +33,6 @@ function Ring({ className }: { className: string }) {
   )
 }
 
-// Easing curves the hero cycles through (the silhouette of the stripe stack draws the curve)
-const EASES = [
-  'none',
-  'power2.inOut',
-  'sine.inOut',
-  'expo.inOut',
-  'power4.out',
-  'circ.inOut',
-  'back.inOut(2)',
-  'power1.in',
-  'elastic.out(1,0.5)',
-  'bounce.out',
-  'steps(6)',
-  'power3.inOut',
-].map((e) => gsap.parseEase(e))
-
 // 13×13 bean silhouette (1 = dot, 0 = none) for the closing chapter
 const BEAN = [
   '0000111110000',
@@ -67,83 +51,31 @@ const BEAN = [
 ]
 
 function LensInner() {
-  const linesRef = useRef<HTMLCanvasElement>(null)
+  const burrRef = useRef<HTMLDivElement>(null)
   const gridRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
-    const lines = linesRef.current!.getContext('2d')!
+    const burr = burrRef.current!
+    const burrImg = burr.querySelector('img')!
     const grid = gridRef.current!.getContext('2d')!
     const W = 400
     const S = 2 // backing store scale
-    lines.setTransform(S, 0, 0, S, 0, 0)
     grid.setTransform(S, 0, 0, S, 0, 0)
-
-    const N_LINES = 73
-    const N_DOTS = 37
-    // morph state: values per index, tweened from one easing to the next
-    const cur = { lines: new Float32Array(N_LINES), dots: new Float32Array(N_DOTS) }
-    const from = { lines: new Float32Array(N_LINES), dots: new Float32Array(N_DOTS) }
-    const to = { lines: new Float32Array(N_LINES), dots: new Float32Array(N_DOTS) }
-    const morph = { p: 1 }
-
-    const target = (ease: (t: number) => number) => {
-      for (let i = 0; i < N_LINES; i++) {
-        const d = Math.abs(i - (N_LINES - 1) / 2) / ((N_LINES - 1) / 2)
-        to.lines[i] = 0.01 + (0.75 - 0.01) * ease(1 - d)
-      }
-      for (let i = 0; i < N_DOTS; i++) {
-        const t = (N_DOTS - 1 - i) / (N_DOTS - 1)
-        to.dots[i] = -78 + 156 * ease(t)
-      }
-    }
-    target(EASES[0])
-    cur.lines.set(to.lines)
-    cur.dots.set(to.dots)
-
-    let k = 0
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const cycle = reduced
-      ? null
-      : gsap.delayedCall(0.75, function next() {
-          if (stage.lens.easing > 0.01) {
-            k = (k + 1) % EASES.length
-            from.lines.set(cur.lines)
-            from.dots.set(cur.dots)
-            target(EASES[k])
-            gsap.fromTo(morph, { p: 0 }, { p: 1, duration: 0.5, ease: 'power3.inOut' })
-          }
-          cycle?.restart(true)
-        })
+    let rot = 0
+    let last = performance.now()
 
     const draw = () => {
       const L = stage.lens
-      // hero easing lines + dots
-      lines.clearRect(0, 0, W, W)
-      if (L.easing > 0.001) {
-        if (morph.p < 1) {
-          for (let i = 0; i < N_LINES; i++) cur.lines[i] = from.lines[i] + (to.lines[i] - from.lines[i]) * morph.p
-          for (let i = 0; i < N_DOTS; i++) cur.dots[i] = from.dots[i] + (to.dots[i] - from.dots[i]) * morph.p
-        } else {
-          cur.lines.set(to.lines)
-          cur.dots.set(to.dots)
-        }
-        lines.fillStyle = ACCENTS.brass
-        for (let i = 0; i < N_LINES; i++) {
-          const y = 82 + (i / (N_LINES - 1)) * 236
-          const d = Math.abs(i - (N_LINES - 1) / 2) / ((N_LINES - 1) / 2)
-          lines.globalAlpha = (0.75 - 0.65 * d) * L.easing
-          const w = 340 * cur.lines[i] * L.easing
-          lines.fillRect(200 - w / 2, y - 1, w, 2)
-        }
-        lines.fillStyle = ACCENTS.champagne
-        for (let i = 0; i < N_DOTS; i++) {
-          const x = 80 + (i / (N_DOTS - 1)) * 240
-          lines.globalAlpha = L.easing
-          lines.beginPath()
-          lines.arc(x, 200 + cur.dots[i], 3 * L.easing, 0, Math.PI * 2)
-          lines.fill()
-        }
-        lines.globalAlpha = 1
+      // hero: the grinding head seen from above. The photo turns, the sheen on top stays put.
+      const now = performance.now()
+      const dt = Math.min(0.05, (now - last) / 1000)
+      last = now
+      burr.style.visibility = L.burr > 0.001 ? 'visible' : 'hidden'
+      if (L.burr > 0.001) {
+        rot += dt * 4 * stage.spin * L.burr // degrees per second
+        burr.style.opacity = String(L.burr)
+        burr.style.transform = `scale(${0.9 + 0.1 * L.burr})`
+        burrImg.style.transform = `rotate(${rot - (1 - L.burr) * 40}deg)`
       }
 
       // dotted grid (13×13) and bean pattern share one canvas
@@ -170,10 +102,7 @@ function LensInner() {
       }
     }
     gsap.ticker.add(draw)
-    return () => {
-      gsap.ticker.remove(draw)
-      cycle?.kill()
-    }
+    return () => gsap.ticker.remove(draw)
   }, [])
 
   return (
@@ -196,7 +125,10 @@ function LensInner() {
         ))}
       </div>
       <canvas ref={gridRef} className="grid-canvas" width={800} height={800} />
-      <canvas ref={linesRef} className="lines-canvas" width={800} height={800} />
+      <div ref={burrRef} className="burr">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/media/hero-burr.webp" alt="" decoding="async" />
+      </div>
     </div>
   )
 }

@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
-import { ACCENTS, ANATOMY, FEATURES, MATERIALS } from '@/lib/content'
+import { ACCENTS, ANATOMY_PARTS, FEATURES, MATERIALS } from '@/lib/content'
+import { useCopy } from '@/lib/i18n'
 import { stage } from '@/three/stage'
 import type { ModuleKey } from '@/three/grinder'
 
@@ -10,13 +11,14 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t
 
 /** Callout labels + 45° leader lines that follow projected 3D anchor points. */
 export function Callouts() {
+  const t = useCopy()
   const svg = useRef<SVGSVGElement>(null)
   const root = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const items = [
-      ...ANATOMY.left.map((l) => ({ ...l, side: 1 as const, list: 'left' })),
-      ...ANATOMY.right.map((l) => ({ ...l, side: -1 as const, list: 'right' })),
+      ...ANATOMY_PARTS.left.map((part) => ({ part, side: 1 as const, list: 'left' })),
+      ...ANATOMY_PARTS.right.map((part) => ({ part, side: -1 as const, list: 'right' })),
     ]
     const lis = root.current!.querySelectorAll<HTMLLIElement>('li')
     const lines = svg.current!.querySelectorAll<SVGPolylineElement>('polyline')
@@ -53,18 +55,18 @@ export function Callouts() {
   return (
     <div ref={root} className="callouts">
       <svg ref={svg} className="leader-lines" aria-hidden>
-        {[...ANATOMY.left, ...ANATOMY.right].map((l) => (
-          <polyline key={l.label} pathLength={1} strokeDasharray="1 1" strokeDashoffset={1} />
+        {[...ANATOMY_PARTS.left, ...ANATOMY_PARTS.right].map((part) => (
+          <polyline key={part} pathLength={1} strokeDasharray="1 1" strokeDashoffset={1} />
         ))}
       </svg>
       <ul className="labels labels-left mono">
-        {ANATOMY.left.map((l) => (
-          <li key={l.label}>{l.label}</li>
+        {t.anatomy.left.map((label, i) => (
+          <li key={i}>{label}</li>
         ))}
       </ul>
       <ul className="labels labels-right mono">
-        {ANATOMY.right.map((l) => (
-          <li key={l.label}>{l.label}</li>
+        {t.anatomy.right.map((label, i) => (
+          <li key={i}>{label}</li>
         ))}
       </ul>
     </div>
@@ -73,6 +75,7 @@ export function Callouts() {
 
 /** Material tags that ride next to the parts while they slide out in the Materials chapter. */
 export function PartTags() {
+  const t = useCopy()
   const root = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const tags = root.current!.querySelectorAll<HTMLDivElement>('.part-tag')
@@ -91,10 +94,10 @@ export function PartTags() {
   }, [])
   return (
     <div ref={root} className="part-tags" aria-hidden>
-      {MATERIALS.items.map((m) => (
-        <div key={m.name} className="part-tag text-ui" style={{ ['--c' as string]: ACCENTS[m.accent] }}>
+      {MATERIALS.items.map((m, i) => (
+        <div key={m.part + i} className="part-tag text-ui" style={{ ['--c' as string]: ACCENTS[m.accent] }}>
           <i />
-          {m.name} · {m.grams} g
+          {t.materials.names[i]} · {m.grams} <span className="unit">g</span>
         </div>
       ))}
     </div>
@@ -103,6 +106,7 @@ export function PartTags() {
 
 /** Bottom-right stack: feature spec cards, weight card, and the timeline scrubber. */
 export function SubNav({ chapters }: { chapters: string[] }) {
+  const t = useCopy()
   const bar = useRef<HTMLDivElement>(null)
   const cursor = useRef<HTMLDivElement>(null)
   const ghost = useRef<HTMLDivElement>(null)
@@ -198,11 +202,11 @@ export function SubNav({ chapters }: { chapters: string[] }) {
       {FEATURES.map((f) => (
         <div key={f.id} className="card spec-card" data-card={f.id} style={{ ['--c' as string]: ACCENTS[f.accent] }}>
           <div className="head">
-            <span>{f.title.toLowerCase()}</span>
+            <span>{t.features[f.id].title.toLowerCase()}</span>
             <span>No.1</span>
           </div>
           <dl>
-            {f.spec.map(([k, v]) => (
+            {t.features[f.id].spec.map(([k, v]) => (
               <div key={k} className="contents">
                 <dt>{k}</dt>
                 <dd>{v}</dd>
@@ -213,26 +217,26 @@ export function SubNav({ chapters }: { chapters: string[] }) {
       ))}
       <div className="card weight-card" data-card="materials">
         <div className="total">
-          <span>Total weight</span>
+          <span>{t.materials.total}</span>
           <b>
             <span className="weight-count">0</span> g
           </b>
         </div>
         <div className="bars">
-          {MATERIALS.items.map((m) => (
+          {MATERIALS.items.map((m, i) => (
             <span
-              key={m.name}
+              key={i}
               data-w={(m.grams / MATERIALS.total) * 100}
               style={{ ['--c' as string]: ACCENTS[m.accent], width: '0%' }}
             />
           ))}
         </div>
         <ul>
-          {MATERIALS.items.map((m) => (
-            <li key={m.name}>
+          {MATERIALS.items.map((m, i) => (
+            <li key={i}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={m.swatch} alt="" />
-              {m.name}
+              {t.materials.names[i]}
               <em>{m.grams} g</em>
             </li>
           ))}

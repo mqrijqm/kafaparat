@@ -1,37 +1,38 @@
-import { NAV } from '@/lib/content'
-import { IconBag, IconGrid, IconInstagram, IconLayers, IconPlay } from './icons'
+'use client'
 
-const ICONS = { grid: IconGrid, layers: IconLayers, play: IconPlay }
+import { LANGS, NAV_HREFS, PARTNER_HREF } from '@/lib/content'
+import { useCopy, useLang } from '@/lib/i18n'
+import { IconArrowUpRight } from './icons'
 
 export default function Header() {
+  const t = useCopy()
+  const { lang, setLang } = useLang()
   return (
     <header className="site-header">
-      <a href="#intro" className="logo" aria-label="MOLA home">
-        mola<i />
+      <a href="#intro" className="logo cell" aria-label="Kafaparat">
+        kafaparat<i />
         <small>No.1</small>
       </a>
-      <nav className="nav text-ui" aria-label="Main">
-        {NAV.map((n) => {
-          const Icon = ICONS[n.icon]
-          return (
-            <a key={n.href} href={n.href}>
-              <Icon />
-              {n.label}
-            </a>
-          )
-        })}
-        <a href="#" aria-label="Instagram">
-          <IconInstagram />
-        </a>
-        <a href="#start" className="btn-reserve">
-          <IconBag />
-          Reserve
-        </a>
+      <nav className="nav cell text-ui" aria-label="Main">
+        {NAV_HREFS.map((href, i) => (
+          <a key={href} href={href}>
+            <span className="num">0{i + 1}</span>
+            {t.nav[i]}
+          </a>
+        ))}
       </nav>
-      <button className="burger" aria-label="Open menu">
-        <span />
-        <span />
-      </button>
+      <div className="lang-toggle cell text-ui" role="group" aria-label={t.langLabel}>
+        {LANGS.map((l) => (
+          <button key={l} aria-pressed={lang === l} onClick={() => setLang(l)}>
+            {l}
+          </button>
+        ))}
+      </div>
+      <a href={PARTNER_HREF} className="btn-partner cell text-ui">
+        <span className="hide-sm">{t.partner.long}</span>
+        <span className="show-sm">{t.partner.short}</span>
+        <IconArrowUpRight />
+      </a>
     </header>
   )
 }

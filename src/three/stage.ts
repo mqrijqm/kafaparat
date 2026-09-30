@@ -19,7 +19,7 @@ type Stage = {
   palette: ReturnType<typeof paletteState>
   /** Values the lens canvases read every frame */
   lens: {
-    easing: number // 0..1 visibility of the hero easing lines/dots
+    burr: number // 0..1 visibility of the hero burr (top view of the grinding head)
     grid: number // 0..1 dotted grid
     bean: number // 0..1 bean dot pattern
     tick: string // tick color
@@ -41,7 +41,7 @@ export const stage: Stage = {
   camera: null,
   light: new THREE.Vector3(-200, 135, -80),
   palette: paletteState({ ...PALETTE_DARK, bg: '#000000', world: '#000000', shadow: '#000000', rim: '#000000', outline: '#000000' }),
-  lens: { easing: 0, grid: 0, bean: 0, tick: '#c9a36a' },
+  lens: { burr: 0, grid: 0, bean: 0, tick: '#c9a36a' },
   spin: 1,
   lensEl: null,
   cssLayer: null,

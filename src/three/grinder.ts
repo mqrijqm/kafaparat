@@ -13,7 +13,7 @@ import {
 import { partMaterial } from './materials'
 
 /*
-  MOLA No.1, procedurally modelled. Axis = local Z, radius ≈ 1, root scaled ×10 (same units as the reference).
+  Kafaparat No.1, procedurally modelled. Axis = local Z, radius ≈ 1, root scaled ×10 (same units as the reference).
   Front (+Z) is the bezel you look into; the crank sits at the back.
 */
 

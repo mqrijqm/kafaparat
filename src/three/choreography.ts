@@ -59,7 +59,7 @@ export function buildChoreography() {
       .to(Z.position, { z: V(58, 92), duration: 1.5, ease: 'power2.inOut' }, 0.9)
       .fromTo(ticks, { opacity: 0 }, { opacity: 0.4, duration: 0.3, stagger: { amount: 0.5, ease: 'power2.out' } }, 0.3)
       .to(stage.lens, { grid: 1, duration: 0.8, ease: 'power2.out' }, 1)
-      .to(stage.lens, { easing: 1, duration: 0.8, ease: 'power3.out' }, 1.2)
+      .to(stage.lens, { burr: 1, duration: 1.4, ease: 'power3.out' }, 1.2)
       .from('.hero h1 .char', { x: '0.35em', opacity: 0, duration: 1, ease: 'expo.out', stagger: { each: 0.025, ease: 'power1.inOut' } }, 1.4)
       .from('.hero h1 .dot', { x: '0.25em', opacity: 0, color: '#ffffff', duration: 0.6, ease: 'power3.inOut' }, 1.95)
       .from('.hero-lead', { opacity: 0, y: 12, duration: 0.8, ease: 'expo.out' }, 1.8)
@@ -141,7 +141,7 @@ export function buildChoreography() {
     })
     tl.to(ringBg, { opacity: 0.001, duration: 0.04 * I.d }, I.t + 0.1 * I.d)
       .to(ticks, { opacity: 0, duration: 0.04 * I.d }, I.t + 0.1 * I.d)
-      .to(stage.lens, { easing: 0, grid: 0, duration: 0.06 * I.d }, I.t + 0.06 * I.d)
+      .to(stage.lens, { burr: 0, grid: 0, duration: 0.06 * I.d }, I.t + 0.06 * I.d)
 
     // Callouts draw in at the end of the hero chapter, out early in anatomy
     tl.fromTo('.labels li', { opacity: 0 }, { opacity: 1, duration: 0.05 * I.d, stagger: { each: 0.004 * I.d, from: 'end' } }, I.t + 0.8 * I.d)
