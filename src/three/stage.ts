@@ -25,6 +25,8 @@ type Stage = {
     tick: string // tick color
   }
   spin: number // idle spin multiplier (0 when reduced motion)
+  /** true while an opaque section (CAYE, footer) covers the whole viewport: skip rendering */
+  paused: boolean
   lensEl: HTMLDivElement | null
   cssLayer: HTMLDivElement | null
   onReady: (() => void)[]
@@ -43,6 +45,7 @@ export const stage: Stage = {
   palette: paletteState({ ...PALETTE_DARK, bg: '#000000', world: '#000000', shadow: '#000000', rim: '#000000', outline: '#000000' }),
   lens: { burr: 0, grid: 0, bean: 0, tick: '#c9a36a' },
   spin: 1,
+  paused: false,
   lensEl: null,
   cssLayer: null,
   onReady: [],

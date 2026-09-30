@@ -66,6 +66,7 @@ export function createPipeline() {
     },
 
     frame(gl: THREE.WebGLRenderer, scene: THREE.Scene, cam: THREE.PerspectiveCamera, t: number, delta: number) {
+      if (stage.paused) return
       const s = stage.spin
       // idle mechanics, always running (like the reference's time-based loops)
       const sp = grinder.spinners

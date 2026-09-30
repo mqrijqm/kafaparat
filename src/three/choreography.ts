@@ -353,10 +353,19 @@ export function buildChoreography() {
       },
     )
 
+    // ───────── Pause the engine under the opaque after-story layer ─────────
+    ScrollTrigger.create({
+      trigger: '.after-story',
+      start: 'top top',
+      end: 'max',
+      onToggle: (s) => (stage.paused = s.isActive),
+    })
+
     return () => {
       intro.kill()
       master.kill()
       stage.palette = { ...PALETTE_DARK }
+      stage.paused = false
     }
   })
 

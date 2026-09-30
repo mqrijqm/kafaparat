@@ -1,3 +1,4 @@
+import { Caye, PartnerBand } from '@/components/Caye'
 import ClientExperience from '@/components/ClientExperience'
 import Header from '@/components/Header'
 import { HeadingLinks, Hero } from '@/components/Hero'
@@ -19,6 +20,11 @@ export default function Home() {
           <Materials />
           <Atelier />
           <Start />
+          {/* after the grinder story: opaque layer above the fixed WebGL engine */}
+          <div className="after-story">
+            <PartnerBand />
+            <Caye />
+          </div>
         </main>
         <Footer />
       </div>

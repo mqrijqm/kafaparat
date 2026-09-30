@@ -116,10 +116,16 @@ export function SubNav({ chapters }: { chapters: string[] }) {
     const els = chapters.map((c) => document.getElementById(c)!)
     const n = els.length
     // chapter i spans [top_i, top_{i+1}] in scroll px, but gets an equal 1/n of the bar
-    const bounds = () => {
+    // the bar covers the grinder story only: it ends where the partnership band / CAYE begin
+    const storyEnd = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight
-      const tops = els.map((e) => Math.min(max, e.getBoundingClientRect().top + window.scrollY))
-      tops.push(max)
+      const after = document.querySelector('.after-story')
+      return after ? Math.min(max, after.getBoundingClientRect().top + window.scrollY - window.innerHeight) : max
+    }
+    const bounds = () => {
+      const end = storyEnd()
+      const tops = els.map((e) => Math.min(end, e.getBoundingClientRect().top + window.scrollY))
+      tops.push(end)
       return tops
     }
     const toBar = (y: number) => {
@@ -142,9 +148,8 @@ export function SubNav({ chapters }: { chapters: string[] }) {
     gsap.set(card.current, { yPercent: 110 })
     const update = () => {
       if (!bar.current || !cursor.current) return
-      const max = document.documentElement.scrollHeight - window.innerHeight
       const y = window.scrollY
-      const prog = y / max
+      const prog = y / storyEnd()
       const w = bar.current!.clientWidth
       gsap.set(cursor.current, { x: toBar(y) * w })
       const show = prog > 0.02 && prog < 0.98

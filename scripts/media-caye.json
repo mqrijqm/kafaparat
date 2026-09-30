@@ -1,0 +1,47 @@
+{
+  "style": "Premium commercial product photography for a luxury professional espresso machine brand. Warm golden, champagne and espresso-brown palette, soft directional studio light, rich shadows, shallow depth of field, editorial and calm. The only text allowed is the small CAYE logo that is already on the machine. No watermark, no captions.",
+  "items": [
+    {
+      "name": "caye-bar",
+      "aspect": "3:2",
+      "ref": "media-src/caye-ref/caye-hero.png",
+      "prompt": "The CAYE professional super-automatic espresso machine (champagne-silver angular body, triangular side panel, two bean hoppers on top, touchscreen, central coffee spout) standing on a honed travertine café bar counter at golden morning light, a glass of fresh espresso under the spout, softly blurred café interior with brass details behind. Machine placed right of centre, generous calm space on the left."
+    },
+    {
+      "name": "caye-hotel",
+      "aspect": "3:2",
+      "ref": "media-src/caye-ref/ref-3q.png",
+      "prompt": "The CAYE professional espresso machine (angular white-and-champagne body with a bold triangular side panel, two bean hoppers, large touchscreen) on a walnut and marble hotel breakfast buffet, stacks of white porcelain cups and saucers beside it, warm luxury hotel lobby with soft lamps blurred in the background. Three-quarter view."
+    },
+    {
+      "name": "caye-roastery",
+      "aspect": "3:2",
+      "ref": "media-src/caye-ref/caye-hero.png",
+      "prompt": "The CAYE professional espresso machine on a dark oak counter inside a specialty coffee roastery, jute sacks of green coffee and a copper drum roaster softly blurred behind, warm tungsten light, a small tasting tray with espresso cups in front of the machine."
+    },
+    {
+      "name": "caye-screen",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/ref-3q.png",
+      "prompt": "Close-up macro of the CAYE machine's glossy black touchscreen panel with a grid of coffee drink icons, a barista's fingertip gently touching one icon, brushed champagne metal frame with the small CAYE logo underneath, warm golden reflections on the glass."
+    },
+    {
+      "name": "caye-side",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/ref-side.png",
+      "prompt": "Architectural detail of the CAYE machine's side profile: the large faceted triangular panel cut into the angular champagne-silver body, sharp chamfered edges catching a long raking golden light against a deep warm brown background. Sculptural, minimal, like an automotive design shot. The side panel surface is completely clean: no buttons, icons, stickers or symbols anywhere on it."
+    },
+    {
+      "name": "caye-hoppers",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/ref-front.png",
+      "prompt": "Macro of the two transparent smoked bean hoppers on top of the CAYE machine, filled with glossy dark roasted coffee beans, a few beans scattered on the matte black lid, warm golden backlight glowing through the beans."
+    },
+    {
+      "name": "caye-milk",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/caye-pour.png",
+      "prompt": "The CAYE machine's central spout pouring a flat white into a small white porcelain cup with silky microfoam and a crema swirl, polished chrome drip tray with fine slots, warm golden background, steam softly rising."
+    }
+  ]
+}

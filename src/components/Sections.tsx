@@ -1,8 +1,8 @@
 'use client'
 
-import { ACCENTS, ATELIER_IMAGES, BREWS, FEATURES, PARTNER_EMAIL } from '@/lib/content'
+import { ACCENTS, ATELIER_IMAGES, BREWS, FEATURES } from '@/lib/content'
 import { useCopy } from '@/lib/i18n'
-import { IconArrowRight, IconArrowUpRight } from './icons'
+import { IconArrowRight } from './icons'
 
 /** Wraps units (µm, g, mm, s) so uppercase UI text leaves them alone. */
 export function Units({ text }: { text: string }) {
@@ -17,11 +17,11 @@ export function Units({ text }: { text: string }) {
   )
 }
 
-function StickyText({ title, lead }: { title: string[]; lead: string }) {
+function StickyText({ title, lead, align = 'left' }: { title: string[]; lead: string; align?: 'left' | 'right' }) {
   return (
     <div className="sticky top-0 h-[100lvh]">
       <div className="section-inner">
-        <div className="section-text fixed-text">
+        <div className={`section-text fixed-text align-${align}`}>
           <h2>
             {title.map((t, i) => (
               <span key={i}>
@@ -57,7 +57,8 @@ export function Features() {
             key={f.id}
             id={f.id}
             data-chapter={f.id}
-            className="section feature-section"
+            // alternate sides: even chapters bottom-left, odd chapters top-right (spec card stays bottom-right)
+            className={`section feature-section ${n % 2 ? 'is-right' : ''}`}
             style={{ ['--c' as string]: ACCENTS[f.accent] }}
           >
             <div className="section-inner">
@@ -71,7 +72,10 @@ export function Features() {
                   {c.bullets.map((b, i) => (
                     <li key={i}>
                       <IconArrowRight />
-                      <Units text={b} />
+                      {/* one wrapper so right-aligned (row-reverse) chapters keep the text order */}
+                      <span>
+                        <Units text={b} />
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -88,7 +92,7 @@ export function Materials() {
   const t = useCopy()
   return (
     <section id="materials" data-chapter="materials" className="is-light-section relative px-[var(--gutter)]" style={{ height: '400lvh' }}>
-      <StickyText title={t.materials.title} lead={t.materials.lead} />
+      <StickyText title={t.materials.title} lead={t.materials.lead} align="right" />
     </section>
   )
 }
@@ -99,7 +103,7 @@ export function Atelier() {
     <section id="atelier" data-chapter="atelier" className="atelier relative px-[var(--gutter)]" style={{ height: '200lvh' }}>
       <div className="sticky top-0 h-[100lvh]">
         <div className="section-inner">
-          <div className="section-text">
+          <div className="section-text align-right">
             <h2>
               {t.atelier.title[0]}
               <br />
@@ -159,14 +163,6 @@ export function Footer() {
   return (
     <footer className="site-footer">
       <div className="container-x !px-0">
-        <div id="partnership" className="partner-band">
-          <span className="text-ui">{f.partner.h}</span>
-          <p>{f.partner.lead}</p>
-          <a href={`mailto:${PARTNER_EMAIL}`} className="btn-partner text-ui">
-            {PARTNER_EMAIL}
-            <IconArrowUpRight />
-          </a>
-        </div>
         <div className="inner">
           <div className="footer-cols">
             {f.cols.map((c) => (

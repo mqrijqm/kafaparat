@@ -1,5 +1,6 @@
 // Generates images through Codex CLI (pinned model, never Astra) and copies them into media-src/.
 // Usage: node scripts/gen-media.mjs scripts/media.json [--only name1,name2] [--force]
+// An item's optional `ref` (path) is attached to the prompt as a reference image.
 import { spawn } from 'node:child_process'
 import { readFileSync, existsSync, mkdirSync, readdirSync, copyFileSync, statSync } from 'node:fs'
 import { join, resolve } from 'node:path'
@@ -28,6 +29,7 @@ function run(item) {
     `Use your built-in image generation tool to create exactly ONE image. Aspect ratio ${item.aspect ?? '3:2'}.`,
     `Subject: ${item.prompt}`,
     item.noStyle ? '' : `Style: ${style}`,
+    item.ref ? 'The attached image is the real product: keep its exact shape, proportions, colours and details faithful.' : '',
     'Do NOT try to save, copy or move the file anywhere and do not run any shell commands. Just generate the image once, then reply with the single word DONE.',
   ].join('\n')
 
@@ -35,7 +37,7 @@ function run(item) {
     const t0 = Date.now()
     const child = spawn(
       'codex',
-      ['exec', '--json', '-m', MODEL, '--skip-git-repo-check', '-s', 'read-only', '-'],
+      ['exec', '--json', '-m', MODEL, '--skip-git-repo-check', '-s', 'read-only', ...(item.ref ? [`--image="${resolve(item.ref)}"`] : []), '-'],
       { shell: true },
     )
     let log = ''

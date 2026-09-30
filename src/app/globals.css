@@ -362,6 +362,15 @@ body {
   color: #302e2d;
 }
 
+/* Alignment variants: text can sit left (default), right or centre */
+.section-text.align-right {
+  margin-left: auto;
+  text-align: right;
+}
+.section-text.align-right p {
+  margin-left: auto;
+}
+
 /* Hero */
 .hero h1 {
   font-size: var(--text-4xl);
@@ -625,6 +634,27 @@ body.is-light .labels {
   height: 1rem;
   color: var(--fg-4);
 }
+.feature-section.is-right .section-inner {
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+.feature-section.is-right .section-text {
+  text-align: right;
+}
+.feature-section.is-right .section-text p,
+.feature-section.is-right .eyebrow,
+.feature-section.is-right .bullets {
+  margin-left: auto;
+}
+.feature-section.is-right .bullets::before {
+  transform-origin: 100% 50%;
+}
+.feature-section.is-right .bullets li {
+  flex-direction: row-reverse;
+}
+.feature-section.is-right .bullets svg {
+  transform: scaleX(-1);
+}
 @media (max-width: 899px) {
   .feature-section .section-inner {
     align-items: flex-start;
@@ -864,7 +894,7 @@ body.is-light .labels {
 @media (min-width: 900px) {
   .atelier-grid {
     position: absolute;
-    right: 0;
+    left: 0;
     bottom: 7.5rem;
     width: min(42rem, 100% - 30rem, (100lvh - 14rem) * 1.9);
   }
@@ -997,32 +1027,31 @@ body.is-light .labels {
   }
 }
 .partner-band {
-  display: grid;
-  gap: 1.5rem;
-  padding: 3rem 0;
-  border-top: 1px solid var(--line-strong);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+  padding: 7rem var(--gutter) 5rem;
+  text-align: center;
   scroll-margin-top: 2rem;
 }
 @media (min-width: 900px) {
   .partner-band {
-    grid-template-columns: 12rem 1fr auto;
-    align-items: end;
-    padding: 5rem 0 4rem;
+    padding: 11rem var(--gutter) 7rem;
   }
 }
 .partner-band > span {
-  align-self: start;
   color: var(--fg-4);
 }
 .partner-band p {
-  max-width: 36rem;
-  font-size: var(--text-2xl);
+  max-width: 44rem;
+  font-size: var(--text-3xl);
   line-height: 1;
   letter-spacing: -0.015em;
   color: var(--fg-1);
+  text-wrap: balance;
 }
 .partner-band .btn-partner {
-  justify-self: start;
   height: 3rem;
   padding-inline: 1.25rem;
   border: 1px solid var(--line-strong);
@@ -1206,6 +1235,334 @@ body.is-light .site-header .nav a {
 }
 body.is-light .spec-card .head {
   color: var(--ink-2);
+}
+
+/* ───────────────────────── After the story: partnership + CAYE ───────────────────────── */
+/* Opaque layer above the fixed WebGL engine (which pauses underneath it) */
+.after-story {
+  position: relative;
+  z-index: 3;
+  background: var(--bg-1);
+}
+.caye {
+  max-width: 1500px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+@media (min-width: 900px) {
+  .caye {
+    padding-inline: 4rem;
+  }
+}
+.caye-logo {
+  display: inline-block;
+  width: 7rem;
+  aspect-ratio: 400 / 120;
+  background: var(--brass);
+  -webkit-mask: var(--src) center / contain no-repeat;
+  mask: var(--src) center / contain no-repeat;
+}
+.caye-logo.lg {
+  width: clamp(9rem, 16vw, 13rem);
+}
+.caye h2,
+.caye h3,
+.caye h4 {
+  font-weight: 300;
+  color: var(--fg-1);
+  letter-spacing: -0.015em;
+}
+.caye p {
+  color: var(--fg-2);
+  line-height: 1.35;
+  text-wrap: pretty;
+}
+.caye .label {
+  display: block;
+  margin-bottom: 1.25rem;
+  color: var(--brass);
+}
+.caye-title {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 0.95;
+}
+.caye-title span {
+  display: block;
+}
+
+/* Intro — centred */
+.caye-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 6rem 0 0;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.caye-intro .eyebrow-c {
+  color: var(--fg-4);
+}
+.caye-intro h2 {
+  font-size: clamp(2.75rem, 6.5vw, 6rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+}
+.caye-intro p {
+  max-width: 34rem;
+  font-size: var(--text-l);
+}
+
+/* Pinned line-art model with notes left and right */
+.caye-stage {
+  position: relative;
+  height: 280lvh;
+}
+.caye-stage-sticky {
+  position: sticky;
+  top: 0;
+  height: 100lvh;
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 40rem) 1fr;
+  grid-template-areas: 'left canvas right';
+  align-items: center;
+  gap: 2rem;
+}
+.caye-canvas {
+  grid-area: canvas;
+  display: block;
+  width: 100%;
+  height: min(78lvh, 42rem);
+}
+.caye-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+.caye-notes.left {
+  grid-area: left;
+}
+.caye-notes.right {
+  grid-area: right;
+  align-items: flex-end;
+  text-align: right;
+}
+.caye-note {
+  max-width: 16rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line-strong);
+}
+.caye-note .num {
+  color: var(--brass);
+}
+.caye-note h3 {
+  margin: 0.6rem 0 0.35rem;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.caye-note p {
+  color: var(--fg-3);
+}
+@media (max-width: 899px) {
+  .caye-stage {
+    height: 240lvh;
+  }
+  .caye-stage-sticky {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 'canvas canvas' 'left right';
+    align-content: center;
+    gap: 1rem;
+    padding-top: var(--header-h);
+  }
+  .caye-canvas {
+    height: 48lvh;
+  }
+  .caye-notes {
+    gap: 1.25rem;
+  }
+  .caye-note h3 {
+    font-size: 1.2rem;
+  }
+  .caye-note p {
+    font-size: var(--text-xs);
+  }
+}
+
+/* Shared photo + copy blocks */
+.caye-photo {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: var(--bg-2);
+}
+.caye-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.caye-photo.wide {
+  aspect-ratio: 3 / 2;
+}
+.caye-copy {
+  max-width: 30rem;
+}
+.caye-copy h3 {
+  font-size: var(--text-3xl);
+  line-height: 0.95;
+}
+.caye-copy p {
+  max-width: 26rem;
+  margin-top: 1.25rem;
+  font-size: var(--text-l);
+}
+.caye-copy.align-right {
+  margin-left: auto;
+  text-align: right;
+}
+.caye-copy.align-right p {
+  margin-left: auto;
+}
+.caye-copy.align-center {
+  margin-inline: auto;
+  text-align: center;
+}
+.caye-copy.align-center p {
+  margin-inline: auto;
+}
+
+/* Form — photo left, copy right */
+.caye-form {
+  display: grid;
+  gap: 2.5rem;
+  padding-block: 4rem 6rem;
+}
+@media (min-width: 900px) {
+  .caye-form {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: end;
+    gap: 4rem;
+    padding-block: 6rem 10rem;
+  }
+  .caye-form .caye-photo {
+    max-height: 88lvh;
+  }
+}
+
+/* Extraction — centred copy, two drifting shots */
+.caye-pour {
+  padding-block: 6rem 8rem;
+  border-top: 1px solid var(--line);
+}
+.pour-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 24rem));
+  justify-content: center;
+  gap: clamp(1rem, 6vw, 7rem);
+  margin-top: 4rem;
+}
+.pour-pair img {
+  object-position: 50% 85%;
+}
+.pour-pair figure:nth-child(2) {
+  margin-top: clamp(3rem, 10vw, 9rem);
+}
+.caye figcaption,
+.caye-details li > span {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 0.9rem;
+  color: var(--fg-3);
+}
+.caye figcaption span,
+.caye-details li b {
+  font-weight: 400;
+  color: var(--fg-5);
+}
+
+/* Spaces — left title, three bars */
+.caye-spaces {
+  padding-block: 6rem 8rem;
+  border-top: 1px solid var(--line);
+}
+.caye-spaces ul {
+  display: grid;
+  gap: 3rem 1.25rem;
+  margin-top: 3.5rem;
+}
+@media (min-width: 900px) {
+  .caye-spaces ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 5rem;
+  }
+  .caye-spaces li:nth-child(2) {
+    margin-top: 5rem;
+  }
+}
+.space-meta {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  row-gap: 0.4rem;
+  padding-top: 1rem;
+}
+.space-meta span {
+  padding-top: 0.45rem;
+  color: var(--fg-5);
+}
+.space-meta h4 {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+.space-meta p {
+  grid-column: 2;
+  color: var(--fg-3);
+}
+
+/* Details — right heading, four close-ups */
+.caye-details {
+  padding-block: 6rem 8rem;
+  border-top: 1px solid var(--line);
+}
+.caye-details ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem 0.75rem;
+  margin-top: 3.5rem;
+}
+@media (min-width: 900px) {
+  .caye-details ul {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin-top: 5rem;
+  }
+}
+.caye-details li:last-child img {
+  object-position: 72% 50%;
+}
+
+/* CTA — centred */
+.caye-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 7rem 0 9rem;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.caye-cta h3 {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 0.95;
+}
+.caye-cta p {
+  max-width: 28rem;
+  font-size: var(--text-l);
+}
+.caye-cta .btn-partner {
+  height: 3rem;
+  margin-top: 0.5rem;
+  padding-inline: 1.25rem;
+  border: 1px solid var(--line-strong);
 }
 
 /* Reduced motion */

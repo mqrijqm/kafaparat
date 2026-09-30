@@ -20,7 +20,7 @@ export const RING: Accent[] = ['brass', 'champagne', 'copper', 'sand', 'sage', '
 export const LANGS = ['bs', 'en'] as const
 export type Lang = (typeof LANGS)[number]
 
-export const NAV_HREFS = ['#anatomy', '#materials', '#atelier'] as const
+export const NAV_HREFS = ['#anatomy', '#materials', '#atelier', '#caye'] as const
 export const PARTNER_HREF = '#partnership'
 export const PARTNER_EMAIL = 'partneri@kafaparat.ba'
 
@@ -54,6 +54,16 @@ export const MATERIALS = {
   ] as { grams: number; accent: Accent; swatch: string; part: string }[],
 }
 
+/** CAYE Professional: the bar machine Kafaparat supplies to partners (section after the partnership band). */
+export const CAYE = {
+  logo: '/brand/caye-logo.svg',
+  hero: '/media/caye-hero.webp',
+  pour: '/media/caye-pour.webp',
+  milk: '/media/caye-milk.webp',
+  spaces: ['/media/caye-bar.webp', '/media/caye-hotel.webp', '/media/caye-roastery.webp'],
+  details: ['/media/caye-screen.webp', '/media/caye-side.webp', '/media/caye-hoppers.webp', '/media/caye-burr.webp'],
+}
+
 export const ATELIER_IMAGES = ['/media/crema-swirl.webp', '/media/crema-grain.webp', '/media/burr-top.webp']
 
 export const BREWS: { microns: number; accent: Accent }[] = [
@@ -80,7 +90,7 @@ const bs = {
     title: 'Kafaparat No.1 — Precizni ručni mlin',
     description: 'Precizni ručni mlin za kafu od čelika, mesinga i oraha. Četrdeset i jedan dio, jedan pokret.',
   },
-  nav: ['Anatomija', 'Materijali', 'Atelje'],
+  nav: ['Anatomija', 'Materijali', 'Atelje', 'CAYE'],
   partner: { short: 'Partnerstvo', long: 'Postanite partner' },
   langLabel: 'Jezik',
   hero: {
@@ -164,6 +174,50 @@ const bs = {
     lead: 'Pronađite postavku za svaki napitak.',
     brews: ['Džezva', 'Espresso', 'Moka', 'AeroPress', 'V60', 'Kalita wave', 'Chemex', 'Sifon', 'Clever', 'French press', 'Kupiranje', 'Cold brew'],
   },
+  caye: {
+    eyebrow: 'Kafaparat × CAYE Professional',
+    title: ['Za šank', 'koji ne staje.'],
+    lead: 'Mlin ostaje jutarnji ritual. Za gužvu od stotinu šoljica partnerima isporučujemo CAYE, profesionalni superautomat koji postavljamo, podešavamo i servisiramo.',
+    model: {
+      left: [
+        ['Dva spremnika', 'Dvije kafe u zrnu, dva profila prženja, jedan dodir.'],
+        ['Ekran osjetljiv na dodir', 'Meni napitaka složen po vašem šanku.'],
+      ],
+      right: [
+        ['Precizni žrvnjevi', 'Svježe mljevenje za svaku šoljicu.'],
+        ['Dvostruki izlaz', 'Dva espressa odjednom, u ritmu šanka.'],
+      ],
+    },
+    hero: {
+      label: 'Oblik',
+      title: 'Arhitektura od čelika.',
+      lead: 'Fasetirano kućište i trouglasti bočni panel: mašina koja se prepoznaje s druge strane sale, i kad ništa ne radi.',
+    },
+    pour: {
+      label: 'Ekstrakcija',
+      title: 'Krema kao iz ruku baristke.',
+      lead: 'Temperatura, pritisak i doza drže se isto od prve do posljednje šoljice u smjeni. Flat white, espresso ili lungo, na jedan dodir.',
+      captions: ['Espresso', 'Flat white'],
+    },
+    spaces: {
+      title: ['Jedna mašina.', 'Tri šanka.'],
+      items: [
+        ['Kafić', 'Jutarnji špic bez reda i bez čekanja.'],
+        ['Hotel', 'Doručak za stotinu gostiju, šoljica po šoljica.'],
+        ['Pržionica', 'Degustacija svake nove serije, tačno kako je pržena.'],
+      ],
+    },
+    details: {
+      title: ['Detalji', 'koji rade tiho.'],
+      lead: 'Sve što osoblje dodiruje je na dohvat ruke. Sve ostalo je iza čelika.',
+      items: ['Ekran', 'Profil', 'Spremnici', 'Žrvnjevi'],
+    },
+    cta: {
+      title: 'CAYE na vašem šanku.',
+      lead: 'Isporuka, postavka, obuka osoblja i servis, iz jedne ruke.',
+      button: 'Zatražite ponudu',
+    },
+  },
   footer: {
     cols: [
       { h: 'Proizvod', links: ['Kafaparat No.1', 'Putna futrola', 'Rezervni žrvnjevi', 'Poklon kartica'] },
@@ -191,7 +245,7 @@ const en: Copy = {
     title: 'Kafaparat No.1 — Precision hand grinder',
     description: 'A precision hand coffee grinder machined from steel, brass and walnut. Forty-one parts, one gesture.',
   },
-  nav: ['Anatomy', 'Materials', 'Atelier'],
+  nav: ['Anatomy', 'Materials', 'Atelier', 'CAYE'],
   partner: { short: 'Partnership', long: 'Become a partner' },
   langLabel: 'Language',
   hero: {
@@ -274,6 +328,50 @@ const en: Copy = {
     title: 'Start grinding',
     lead: 'Find your setting for every brew.',
     brews: ['Turkish', 'Espresso', 'Moka pot', 'AeroPress', 'V60', 'Kalita wave', 'Chemex', 'Siphon', 'Clever', 'French press', 'Cupping', 'Cold brew'],
+  },
+  caye: {
+    eyebrow: 'Kafaparat × CAYE Professional',
+    title: ['For the bar', 'that never stops.'],
+    lead: 'The grinder stays the morning ritual. For a rush of a hundred cups we supply partners with CAYE, a professional super-automatic we install, tune and service.',
+    model: {
+      left: [
+        ['Twin hoppers', 'Two beans, two roast profiles, one touch.'],
+        ['Touchscreen', 'A drinks menu arranged around your bar.'],
+      ],
+      right: [
+        ['Precision burrs', 'Freshly ground for every single cup.'],
+        ['Double spout', 'Two espressos at once, at the pace of the bar.'],
+      ],
+    },
+    hero: {
+      label: 'Form',
+      title: 'Architecture in steel.',
+      lead: 'A faceted body and a triangular side panel: a machine you recognise from across the room, even when it is resting.',
+    },
+    pour: {
+      label: 'Extraction',
+      title: 'Crema like a barista pulled it.',
+      lead: 'Temperature, pressure and dose hold steady from the first cup of the shift to the last. Flat white, espresso or lungo, one touch.',
+      captions: ['Espresso', 'Flat white'],
+    },
+    spaces: {
+      title: ['One machine.', 'Three bars.'],
+      items: [
+        ['Café', 'The morning rush without a queue.'],
+        ['Hotel', 'Breakfast for a hundred guests, cup by cup.'],
+        ['Roastery', 'Cupping every new batch exactly as it was roasted.'],
+      ],
+    },
+    details: {
+      title: ['Details', 'that work quietly.'],
+      lead: 'Everything the staff touches is within reach. Everything else lives behind steel.',
+      items: ['Screen', 'Profile', 'Hoppers', 'Burrs'],
+    },
+    cta: {
+      title: 'CAYE on your bar.',
+      lead: 'Delivery, installation, staff training and service, all from one hand.',
+      button: 'Request a quote',
+    },
   },
   footer: {
     cols: [
