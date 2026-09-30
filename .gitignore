@@ -43,3 +43,6 @@ next-env.d.ts
 
 # generated source images (large, regenerate with scripts/gen-media.mjs)
 /media-src/
+
+.vercel
+.env*
