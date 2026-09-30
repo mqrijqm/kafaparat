@@ -1,0 +1,99 @@
+{
+  "style": "Luxury editorial product photography. Muted, elegant neutral palette: warm charcoal (#252423), graphite, bone, stone, with champagne-brass highlights. One soft warm rim light, deep velvety shadows, fine film grain, shallow depth of field, calm and minimal composition with generous negative space. Absolutely no text, no letters, no numbers unless requested, no logos, no watermarks.",
+  "items": [
+    {
+      "name": "burr-macro",
+      "aspect": "1:1",
+      "prompt": "Extreme macro of a conical stainless-steel coffee grinder burr seen from a low three-quarter angle, sharp machined spiral cutting teeth, a few espresso-fine coffee grounds resting on the teeth, subject centered, warm charcoal background."
+    },
+    {
+      "name": "dial-macro",
+      "aspect": "1:1",
+      "prompt": "Extreme macro of a brushed brass adjustment ring on a hand coffee grinder: very fine straight knurling, a row of tiny engraved index tick marks (no numerals), a single small polished dot marker, centered circular composition, graphite anodized body just behind it, warm charcoal background."
+    },
+    {
+      "name": "grind-spectrum",
+      "aspect": "1:1",
+      "prompt": "Top-down flat lay on warm matte charcoal stone: coffee grounds arranged in a perfect circular ring that gradually transitions from whole roasted beans, to coarse cold-brew grounds, to medium pour-over grounds, to powder-fine Turkish grind, completing the circle. Precise, sculptural, centered, soft overhead light."
+    },
+    {
+      "name": "walnut-knob",
+      "aspect": "1:1",
+      "prompt": "Macro of a turned oiled walnut wood crank knob with visible straight grain, mounted on a brushed stainless steel crank arm, centered, warm rim light tracing its curved silhouette, charcoal background."
+    },
+    {
+      "name": "bearings",
+      "aspect": "1:1",
+      "prompt": "Macro of two precision stainless steel ball bearings stacked on a steel drive shaft, mirror-polished balls visible through the cage, tiny reflections, centered circular composition, charcoal background."
+    },
+    {
+      "name": "catch-cup",
+      "aspect": "1:1",
+      "prompt": "Top-down view straight into a matte graphite aluminium catch cup filled with freshly ground medium-fine coffee, a soft mound in the center, the cup rim forming a perfect circle in the frame, warm light from one side."
+    },
+    {
+      "name": "ritual-hands",
+      "aspect": "1:1",
+      "prompt": "Top-down view of two hands holding and turning a cylindrical hand coffee grinder (matte graphite anodized aluminium body, fine knurled bands, brushed brass adjustment ring, folding stainless crank with walnut knob) over a dark stone kitchen counter, a small ceramic cup in bone color nearby, morning window light, calm ritual mood, centered."
+    },
+    {
+      "name": "travel-case",
+      "aspect": "1:1",
+      "prompt": "A cylindrical hand coffee grinder (matte graphite anodized aluminium body, fine knurled bands, brushed brass adjustment ring, folding stainless crank with walnut knob) lying in an open taupe leather travel roll case on dark linen, seen from above, a few coffee beans scattered, centered."
+    },
+    {
+      "name": "hero-still",
+      "aspect": "16:9",
+      "prompt": "A cylindrical hand coffee grinder standing upright on a honed dark basalt stone plinth (matte graphite anodized aluminium body, fine knurled grip bands, brushed brass adjustment ring near the top, folding stainless crank arm with a turned walnut knob), placed at the right third of the frame, soft haze, a single warm rim light from behind left, vast dark charcoal negative space on the left."
+    },
+    {
+      "name": "workshop-lathe",
+      "aspect": "4:5",
+      "prompt": "Inside a quiet precision machining workshop: a CNC lathe turning a graphite aluminium cylinder, fine metal curls, coolant mist catching warm light, dark moody interior, craftsmanship documentary style."
+    },
+    {
+      "name": "craftsman-hands",
+      "aspect": "4:5",
+      "prompt": "Close-up of a craftsman's hands in a dark workshop inspecting a brushed brass ring with a small loupe, fine knurling visible, warm desk lamp light, shallow depth of field, documentary style."
+    },
+    {
+      "name": "morning-table",
+      "aspect": "4:5",
+      "prompt": "Still life on a travertine table at dawn: a cylindrical hand coffee grinder (matte graphite anodized aluminium body, fine knurled bands, brushed brass adjustment ring, folding stainless crank with walnut knob), a glass pour-over dripper, a bone ceramic cup with steam, long soft shadows, muted neutral tones."
+    },
+    {
+      "name": "swatch-steel",
+      "aspect": "1:1",
+      "prompt": "Seamless flat material swatch filling the entire frame: bead-blasted and brushed stainless steel surface, subtle directional brushing, even soft lighting, no objects.",
+      "noStyle": true
+    },
+    {
+      "name": "swatch-walnut",
+      "aspect": "1:1",
+      "prompt": "Seamless flat material swatch filling the entire frame: oiled American walnut wood, straight fine grain, warm but muted, even soft lighting, no objects.",
+      "noStyle": true
+    },
+    {
+      "name": "swatch-brass",
+      "aspect": "1:1",
+      "prompt": "Seamless flat material swatch filling the entire frame: satin brushed brass with a soft champagne tone, fine horizontal brushing, even soft lighting, no objects.",
+      "noStyle": true
+    },
+    {
+      "name": "swatch-graphite",
+      "aspect": "1:1",
+      "prompt": "Seamless flat material swatch filling the entire frame: matte graphite anodized aluminium with an extremely fine knurled diamond pattern, even soft lighting, no objects.",
+      "noStyle": true
+    },
+    {
+      "name": "hallmark",
+      "aspect": "1:1",
+      "prompt": "A small round brass hallmark seal stamped into a graphite metal plate, the seal shows only an abstract geometric millstone symbol (concentric circles with radial grooves), no letters, macro, centered, warm rim light."
+    },
+    {
+      "name": "og-image",
+      "aspect": "16:9",
+      "prompt": "Exploded technical view of a cylindrical hand coffee grinder floating in dark charcoal space: its parts (walnut crank knob, crank arm, lid, bearing, brass adjustment ring, conical steel burr, graphite knurled body, catch cup) separated along one diagonal axis with even gaps, soft warm rim light on every edge, precise and sculptural."
+    }
+  ]
+}

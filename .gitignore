@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.playwright-mcp/
+
+# generated source images (large, regenerate with scripts/gen-media.mjs)
+/media-src/
