@@ -40,7 +40,7 @@ function WordCycler() {
       const out = slot.current!.querySelectorAll('.c')
       const tl = gsap.timeline({ onComplete: () => gsap.delayedCall(1.4, loop) })
       tl.to(out, { opacity: 0, scaleX: 0, duration: 0.15, stagger: { each: 0.025, from: 'end' }, ease: 'power2.in' })
-      tl.to(dot.current, { scaleX: 6, color: '#f6f4f2', duration: 0.15, ease: 'power2.out' }, '<')
+      tl.to(dot.current, { scaleX: 6, color: '#f6efe6', duration: 0.15, ease: 'power2.out' }, '<')
       tl.add(() => {
         i = (i + 1) % HERO.words.length
         const chars = render(HERO.words[i])

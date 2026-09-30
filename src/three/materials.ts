@@ -34,7 +34,10 @@ const idFragment = /* glsl */ `
     if (!gl_FrontFacing) n = -n;
     float ndl = dot(n, uLightDir);
     float rim = (1.0 - max(dot(vV, n), 0.0)) * max(ndl, 0.0);
-    float tone = ndl < 0.0 ? 0.0 : (rim > 0.72 ? 1.0 : 0.6);
+    // specular glint: light bouncing straight toward the camera
+    float spec = pow(max(dot(n, normalize(uLightDir + vV)), 0.0), 24.0);
+    float glint = max(smoothstep(0.45, 0.85, rim), smoothstep(0.35, 0.9, spec));
+    float tone = ndl < 0.0 ? 0.0 : (glint > 0.02 ? 0.8 + 0.2 * glint : 0.6);
     float nMix = 0.08 * clamp(gl_FragCoord.w * 10.0, 0.0, 1.0);
     gl_FragColor = vec4(mix(uId, n * 0.5 + 0.5, nMix), tone);
   }
@@ -67,26 +70,25 @@ const hex = (h: string) => {
 }
 
 export const PALETTE_DARK = {
-  bg: '#252423',
-  world: '#403d3b',
-  shadow: '#211f1e',
-  rim: '#ecd3b0',
-  outline: '#0f0e0d',
+  bg: '#1f1510',
+  world: '#3b281c',
+  shadow: '#170f0a',
+  rim: '#d6aa5e',
+  outline: '#0b0705',
   outlineBlend: 0.4,
   contourBlend: 0.65,
-  sheen: 0,
+  sheen: 0.45,
 }
 
-// "Light" chapters are gold: line-art in warm dark brown on a brushed-gold field
 export const PALETTE_LIGHT = {
-  bg: '#c6a266',
-  world: '#c6a266',
-  shadow: '#c6a266',
-  rim: '#c6a266',
-  outline: '#1c1307',
-  outlineBlend: 0.3,
-  contourBlend: 0.3,
-  sheen: 1,
+  bg: '#dad5d0',
+  world: '#dad5d0',
+  shadow: '#dad5d0',
+  rim: '#dad5d0',
+  outline: '#000000',
+  outlineBlend: 0.35,
+  contourBlend: 0.35,
+  sheen: 0,
 }
 
 export function createOutlineMaterial() {
@@ -134,12 +136,15 @@ export function createOutlineMaterial() {
           col = mix(uBg, mix(uOutline, uBg, uContourBlend), outline);
         } else {
           vec3 paint = uWorld;
-          if (c.a >= 0.95) paint = uRim;
+          if (c.a >= 0.78) {
+            float g = clamp((c.a - 0.8) / 0.2, 0.0, 1.0);
+            paint = mix(uWorld, uRim, 0.3 + 0.7 * g);
+          }
           else if (c.a <= 0.3) paint = uShadow;
           vec3 line = mix(uOutline, paint, uOutlineBlend);
           col = mix(paint, line, outline);
         }
-        // metallic sheen: soft highlight upper-center, falling off to the edges
+        // warm sheen: soft lift upper-center, falling off to the edges (a lamp over espresso)
         float d = distance(vUv, vec2(0.55, 0.62));
         col *= 1.0 + uSheen * (0.16 - 0.32 * d * d);
         gl_FragColor = vec4(col, 1.0);

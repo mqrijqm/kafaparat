@@ -2,17 +2,17 @@
 
 /* ───────────────────────── Tokens ───────────────────────── */
 :root {
-  --bg-1: #252423;
-  --bg-2: #2a2928;
-  --bg-3: #302e2d;
-  --bg-4: #353432;
-  --bg-5: #3a3938;
-  --fg-1: #f6f4f2;
-  --fg-2: #d5d3d1;
-  --fg-3: #b4b1af;
-  --fg-4: #93908d;
-  --fg-5: #615e5b;
-  --light: #c6a266;
+  --bg-1: #1f1510;
+  --bg-2: #261a13;
+  --bg-3: #2e2018;
+  --bg-4: #37271d;
+  --bg-5: #402e22;
+  --fg-1: #f6efe6;
+  --fg-2: #dccfbf;
+  --fg-3: #b9a895;
+  --fg-4: #978572;
+  --fg-5: #66553f;
+  --light: #dad5d0;
 
   --brass: #c9a36a;
   --champagne: #e6cfa4;
@@ -204,12 +204,12 @@ body {
   position: absolute;
   inset: 0;
   border-radius: 0.25rem;
-  background: #3b3226;
+  background: #3d2a17;
   z-index: -1;
   transition: background 0.15s;
 }
 .btn-reserve:hover::before {
-  background: #4a3d2b;
+  background: #4d3519;
 }
 .btn-reserve:hover {
   filter: drop-shadow(0 0 3px rgba(201, 163, 106, 0.6));
@@ -273,10 +273,10 @@ body {
   font-weight: 800;
 }
 .is-light-section .section-text p {
-  color: #3a2c17;
+  color: #353432;
 }
 .is-light-section .section-text h2 {
-  color: #231a0c;
+  color: #302e2d;
 }
 
 /* Hero */
@@ -463,7 +463,7 @@ body {
   transition: color 0.25s;
 }
 body.is-light .labels {
-  color: #3a2c17;
+  color: #353432;
 }
 .labels li {
   opacity: 0;
@@ -986,7 +986,7 @@ body.is-light .progress-card {
   border-radius: 50%;
   overflow: hidden;
   opacity: 0;
-  background: #111;
+  background: #150e0a;
 }
 .lens .photo img {
   position: absolute;
@@ -1002,7 +1002,7 @@ body.is-light .progress-card {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: radial-gradient(circle, transparent 45%, rgba(20, 19, 18, 0.85) 100%);
+  background: radial-gradient(circle, transparent 45%, rgba(24, 15, 10, 0.88) 100%);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 .lens canvas {
