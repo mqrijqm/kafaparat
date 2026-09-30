@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { conicalBurr, gear } from './geometry'
 import { partMaterial } from './materials'
 
 /*
@@ -337,6 +338,22 @@ export function buildCaye(): Caye {
   rightLid.position.set(0.34, 1.115, -0.22)
   hoppers.add(rightLid)
 
+  // Twin grinders under the hoppers: hidden by the lid tray, revealed when the hoppers lift
+  const burrs = new THREE.Group()
+  burrs.name = 'burrs'
+  root.add(burrs)
+  for (const x of [-0.34, 0.34]) {
+    const set = new THREE.Group()
+    set.position.set(x, 0.655, -0.22)
+    const ring = mesh(gear(0.17, 0.2, 24, 0.03, 0.12), `${x < 0 ? 'left' : 'right'}-outer-burr`)
+    ring.rotation.x = -Math.PI / 2
+    const cone = mesh(conicalBurr(0.11, 0.12, 7), `${x < 0 ? 'left' : 'right'}-inner-burr`)
+    cone.rotation.x = -Math.PI / 2 // tip up
+    cone.position.y = 0.05
+    set.add(ring, cone)
+    burrs.add(set)
+  }
+
   root.updateMatrixWorld(true)
 
   const bounds = new THREE.Box3().setFromObject(root)
@@ -354,6 +371,7 @@ export function buildCaye(): Caye {
     tray,
     drawers,
     hoppers,
+    burrs,
   }
 
   return { root, parts }

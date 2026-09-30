@@ -1316,7 +1316,7 @@ body.is-light .spec-card .head {
 /* Pinned line-art model with notes left and right */
 .caye-stage {
   position: relative;
-  height: 280lvh;
+  height: 420lvh;
 }
 .caye-stage-sticky {
   position: sticky;
@@ -1333,6 +1333,9 @@ body.is-light .spec-card .head {
   display: block;
   width: 100%;
   height: min(78lvh, 42rem);
+  /* close-ups dissolve toward the edges instead of being cut by the canvas box */
+  -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
 }
 .caye-notes {
   display: flex;
@@ -1365,7 +1368,7 @@ body.is-light .spec-card .head {
 }
 @media (max-width: 899px) {
   .caye-stage {
-    height: 240lvh;
+    height: 360lvh;
   }
   .caye-stage-sticky {
     grid-template-columns: 1fr 1fr;

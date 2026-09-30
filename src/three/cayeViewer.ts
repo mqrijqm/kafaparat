@@ -6,6 +6,8 @@ import { applyPalette, createOutlineMaterial, PALETTE_DARK, type Palette } from 
   Small standalone renderer for the CAYE machine: same two-pass outline look as the grinder,
   but line-only (every tone = page colour) with brass strokes. Plain three.js, no R3F:
   it owns one canvas and draws only when scroll changes the pose (no idle loop).
+  Camera = a "dolly": it always looks at `focus` (a point on the model) from `dist` away,
+  so the scroll timeline zooms in on a part by tweening focus + dist, and out again.
 */
 
 const LINE_ART: Palette = {
@@ -27,14 +29,23 @@ export function createCayeViewer(canvas: HTMLCanvasElement, lowTier: boolean) {
 
   const scene = new THREE.Scene()
   const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 50)
-  camera.position.set(0, 0.35, 6.2)
-  camera.lookAt(0, 0, 0)
 
   // pivot = rotation centre (the model is already centred on its bounding box)
   const pivot = new THREE.Group()
   const caye = buildCaye()
   pivot.add(caye.root)
   scene.add(pivot)
+
+  // Focus points (model space, before rotation): centre of each part the notes talk about
+  const centreOf = (o: THREE.Object3D) => new THREE.Box3().setFromObject(o).getCenter(new THREE.Vector3())
+  scene.updateMatrixWorld(true)
+  const focus = {
+    overview: new THREE.Vector3(0, 0, 0),
+    hoppers: centreOf(caye.parts.hoppers),
+    screen: centreOf(caye.parts.screen),
+    burrs: centreOf(caye.parts.burrs),
+    spout: centreOf(caye.parts.spout),
+  }
 
   const rt = new THREE.WebGLRenderTarget(2, 2, { depthBuffer: true, type: THREE.UnsignedByteType })
   const outline = createOutlineMaterial()
@@ -48,12 +59,20 @@ export function createCayeViewer(canvas: HTMLCanvasElement, lowTier: boolean) {
   const white = new THREE.Color(0xffffff)
   const buf = new THREE.Vector2()
 
-  /** Pose driven by the section's ScrollTrigger: turn 0..1 = one full turn, lift 0..1 = hoppers rise */
-  const state = { turn: 0, lift: 0 }
+  /** Pose driven by the section's ScrollTrigger (GSAP tweens these plain numbers) */
+  const state = { yaw: -0.75, pitch: 0.12, dist: 7, fx: 0, fy: 0, fz: 0, lift: 0, spin: 0 }
+  let fit = 1 // extra distance on narrow canvases so the full machine still fits
+  const target = new THREE.Vector3()
 
   function render() {
-    pivot.rotation.set(0.12, -0.75 + state.turn * Math.PI * 2, 0)
-    caye.parts.hoppers.position.y = state.lift * 0.18
+    pivot.rotation.set(state.pitch, state.yaw, 0)
+    // hoppers slide up and back like a drawer, uncovering the burrs
+    caye.parts.hoppers.position.set(0, state.lift * 0.3, -state.lift * 1.0)
+    caye.parts.burrs.children.forEach((b, i) => (b.rotation.y = (i ? -1 : 1) * state.spin))
+    // focus point follows the model's rotation; camera sits straight in front of it
+    target.set(state.fx, state.fy, state.fz).applyEuler(pivot.rotation)
+    camera.position.set(target.x, target.y + 0.1 * state.dist, target.z + state.dist * fit)
+    camera.lookAt(target)
     renderer.setRenderTarget(rt)
     renderer.setClearColor(white, 1)
     renderer.clear()
@@ -64,11 +83,11 @@ export function createCayeViewer(canvas: HTMLCanvasElement, lowTier: boolean) {
 
   return {
     state,
+    focus,
     resize(width: number, height: number) {
       renderer.setSize(width, height, false)
       camera.aspect = width / Math.max(height, 1)
-      // keep the whole machine in frame on narrow canvases
-      camera.position.z = camera.aspect < 0.8 ? 6.2 / camera.aspect * 0.8 : 6.2
+      fit = camera.aspect < 0.8 ? 0.8 / camera.aspect : 1
       camera.updateProjectionMatrix()
       renderer.getDrawingBufferSize(buf)
       rt.setSize(buf.x, buf.y)

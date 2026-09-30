@@ -55,21 +55,44 @@ function ModelStage() {
         ctx = gsap.context(() => {
           const notes = gsap.utils.toArray<HTMLElement>('.caye-note', el)
           if (reduced) {
-            v.state.turn = 0.25
+            v.state.yaw = -0.5
             v.render()
             return
           }
+          // One stop per note, in reading order: left 01, 02 then right 03, 04.
+          // Each stop = where the camera looks (focus), how close (dist) and from which side (yaw/pitch).
+          const F = v.focus
+          const stops = [
+            { f: F.hoppers, dist: 3.1, yaw: -0.45, pitch: 0.42, lift: 0 },
+            { f: F.screen, dist: 2.3, yaw: 0.2, pitch: 0.08, lift: 0 },
+            { f: F.burrs, dist: 2.6, yaw: 0.3, pitch: 0.6, lift: 1 },
+            { f: F.spout, dist: 2.4, yaw: -0.55, pitch: 0.02, lift: 0 },
+          ]
+          const MOVE = 0.09 // travel between stops (timeline units, whole block = 1)
+          const HOLD = 0.1 // time spent on each part
           const tl = gsap.timeline({
-            defaults: { ease: 'none' },
-            scrollTrigger: { trigger: el, start: 'top top', end: 'bottom bottom', scrub: 0.6 },
+            defaults: { ease: 'power2.inOut' },
+            scrollTrigger: { trigger: el, start: 'top top', end: 'bottom bottom', scrub: 0.8 },
             onUpdate: v.render,
           })
-          tl.to(v.state, { turn: 1, duration: 1 }, 0)
-            .to(v.state, { lift: 1, duration: 0.2, ease: 'power2.inOut' }, 0.1)
-            .to(v.state, { lift: 0, duration: 0.2, ease: 'power2.inOut' }, 0.7)
-          notes.forEach((n, i) => {
-            tl.fromTo(n, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.08, ease: 'power2.out' }, 0.1 + i * 0.16)
+          const go = (at: number, dur: number, f: { x: number; y: number; z: number }, p: Omit<(typeof stops)[number], 'f'>) =>
+            tl.to(v.state, { fx: f.x, fy: f.y, fz: f.z, ...p, duration: dur }, at)
+
+          // notes: all quietly present, the active one lit
+          tl.fromTo(notes, { opacity: 0, y: 16 }, { opacity: 0.3, y: 0, duration: 0.05, stagger: 0.01, ease: 'power2.out' }, 0.02)
+          let t = 0.08
+          stops.forEach(({ f, ...p }, i) => {
+            go(t, MOVE, f, p)
+            tl.to(notes[i], { opacity: 1, duration: MOVE * 0.6 }, t + MOVE * 0.4)
+            t += MOVE + HOLD
+            if (i < stops.length - 1) tl.to(notes[i], { opacity: 0.3, duration: MOVE * 0.6 }, t)
           })
+          // the burrs turn while the camera rests on them (stop 3)
+          tl.fromTo(v.state, { spin: 0 }, { spin: Math.PI * 2, duration: MOVE + HOLD * 2, ease: 'none' }, 0.08 + 2 * (MOVE + HOLD) - HOLD * 0.5)
+          // pull back out to the whole machine, finishing its turn
+          go(t, 0.14, F.overview, { dist: 7, yaw: -0.75 + Math.PI * 2, pitch: 0.12, lift: 0 })
+          tl.to(notes, { opacity: 1, duration: 0.06 }, t + 0.06)
+          tl.set({}, {}, 1)
         }, el)
       },
       { rootMargin: '100% 0px' },
