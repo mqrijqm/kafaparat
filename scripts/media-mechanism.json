@@ -1,0 +1,25 @@
+{
+  "style": "Luxury editorial product photography. Muted, elegant neutral palette: warm charcoal (#252423), graphite, bone, stone, with champagne-brass highlights. One soft warm rim light, deep velvety shadows, fine film grain, shallow depth of field, calm and minimal composition with generous negative space. Absolutely no text, no letters, no numbers unless requested, no logos, no watermarks.",
+  "items": [
+    {
+      "name": "drive-gears",
+      "aspect": "1:1",
+      "prompt": "Macro of the drive of a professional espresso-machine grinding module: a large brushed brass helical gear meshing with a small hardened mirror-polished steel pinion on an electric motor shaft, precise machined teeth catching a warm rim light, subject centered in a circular composition, dark mechanical interior falling off into shadow."
+    },
+    {
+      "name": "dosing-chute",
+      "aspect": "1:1",
+      "prompt": "A fine continuous stream of freshly ground espresso coffee falling from a brushed stainless-steel grinder chute into a polished steel dosing chamber below, individual particles suspended in the warm light, precise industrial machine parts, subject centered in a circular composition, dark background."
+    },
+    {
+      "name": "cooling-fins",
+      "aspect": "1:1",
+      "prompt": "Macro of a machined aluminium burr-chamber housing from a professional coffee grinding machine, deep concentric cooling fins with crisp edges, champagne-anodized finish, a glimpse of a steel flat burr in the centre, raking warm rim light across the fins, subject centered in a circular composition, dark background."
+    },
+    {
+      "name": "grind-module",
+      "aspect": "1:1",
+      "prompt": "A compact cylindrical coffee grinding cartridge module removed from a professional espresso machine, graphite anodized housing with a brass coupling and a small cutaway window revealing a steel burr inside, resting on dark basalt stone, three-quarter view, precise industrial product shot, subject centered in a circular composition."
+    }
+  ]
+}

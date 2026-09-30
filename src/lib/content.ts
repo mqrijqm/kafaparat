@@ -36,11 +36,11 @@ export const FEATURES: Feature[] = [
   { id: 'burrs', accent: 'brass', image: '/media/burr-macro.webp' },
   { id: 'dial', accent: 'champagne', image: '/media/dial-macro.webp' },
   { id: 'spectrum', accent: 'copper', image: '/media/grind-spectrum.webp' },
-  { id: 'walnut', accent: 'sand', image: '/media/walnut-knob.webp' },
+  { id: 'drive', accent: 'sand', image: '/media/drive-gears.webp' },
   { id: 'bearings', accent: 'sage', image: '/media/bearings.webp' },
-  { id: 'cup', accent: 'stone', image: '/media/catch-cup.webp' },
-  { id: 'ritual', accent: 'pewter', image: '/media/ritual-hands.webp' },
-  { id: 'travel', accent: 'bone', image: '/media/travel-case.webp' },
+  { id: 'dosing', accent: 'stone', image: '/media/dosing-chute.webp' },
+  { id: 'cooling', accent: 'pewter', image: '/media/cooling-fins.webp' },
+  { id: 'module', accent: 'bone', image: '/media/grind-module.webp' },
 ]
 
 export const MATERIALS = {
@@ -129,11 +129,11 @@ const bs = {
       bullets: ['Od džezve do cold brewa', 'Ponovljive postavke', 'Ujednačena čestica'],
       spec: [['džezva', '100 µm'], ['espresso', '250 µm'], ['filter', '650 µm'], ['cold brew', '1300 µm']],
     },
-    walnut: {
-      title: 'Orah i čelik',
-      lead: 'Tokareno dugme od oraha na preklopnoj čeličnoj ručici. Toplo gdje ga držite, kruto gdje radi.',
-      bullets: ['Nauljeni američki orah', 'Preklopna ručica', 'Ručno tokareno dugme'],
-      spec: [['dugme', 'orah, nauljen'], ['ručica', '304 nehrđajući'], ['dužina', '96 mm'], ['preklop', 'magnetni']],
+    drive: {
+      title: 'Tihi pogon',
+      lead: 'Motor s reduktorom okreće žrvanj sporo i snažno. Zrno se reže, ne gnječi, i ostaje hladno.',
+      bullets: ['Zavojni reduktor', 'Sporih 400 o/min', 'Tiši od razgovora'],
+      spec: [['motor', 'DC bez četkica'], ['brzina', '400 o/min'], ['reduktor', '1:12 zavojni'], ['buka', '< 55 dB']],
     },
     bearings: {
       title: 'Dvostruki ležajevi',
@@ -141,23 +141,23 @@ const bs = {
       bullets: ['Dvostruko zatvoreni', 'Osovina bez zazora', 'Tiha rotacija'],
       spec: [['ležajevi', '2 × zatvoreni'], ['osovina', '7 mm čelik'], ['odstupanje', '< 5 µm'], ['servis', 'doživotni']],
     },
-    cup: {
-      title: 'Magnetna posuda',
-      lead: 'Posuda se zakači sa šest magneta i čisto sipa. Ni zrnce ne propada.',
-      bullets: ['Šest N52 magneta', 'Antistatička obrada', 'Kapacitet 40 g'],
-      spec: [['magneti', '6 × N52'], ['kapacitet', '40 g'], ['obrada', 'eloksirano'], ['statika', 'nema']],
+    dosing: {
+      title: 'Tačna doza',
+      lead: 'Samljevena kafa pada pravo u komoru za doziranje koja je mjeri na desetinu grama. Svaki espresso počinje isto.',
+      bullets: ['Vaga u komori', 'Tačnost 0,1 g', 'Bez prosipanja'],
+      spec: [['doza', '7 — 22 g'], ['tačnost', '± 0,1 g'], ['komora', 'nehrđajući čelik'], ['statika', 'ionizator']],
     },
-    ritual: {
-      title: 'Ritual',
-      lead: 'Četrdeset sporih okretaja, dvadeset sekundi tišine. Najbolji dio jutra je onaj prvi.',
-      bullets: ['40 okretaja po dozi', '20 sekundi', 'Bez kabla, bez zujanja'],
-      spec: [['doza', '18 g'], ['okretaji', '≈ 40'], ['vrijeme', '≈ 20 s'], ['pogon', 'vi']],
+    cooling: {
+      title: 'Hladan rez',
+      lead: 'Rebrasto aluminijsko kućište odvodi toplotu od žrvnjeva, pa i u najvećoj gužvi aroma ostaje u zrnu.',
+      bullets: ['Rebrasto kućište', 'Bez pregrijavanja', 'Stabilna aroma'],
+      spec: [['kućište', 'aluminij 6061'], ['rebra', '24'], ['zagrijavanje', 'maks. + 2 °C'], ['rad', 'cijela smjena']],
     },
-    travel: {
-      title: 'Svugdje',
-      lead: '612 grama, kožna futrola i nikakva utičnica. Kafana putuje s vama.',
-      bullets: ['612 g', 'Kožna putna futrola', 'Staje u AeroPress'],
-      spec: [['težina', '612 g'], ['visina', '168 mm'], ['prečnik', '52 mm'], ['futrola', 'biljno štavljena koža']],
+    module: {
+      title: 'Modul za minut',
+      lead: 'Cijeli mehanizam izlazi iz mašine kao jedan uložak. Servis bez alata, šank bez pauze.',
+      bullets: ['Jedan uložak', 'Zamjena bez alata', 'Servis za 60 sekundi'],
+      spec: [['zamjena', '60 sekundi'], ['alat', 'nije potreban'], ['žrvnjevi', 'zamjenjivi'], ['garancija', '5 godina']],
     },
   } as Record<string, FeatureCopy>,
   materials: {
@@ -292,11 +292,11 @@ const en: Copy = {
       bullets: ['Turkish to cold brew', 'Repeatable settings', 'Uniform particle'],
       spec: [['turkish', '100 µm'], ['espresso', '250 µm'], ['filter', '650 µm'], ['cold brew', '1300 µm']],
     },
-    walnut: {
-      title: 'Walnut & steel',
-      lead: 'A turned walnut knob on a folding steel arm. Warm where you hold it, rigid where it works.',
-      bullets: ['Oiled American walnut', 'Folding crank arm', 'Hand-turned knob'],
-      spec: [['knob', 'walnut, oiled'], ['arm', '304 stainless'], ['length', '96 mm'], ['fold', 'magnetic']],
+    drive: {
+      title: 'Quiet drive',
+      lead: 'A geared motor turns the burr slowly and with force. The bean is cut, not crushed, and stays cool.',
+      bullets: ['Helical reduction', 'A slow 400 rpm', 'Quieter than a conversation'],
+      spec: [['motor', 'brushless DC'], ['speed', '400 rpm'], ['reduction', '1:12 helical'], ['noise', '< 55 dB']],
     },
     bearings: {
       title: 'Twin bearings',
@@ -304,23 +304,23 @@ const en: Copy = {
       bullets: ['Double sealed', 'Zero shaft play', 'Silent rotation'],
       spec: [['bearings', '2 × sealed'], ['shaft', '7 mm steel'], ['runout', '< 5 µm'], ['service', 'lifetime']],
     },
-    cup: {
-      title: 'Magnetic cup',
-      lead: 'The catch cup clicks on with six magnets and pours clean. Not a single ground lost.',
-      bullets: ['Six N52 magnets', 'Anti-static finish', '40 g capacity'],
-      spec: [['magnets', '6 × N52'], ['capacity', '40 g'], ['finish', 'anodized'], ['static', 'none']],
+    dosing: {
+      title: 'Exact dose',
+      lead: 'Ground coffee falls straight into a dosing chamber that weighs it to a tenth of a gram. Every espresso starts the same.',
+      bullets: ['Scale in the chamber', 'Accurate to 0.1 g', 'No spills'],
+      spec: [['dose', '7 — 22 g'], ['accuracy', '± 0.1 g'], ['chamber', 'stainless steel'], ['static', 'ionised']],
     },
-    ritual: {
-      title: 'The ritual',
-      lead: 'Forty slow turns, twenty seconds of quiet. The best part of the morning is the first one.',
-      bullets: ['40 turns per dose', '20 seconds', 'No cable, no hum'],
-      spec: [['dose', '18 g'], ['turns', '≈ 40'], ['time', '≈ 20 s'], ['power', 'you']],
+    cooling: {
+      title: 'Cool cut',
+      lead: 'A finned aluminium housing draws heat away from the burrs, so even at the busiest hour the aroma stays in the bean.',
+      bullets: ['Finned housing', 'No overheating', 'Stable aroma'],
+      spec: [['housing', '6061 aluminium'], ['fins', '24'], ['heat rise', 'max + 2 °C'], ['duty', 'full shift']],
     },
-    travel: {
-      title: 'Everywhere',
-      lead: '612 grams, a leather roll and no power outlet required. The café travels with you.',
-      bullets: ['612 g', 'Leather travel roll', 'Fits an AeroPress'],
-      spec: [['weight', '612 g'], ['height', '168 mm'], ['diameter', '52 mm'], ['case', 'vegetable leather']],
+    module: {
+      title: 'A module in a minute',
+      lead: 'The whole mechanism slides out of the machine as one cartridge. Service without tools, a bar without a pause.',
+      bullets: ['One cartridge', 'Tool-free swap', 'Serviced in 60 seconds'],
+      spec: [['swap', '60 seconds'], ['tools', 'none needed'], ['burrs', 'replaceable'], ['warranty', '5 years']],
     },
   },
   materials: {
