@@ -15,6 +15,7 @@ const mono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
   title: 'MOLA No.1 — Precision hand grinder',
   description:
     'A precision hand coffee grinder machined from steel, brass and walnut. Forty-one parts, one gesture.',

@@ -137,6 +137,7 @@ export function SubNav({ chapters }: { chapters: string[] }) {
     let shown = false
     gsap.set(card.current, { yPercent: 110 })
     const update = () => {
+      if (!bar.current || !cursor.current) return
       const max = document.documentElement.scrollHeight - window.innerHeight
       const y = window.scrollY
       const prog = y / max

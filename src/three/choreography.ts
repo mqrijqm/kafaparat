@@ -29,6 +29,8 @@ export function buildChoreography() {
   const q = (s: string) => Array.from(lensEl.querySelectorAll<HTMLElement>(s))
   const ringBgPaths = q('.ring-bg path')
   const ringFg = q('.ring-fg path')
+  const ringBg = lensEl.querySelector<SVGElement>('.ring-bg')!
+  const ringFgSvg = lensEl.querySelector<SVGElement>('.ring-fg')!
   const ticks = q('.clock .tick')
   const photo = lensEl.querySelector<HTMLElement>('.photo')!
   const photos = q('.photo img')
@@ -72,7 +74,7 @@ export function buildChoreography() {
         0.6 + Math.random() * 0.8,
       )
     })
-    gsap.set('.lens .ring-bg', { opacity: 1 })
+    gsap.set(ringBg, { opacity: 1 })
     if (reduced) intro.progress(1)
 
     // ───────── MASTER (scroll-scrubbed) ─────────
@@ -137,7 +139,7 @@ export function buildChoreography() {
       tl.fromTo(s.rotation, { z: 0 }, { z: -200 * DEG, duration: 0.18 * I.d, ease: 'power2.in' }, I.t + (0.07 + i * 0.006) * I.d)
       tl.fromTo(s.scale, { x: 1, y: 1, z: 1 }, { x: 0.001, y: 0.001, z: 0.001, duration: 0.02 * I.d }, I.t + (0.23 + i * 0.006) * I.d)
     })
-    tl.to('.lens .ring-bg', { opacity: 0.001, duration: 0.04 * I.d }, I.t + 0.1 * I.d)
+    tl.to(ringBg, { opacity: 0.001, duration: 0.04 * I.d }, I.t + 0.1 * I.d)
       .to(ticks, { opacity: 0, duration: 0.04 * I.d }, I.t + 0.1 * I.d)
       .to(stage.lens, { easing: 0, grid: 0, duration: 0.06 * I.d }, I.t + 0.06 * I.d)
 
@@ -155,7 +157,7 @@ export function buildChoreography() {
       tl.fromTo(mods(k as ModuleKey), { z }, { z: g.baseZ[k as ModuleKey] + (z - g.baseZ[k as ModuleKey]) * 0.35, duration: 0.4 * A.d, ease: 'power2.inOut' }, A.t + 0.5 * A.d)
     })
     tl.fromTo(stage.lensGroup!.position, { z: 30 }, { z: 25, duration: 0.3 * A.d }, A.t + 0.6 * A.d)
-      .to('.lens .ring-bg', { opacity: 0.125, duration: 0.08 * A.d }, A.t + 0.9 * A.d)
+      .to(ringBg, { opacity: 0.125, duration: 0.08 * A.d }, A.t + 0.9 * A.d)
       .to(ticks, { opacity: 0.4, duration: 0.08 * A.d, stagger: { amount: 0.05 * A.d } }, A.t + 0.88 * A.d)
       .to(stage.lens, { grid: 1, duration: 0.1 * A.d }, A.t + 0.9 * A.d)
 
@@ -163,7 +165,7 @@ export function buildChoreography() {
     const out: ModuleKey[] = ['cup', 'outerBurr', 'dial', 'carrier', 'bearingA', 'lid']
     tl.to(Z.position, { z: V(20, -15), duration: 0.25 * M.d, ease: 'power2.inOut' }, M.t)
       .to(Z.rotation, { x: 45 * DEG, duration: 0.25 * M.d, ease: 'power2.inOut' }, M.t)
-      .to(['.lens .ring-bg', '.lens .ring-fg'], { opacity: 0.001, duration: 0.06 * M.d }, M.t + 0.02 * M.d)
+      .to([ringBg, ringFgSvg], { opacity: 0.001, duration: 0.06 * M.d }, M.t + 0.02 * M.d)
       .to(ticks, { opacity: 0, duration: 0.06 * M.d }, M.t + 0.02 * M.d)
       .to(stage.lens, { grid: 0, duration: 0.06 * M.d }, M.t + 0.02 * M.d)
     out.forEach((k, i) => {
@@ -188,7 +190,7 @@ export function buildChoreography() {
     tl.to(Z.position, { z: V(64, 100), duration: 0.35 * M.d, ease: 'power3.out' }, M.t + 0.65 * M.d)
 
     // ATELIER — lens returns with the bean pattern
-    tl.to('.lens .ring-bg', { opacity: 1, duration: 0.15 * AT.d }, AT.t + 0.1 * AT.d)
+    tl.to(ringBg, { opacity: 1, duration: 0.15 * AT.d }, AT.t + 0.1 * AT.d)
       .to(ticks, { opacity: 0.4, duration: 0.1 * AT.d, stagger: { amount: 0.1 * AT.d } }, AT.t + 0.1 * AT.d)
       .to(stage.lens, { bean: 1, duration: 0.3 * AT.d, ease: 'power2.out' }, AT.t + 0.2 * AT.d)
 
@@ -309,11 +311,11 @@ export function buildChoreography() {
       start: 'top 60%',
       end: 'bottom 40%',
       onToggle: (s) => {
-        gsap.to('.lens .ring-fg', { opacity: s.isActive ? 1 : 0.001, duration: 0.3 })
+        gsap.to(ringFgSvg, { opacity: s.isActive ? 1 : 0.001, duration: 0.3 })
         if (!s.isActive) activate(null)
       },
     })
-    gsap.set('.lens .ring-fg', { opacity: 0.001 })
+    gsap.set(ringFgSvg, { opacity: 0.001 })
 
     // ───────── Materials weight card ─────────
     const count = { v: 0 }

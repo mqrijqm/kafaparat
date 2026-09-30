@@ -21,6 +21,12 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   const lenisRef = useRef<LenisRef>(null)
 
   useEffect(() => {
+    // the story always starts at the top: the intro timeline plays from scroll 0
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
     // Lenis is driven by GSAP's ticker, so scroll and animation share one clock
     function update(time: number) {
       lenisRef.current?.lenis?.raf(time * 1000)
