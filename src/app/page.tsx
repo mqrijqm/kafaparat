@@ -4,6 +4,7 @@ import ClientExperience from '@/components/ClientExperience'
 import Header from '@/components/Header'
 import { HeadingLinks, Hero } from '@/components/Hero'
 import { Anatomy, Atelier, Features, Footer, Materials, Start } from '@/components/Sections'
+import { GoldenStandard } from '@/components/GoldenStandard'
 import { Shop } from '@/components/Shop'
 
 export default function Home() {
@@ -26,6 +27,7 @@ export default function Home() {
           <div className="after-story">
             <PartnerBand />
             <Caye />
+            <GoldenStandard />
             <Shop />
           </div>
         </main>

@@ -73,22 +73,43 @@ export const SHOP = {
     id: 'caye-smart-x',
     price: 8950,
     lease: 249,
-    gallery: ['/media/caye-hero.webp', '/media/caye-v-inside.webp', '/media/caye-v-burrs.webp', '/media/caye-pour.webp'],
     finishes: [
       { id: 'silver', swatch: 'linear-gradient(135deg,#e9e6e1,#9a9894)' },
       { id: 'graphite', swatch: 'linear-gradient(135deg,#55514c,#1d1b19)' },
     ],
-    // extra price per configuration (single / twin grinder)
+    // extra price per configuration (single / twin hopper)
     configs: [0, 900],
   },
+  // Golden Standard coffee, milk and hygiene (real product names from goldenstandard.eu, prices are placeholders)
   accessories: [
-    { id: 'cps-burrs', price: 189, image: '/media/shop-burrs.webp' },
-    { id: 'grind-module', price: 690, image: '/media/shop-module.webp' },
-    { id: 'beans', price: 32, image: '/media/shop-beans.webp' },
-    { id: 'milk-jug', price: 129, image: '/media/shop-jug.webp' },
-    { id: 'water-filter', price: 45, image: '/media/shop-filter.webp' },
-    { id: 'tablets', price: 24, image: '/media/shop-tablets.webp' },
-  ],
+    { id: 'gs-signature', cat: 'coffee', price: 29, image: '/media/gs-signature.webp' },
+    { id: 'gs-crema', cat: 'coffee', price: 27, image: '/media/gs-crema.webp' },
+    { id: 'gs-milk', cat: 'milk', price: 18, image: '/media/gs-milk.webp' },
+    { id: 'gs-oat', cat: 'milk', price: 24, image: '/media/gs-oat.webp' },
+    { id: 'gs-filter', cat: 'hygiene', price: 89, image: '/media/gs-filter.webp' },
+    { id: 'gs-tablets', cat: 'hygiene', price: 24, image: '/media/gs-tablets.webp' },
+  ] as { id: string; cat: 'coffee' | 'milk' | 'hygiene'; price: number; image: string }[],
+  categories: ['all', 'coffee', 'milk', 'hygiene'] as const,
+}
+
+/**
+ * Product photos for the chosen finish + hopper configuration: three angles of that exact machine,
+ * then one shared close-up (the burrs are the same in every version).
+ */
+export function machineGallery(finish: number, config: number) {
+  const f = SHOP.machine.finishes[finish]?.id ?? 'silver'
+  const h = config === 0 ? 1 : 2
+  return [
+    ...(['3q', 'side', 'back'] as const).map((v) => `/media/smartx-${f}-${h}-${v}.webp`),
+    '/media/caye-v-burrs.webp',
+  ]
+}
+
+export const GOLDEN_STANDARD = {
+  url: { bs: 'https://goldenstandard.eu/bs', en: 'https://goldenstandard.eu/en' },
+  logo: '/brand/golden-standard.webp',
+  mark: '/brand/golden-standard-mark.webp',
+  brands: ['Marco Beverage Systems', 'CAYE Technology', 'Mr.Cafe', 'Lattiz'],
 }
 
 export const ATELIER_IMAGES = ['/media/crema-swirl.webp', '/media/crema-grain.webp', '/media/burr-top.webp']
@@ -279,7 +300,7 @@ const bs = {
         h: 'Specifikacije',
         rows: [
           ['Mlin', '2 × 64 mm keramički CPS'],
-          ['Kapacitet', '350 šoljica / sat'],
+          ['Kapacitet', '258 šotova / sat'],
           ['Vaga za prah', '± 0,1 g'],
           ['Širina', '430 mm'],
           ['Napajanje', '400 V · 6,8 kW'],
@@ -304,18 +325,44 @@ const bs = {
         ],
       },
     ],
-    more: 'Dodaci i potrošni materijal',
-    moreLead: 'Sve što mašini treba da radi kao prvog dana.',
+    more: 'Naša kafa, mlijeko i higijena',
+    moreLead: 'Sve kalibrirano za isti aparat: Golden Standard kafa u zrnu, barista mlijeko, filter i tablete za čišćenje.',
     quickAdd: 'Brzo dodaj',
+    brand: 'Golden Standard',
+    cats: { all: 'Sve', coffee: 'Kafa', milk: 'Mlijeko', hygiene: 'Higijena' } as Record<string, string>,
     accessories: {
-      'cps-burrs': ['CPS keramički žrvnjevi', 'Par, 64 mm'],
-      'grind-module': ['Mlinski modul', 'Zamjena za 60 sekundi'],
-      beans: ['Kafaparat espresso', 'Kafa u zrnu, 1 kg'],
-      'milk-jug': ['Posuda za mlijeko', 'Izolirana, 4 l'],
-      'water-filter': ['Filter za vodu', 'Za 6 000 l'],
-      tablets: ['Tablete za čišćenje', '100 komada'],
+      'gs-signature': ['Signature Roast', 'Kafa u zrnu, 1 kg'],
+      'gs-crema': ['Barista Crema', 'Kafa u zrnu, 1 kg'],
+      'gs-milk': ['Barista Premium Milk 3.8', 'Paket 6 × 1 l'],
+      'gs-oat': ['Oat Barista', 'Paket 6 × 1 l'],
+      'gs-filter': ['Filter za vodu', 'Profesionalni uložak'],
+      'gs-tablets': ['Tablete za čišćenje', 'Za kafu i mlijeko'],
     } as Record<string, [string, string]>,
-    badge: { 'cps-burrs': 'Novo', beans: 'Najprodavanije' } as Record<string, string>,
+    badge: { 'gs-signature': 'Najprodavanije', 'gs-oat': 'Biljno' } as Record<string, string>,
+    variant: 'Prikazano',
+  },
+  gs: {
+    eyebrow: 'Zvanično zastupstvo Golden Standard · HR, SI, BiH, CG',
+    title: ['Zlatni standard', 'u svakoj šoljici.'],
+    lead: 'Aparat, kafa, mlijeko i higijena na ovom sajtu dolaze iz Golden Standard sistema: regionalnog B2B sistema za ugostiteljstvo koji partneru donosi opremu, kalibraciju i obuku tima, bez početnog ulaganja u mašinu.',
+    pillars: [
+      ['Kafa', 'Signature Roast i Barista Crema, u zrnu, kalibrirane na vašem mlinu.'],
+      ['Mlijeko', 'Barista Premium Milk 3.8, Low Fat Milk 1.0 i Oat Barista, kalibrirani na FoaMasteru.'],
+      ['Oprema', 'CAYE Smart X, Mr.Cafe FoaMaster, Marco MilkPal i Lattiz Advance.'],
+      ['Higijena', 'Golden Standard filter za vodu i tablete za čišćenje kafe i mlijeka.'],
+      ['Akademija', 'Obuka tima, standardizirani recepti i Certified oznaka.'],
+    ],
+    machines: [
+      ['Smart X', 'super-automatski espresso'],
+      ['Smart X Master', 'dva kuhala, dva izlaza'],
+    ],
+    faq: {
+      q: 'Čiju opremu Golden Standard zvanično zastupa?',
+      a: 'Zvanični smo distributer opreme Marco Beverage Systems, CAYE Technology i Mr.Cafe za Hrvatsku, Sloveniju, Bosnu i Hercegovinu i Crnu Goru. Lattiz isporučujemo kroz Viro Plus d.o.o., službenog distributera za Hrvatsku i Sloveniju.',
+    },
+    claim: 'Isti rezultat u svakoj smjeni i na svakoj lokaciji.',
+    cta: 'Posjetite goldenstandard.eu',
+    powered: 'Pokreće',
   },
   cart: {
     title: 'Korpa',
@@ -525,7 +572,7 @@ const en: Copy = {
         h: 'Specifications',
         rows: [
           ['Grinder', '2 × 64 mm ceramic CPS'],
-          ['Capacity', '350 cups / hour'],
+          ['Capacity', '258 shots / hour'],
           ['Powder scale', '± 0.1 g'],
           ['Width', '430 mm'],
           ['Power', '400 V · 6.8 kW'],
@@ -550,18 +597,44 @@ const en: Copy = {
         ],
       },
     ],
-    more: 'Accessories & consumables',
-    moreLead: 'Everything the machine needs to run like day one.',
+    more: 'Our coffee, milk and hygiene',
+    moreLead: 'All calibrated for the same machine: Golden Standard whole beans, barista milk, water filter and cleaning tablets.',
     quickAdd: 'Quick add',
+    brand: 'Golden Standard',
+    cats: { all: 'All', coffee: 'Coffee', milk: 'Milk', hygiene: 'Hygiene' },
     accessories: {
-      'cps-burrs': ['CPS ceramic burrs', 'Pair, 64 mm'],
-      'grind-module': ['Grinding module', 'Swapped in 60 seconds'],
-      beans: ['Kafaparat espresso', 'Whole beans, 1 kg'],
-      'milk-jug': ['Milk container', 'Insulated, 4 l'],
-      'water-filter': ['Water filter', 'Good for 6,000 l'],
-      tablets: ['Cleaning tablets', '100 pieces'],
+      'gs-signature': ['Signature Roast', 'Whole beans, 1 kg'],
+      'gs-crema': ['Barista Crema', 'Whole beans, 1 kg'],
+      'gs-milk': ['Barista Premium Milk 3.8', 'Pack of 6 × 1 l'],
+      'gs-oat': ['Oat Barista', 'Pack of 6 × 1 l'],
+      'gs-filter': ['Water filter', 'Professional cartridge'],
+      'gs-tablets': ['Cleaning tablets', 'For coffee and milk'],
     },
-    badge: { 'cps-burrs': 'New', beans: 'Bestseller' },
+    badge: { 'gs-signature': 'Bestseller', 'gs-oat': 'Plant-based' },
+    variant: 'Shown',
+  },
+  gs: {
+    eyebrow: 'Official Golden Standard representation · HR, SI, BiH, ME',
+    title: ['The gold standard', 'in every cup.'],
+    lead: 'The machine, coffee, milk and hygiene on this site come from the Golden Standard system: a regional B2B system for hospitality that gives partners the equipment, calibration and team training, with no upfront investment in the machine.',
+    pillars: [
+      ['Coffee', 'Signature Roast and Barista Crema, whole beans, calibrated on your grinder.'],
+      ['Milk', 'Barista Premium Milk 3.8, Low Fat Milk 1.0 and Oat Barista, calibrated on FoaMaster.'],
+      ['Equipment', 'CAYE Smart X, Mr.Cafe FoaMaster, Marco MilkPal and Lattiz Advance.'],
+      ['Hygiene', 'Golden Standard water filter and cleaning tablets for coffee and milk.'],
+      ['Academy', 'Team training, standardised recipes and the Certified mark.'],
+    ],
+    machines: [
+      ['Smart X', 'super-automatic espresso'],
+      ['Smart X Master', 'two boilers, two outlets'],
+    ],
+    faq: {
+      q: 'Whose equipment does Golden Standard officially represent?',
+      a: 'We are the official distributor of Marco Beverage Systems, CAYE Technology and Mr.Cafe equipment for Croatia, Slovenia, Bosnia and Herzegovina and Montenegro. Lattiz is supplied through Viro Plus d.o.o., the official distributor for Croatia and Slovenia.',
+    },
+    claim: 'The same result in every shift and at every location.',
+    cta: 'Visit goldenstandard.eu',
+    powered: 'Powered by',
   },
   cart: {
     title: 'Cart',

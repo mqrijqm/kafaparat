@@ -1,0 +1,149 @@
+{
+  "style": "",
+  "items": [
+    {
+      "name": "smartx-silver-1-3q",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/caye-hero.png",
+      "noStyle": true,
+      "refNote": "The attached image shows the real CAYE Smart X machine: keep its exact shape, proportions and details (angular die-cast side frame with the triangular inset, tilted touchscreen, brew spouts, drip tray). Only change what the prompt asks for.",
+      "prompt": "CAYE Smart X. Three-quarter front view from the left, the machine centered, a glass of espresso under the spout. The die-cast side frame and body are brushed SILVER aluminium, exactly like the reference. On top there is only ONE single wide bean hopper spanning the whole top (one lid, one bean container), not two. Style: Photorealistic premium product photography of a professional super-automatic espresso machine, seamless warm golden-amber studio backdrop with a soft gradient (like the attached reference), soft reflective floor, one warm key light from the upper left, crisp edges, no people, no extra props. No added text, no watermark."
+    },
+    {
+      "name": "smartx-silver-1-back",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/ref-front.png",
+      "noStyle": true,
+      "refNote": "The attached image shows the real CAYE Smart X machine: keep its exact shape, proportions and details (angular die-cast side frame with the triangular inset, tilted touchscreen, brew spouts, drip tray). Only change what the prompt asks for.",
+      "prompt": "CAYE Smart X. Straight-on rear view, perfectly symmetrical, machine centered with space around it. The die-cast side frame and body are brushed SILVER aluminium, exactly like the reference. On top there is only ONE single wide bean hopper spanning the whole top (one lid, one bean container), not two. Style: Photorealistic premium product photography of a professional super-automatic espresso machine, seamless warm golden-amber studio backdrop with a soft gradient (like the attached reference), soft reflective floor, one warm key light from the upper left, crisp edges, no people, no extra props. No added text, no watermark."
+    },
+    {
+      "name": "smartx-silver-1-side",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/ref-side.png",
+      "noStyle": true,
+      "refNote": "The attached image shows the real CAYE Smart X machine: keep its exact shape, proportions and details (angular die-cast side frame with the triangular inset, tilted touchscreen, brew spouts, drip tray). Only change what the prompt asks for.",
+      "prompt": "CAYE Smart X. Side view from the right, showing the chamfered side frame with its large dark triangular inset panel pointing down toward the front. The die-cast side frame and body are brushed SILVER aluminium, exactly like the reference. On top there is only ONE single wide bean hopper spanning the whole top (one lid, one bean container), not two. Style: Photorealistic premium product photography of a professional super-automatic espresso machine, seamless warm golden-amber studio backdrop with a soft gradient (like the attached reference), soft reflective floor, one warm key light from the upper left, crisp edges, no people, no extra props. No added text, no watermark."
+    },
+    {
+      "name": "smartx-silver-2-3q",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/caye-hero.png",
+      "noStyle": true,
+      "refNote": "The attached image shows the real CAYE Smart X machine: keep its exact shape, proportions and details (angular die-cast side frame with the triangular inset, tilted touchscreen, brew spouts, drip tray). Only change what the prompt asks for.",
+      "prompt": "CAYE Smart X. Three-quarter front view from the left, the machine centered, a glass of espresso under the spout. The die-cast side frame and body are brushed SILVER aluminium, exactly like the reference. On top there are TWO identical bean hoppers side by side (two lids, two bean containers), exactly like the reference. Style: Photorealistic premium product photography of a professional super-automatic espresso machine, seamless warm golden-amber studio backdrop with a soft gradient (like the attached reference), soft reflective floor, one warm key light from the upper left, crisp edges, no people, no extra props. No added text, no watermark."
+    },
+    {
+      "name": "smartx-silver-2-back",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/ref-front.png",
+      "noStyle": true,
+      "refNote": "The attached image shows the real CAYE Smart X machine: keep its exact shape, proportions and details (angular die-cast side frame with the triangular inset, tilted touchscreen, brew spouts, drip tray). Only change what the prompt asks for.",
+      "prompt": "CAYE Smart X. Straight-on rear view, perfectly symmetrical, machine centered with space around it. The die-cast side frame and body are brushed SILVER aluminium, exactly like the reference. On top there are TWO identical bean hoppers side by side (two lids, two bean containers), exactly like the reference. Style: Photorealistic premium product photography of a professional super-automatic espresso machine, seamless warm golden-amber studio backdrop with a soft gradient (like the attached reference), soft reflective floor, one warm key light from the upper left, crisp edges, no people, no extra props. No added text, no watermark."
+    },
+    {
+      "name": "smartx-silver-2-side",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/ref-side.png",
+      "noStyle": true,
+      "refNote": "The attached image shows the real CAYE Smart X machine: keep its exact shape, proportions and details (angular die-cast side frame with the triangular inset, tilted touchscreen, brew spouts, drip tray). Only change what the prompt asks for.",
+      "prompt": "CAYE Smart X. Side view from the right, showing the chamfered side frame with its large dark triangular inset panel pointing down toward the front. The die-cast side frame and body are brushed SILVER aluminium, exactly like the reference. On top there are TWO identical bean hoppers side by side (two lids, two bean containers), exactly like the reference. Style: Photorealistic premium product photography of a professional super-automatic espresso machine, seamless warm golden-amber studio backdrop with a soft gradient (like the attached reference), soft reflective floor, one warm key light from the upper left, crisp edges, no people, no extra props. No added text, no watermark."
+    },
+    {
+      "name": "smartx-graphite-1-3q",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/caye-hero.png",
+      "noStyle": true,
+      "refNote": "The attached image shows the real CAYE Smart X machine: keep its exact shape, proportions and details (angular die-cast side frame with the triangular inset, tilted touchscreen, brew spouts, drip tray). Only change what the prompt asks for.",
+      "prompt": "CAYE Smart X. Three-quarter front view from the left, the machine centered, a glass of espresso under the spout. The die-cast side frame and body are finished in dark GRAPHITE / anthracite metallic (dark grey, satin), instead of silver; the black glass front and chrome spouts stay the same. On top there is only ONE single wide bean hopper spanning the whole top (one lid, one bean container), not two. Style: Photorealistic premium product photography of a professional super-automatic espresso machine, seamless warm golden-amber studio backdrop with a soft gradient (like the attached reference), soft reflective floor, one warm key light from the upper left, crisp edges, no people, no extra props. No added text, no watermark."
+    },
+    {
+      "name": "smartx-graphite-1-back",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/ref-front.png",
+      "noStyle": true,
+      "refNote": "The attached image shows the real CAYE Smart X machine: keep its exact shape, proportions and details (angular die-cast side frame with the triangular inset, tilted touchscreen, brew spouts, drip tray). Only change what the prompt asks for.",
+      "prompt": "CAYE Smart X. Straight-on rear view, perfectly symmetrical, machine centered with space around it. The die-cast side frame and body are finished in dark GRAPHITE / anthracite metallic (dark grey, satin), instead of silver; the black glass front and chrome spouts stay the same. On top there is only ONE single wide bean hopper spanning the whole top (one lid, one bean container), not two. Style: Photorealistic premium product photography of a professional super-automatic espresso machine, seamless warm golden-amber studio backdrop with a soft gradient (like the attached reference), soft reflective floor, one warm key light from the upper left, crisp edges, no people, no extra props. No added text, no watermark."
+    },
+    {
+      "name": "smartx-graphite-1-side",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/ref-side.png",
+      "noStyle": true,
+      "refNote": "The attached image shows the real CAYE Smart X machine: keep its exact shape, proportions and details (angular die-cast side frame with the triangular inset, tilted touchscreen, brew spouts, drip tray). Only change what the prompt asks for.",
+      "prompt": "CAYE Smart X. Side view from the right, showing the chamfered side frame with its large dark triangular inset panel pointing down toward the front. The die-cast side frame and body are finished in dark GRAPHITE / anthracite metallic (dark grey, satin), instead of silver; the black glass front and chrome spouts stay the same. On top there is only ONE single wide bean hopper spanning the whole top (one lid, one bean container), not two. Style: Photorealistic premium product photography of a professional super-automatic espresso machine, seamless warm golden-amber studio backdrop with a soft gradient (like the attached reference), soft reflective floor, one warm key light from the upper left, crisp edges, no people, no extra props. No added text, no watermark."
+    },
+    {
+      "name": "smartx-graphite-2-3q",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/caye-hero.png",
+      "noStyle": true,
+      "refNote": "The attached image shows the real CAYE Smart X machine: keep its exact shape, proportions and details (angular die-cast side frame with the triangular inset, tilted touchscreen, brew spouts, drip tray). Only change what the prompt asks for.",
+      "prompt": "CAYE Smart X. Three-quarter front view from the left, the machine large and centered, filling about 80% of the frame height (same framing as the reference), a glass of espresso under the spout. The die-cast side frame and body are finished in dark GRAPHITE / anthracite metallic (dark grey, satin), instead of silver; the black glass front and chrome spouts stay the same. On top there are TWO identical bean hoppers side by side (two lids, two bean containers), exactly like the reference. Style: Photorealistic premium product photography of a professional super-automatic espresso machine, seamless warm golden-amber studio backdrop with a soft gradient (like the attached reference), soft reflective floor, one warm key light from the upper left, crisp edges, no people, no extra props. No added text, no watermark."
+    },
+    {
+      "name": "smartx-graphite-2-back",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/ref-front.png",
+      "noStyle": true,
+      "refNote": "The attached image shows the real CAYE Smart X machine: keep its exact shape, proportions and details (angular die-cast side frame with the triangular inset, tilted touchscreen, brew spouts, drip tray). Only change what the prompt asks for.",
+      "prompt": "CAYE Smart X. Straight-on rear view, perfectly symmetrical, machine centered with space around it. The die-cast side frame and body are finished in dark GRAPHITE / anthracite metallic (dark grey, satin), instead of silver; the black glass front and chrome spouts stay the same. On top there are TWO identical bean hoppers side by side (two lids, two bean containers), exactly like the reference. Style: Photorealistic premium product photography of a professional super-automatic espresso machine, seamless warm golden-amber studio backdrop with a soft gradient (like the attached reference), soft reflective floor, one warm key light from the upper left, crisp edges, no people, no extra props. No added text, no watermark."
+    },
+    {
+      "name": "smartx-graphite-2-side",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/ref-side.png",
+      "noStyle": true,
+      "refNote": "The attached image shows the real CAYE Smart X machine: keep its exact shape, proportions and details (angular die-cast side frame with the triangular inset, tilted touchscreen, brew spouts, drip tray). Only change what the prompt asks for.",
+      "prompt": "CAYE Smart X. Side view from the right, showing the chamfered side frame with its large dark triangular inset panel pointing down toward the front. The die-cast side frame and body are finished in dark GRAPHITE / anthracite metallic (dark grey, satin), instead of silver; the black glass front and chrome spouts stay the same. On top there are TWO identical bean hoppers side by side (two lids, two bean containers), exactly like the reference. Style: Photorealistic premium product photography of a professional super-automatic espresso machine, seamless warm golden-amber studio backdrop with a soft gradient (like the attached reference), soft reflective floor, one warm key light from the upper left, crisp edges, no people, no extra props. No added text, no watermark."
+    },
+    {
+      "name": "gs-signature",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/gs-logo.png",
+      "noStyle": true,
+      "refNote": "The attached image is the brand logo of GOLDEN STANDARD: a gold circle with a white latte-art cup, and the serif wordmark GOLDEN STANDARD. Reproduce this logo faithfully and legibly on the product label; spell GOLDEN STANDARD exactly.",
+      "prompt": "A matte black 1 kg stand-up coffee bag with a folded top and a one-way valve. Front label: the gold Golden Standard emblem and wordmark, and below it in small elegant gold capitals the words SIGNATURE ROAST. A few roasted beans in front. Style: Premium e-commerce product photograph, product standing on a warm dark marble plinth, deep espresso-brown background, warm champagne-gold rim light, centered with generous negative space, photorealistic. No other text or logos."
+    },
+    {
+      "name": "gs-crema",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/gs-logo.png",
+      "noStyle": true,
+      "refNote": "The attached image is the brand logo of GOLDEN STANDARD: a gold circle with a white latte-art cup, and the serif wordmark GOLDEN STANDARD. Reproduce this logo faithfully and legibly on the product label; spell GOLDEN STANDARD exactly.",
+      "prompt": "A matte ivory-cream 1 kg stand-up coffee bag with a folded top. Front label: the gold Golden Standard emblem and wordmark, and below it in small elegant gold capitals the words BARISTA CREMA. A few roasted beans in front. Style: Premium e-commerce product photograph, product standing on a warm dark marble plinth, deep espresso-brown background, warm champagne-gold rim light, centered with generous negative space, photorealistic. No other text or logos."
+    },
+    {
+      "name": "gs-milk",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/gs-logo.png",
+      "noStyle": true,
+      "refNote": "The attached image is the brand logo of GOLDEN STANDARD: a gold circle with a white latte-art cup, and the serif wordmark GOLDEN STANDARD. Reproduce this logo faithfully and legibly on the product label; spell GOLDEN STANDARD exactly.",
+      "prompt": "A 1 litre white Tetra Pak milk carton with a gold screw cap. Front: the gold Golden Standard emblem and wordmark, and the words BARISTA PREMIUM MILK 3.8 in small elegant capitals. A small splash-free glass of milk beside it. Style: Premium e-commerce product photograph, product standing on a warm dark marble plinth, deep espresso-brown background, warm champagne-gold rim light, centered with generous negative space, photorealistic. No other text or logos."
+    },
+    {
+      "name": "gs-oat",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/gs-logo.png",
+      "noStyle": true,
+      "refNote": "The attached image is the brand logo of GOLDEN STANDARD: a gold circle with a white latte-art cup, and the serif wordmark GOLDEN STANDARD. Reproduce this logo faithfully and legibly on the product label; spell GOLDEN STANDARD exactly.",
+      "prompt": "A 1 litre oat-beige Tetra Pak carton with a gold screw cap. Front: the gold Golden Standard emblem and wordmark, and the words OAT BARISTA in small elegant capitals. A few oat grains in front. Style: Premium e-commerce product photograph, product standing on a warm dark marble plinth, deep espresso-brown background, warm champagne-gold rim light, centered with generous negative space, photorealistic. No other text or logos."
+    },
+    {
+      "name": "gs-filter",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/gs-logo.png",
+      "noStyle": true,
+      "refNote": "The attached image is the brand logo of GOLDEN STANDARD: a gold circle with a white latte-art cup, and the serif wordmark GOLDEN STANDARD. Reproduce this logo faithfully and legibly on the product label; spell GOLDEN STANDARD exactly.",
+      "prompt": "A slim white professional water filter cartridge for espresso machines with a black head, its label showing the gold Golden Standard emblem and wordmark. Style: Premium e-commerce product photograph, product standing on a warm dark marble plinth, deep espresso-brown background, warm champagne-gold rim light, centered with generous negative space, photorealistic. No other text or logos."
+    },
+    {
+      "name": "gs-tablets",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/gs-logo.png",
+      "noStyle": true,
+      "refNote": "The attached image is the brand logo of GOLDEN STANDARD: a gold circle with a white latte-art cup, and the serif wordmark GOLDEN STANDARD. Reproduce this logo faithfully and legibly on the product label; spell GOLDEN STANDARD exactly.",
+      "prompt": "A matte black cylindrical tub of espresso machine cleaning tablets with a gold lid, label showing the gold Golden Standard emblem and wordmark and the words CLEANING TABLETS in small capitals; a few white tablets in front. Style: Premium e-commerce product photograph, product standing on a warm dark marble plinth, deep espresso-brown background, warm champagne-gold rim light, centered with generous negative space, photorealistic. No other text or logos."
+    }
+  ]
+}

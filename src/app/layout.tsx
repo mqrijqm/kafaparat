@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { JetBrains_Mono } from 'next/font/google'
+import { Cinzel, JetBrains_Mono } from 'next/font/google'
 import localFont from 'next/font/local'
 import SmoothScroll from '@/components/SmoothScroll'
 import { LangProvider } from '@/lib/i18n'
@@ -17,6 +17,13 @@ const zolina = localFont({
 const mono = JetBrains_Mono({
   variable: '--font-jetbrains',
   subsets: ['latin', 'latin-ext'],
+})
+
+// Golden Standard wordmark face (only used in their section)
+const cinzel = Cinzel({
+  variable: '--font-gs',
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '500'],
 })
 
 const { meta } = COPY.bs
@@ -40,7 +47,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="bs" className={`${zolina.variable} ${mono.variable}`}>
+    <html lang="bs" className={`${zolina.variable} ${mono.variable} ${cinzel.variable}`}>
       <body>
         <LangProvider>
           <SmoothScroll>{children}</SmoothScroll>

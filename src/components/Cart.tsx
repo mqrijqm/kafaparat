@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useLenis } from 'lenis/react'
-import { SHOP } from '@/lib/content'
+import { machineGallery, SHOP } from '@/lib/content'
 import { cart, money, unitPrice, useCart, type CartLine } from '@/lib/cart'
 import { useCopy, useLang } from '@/lib/i18n'
 import { IconArrowRight, IconBag, IconClose, IconMinus, IconPlus } from './icons'
@@ -43,7 +43,7 @@ function lineInfo(l: CartLine, t: ReturnType<typeof useCopy>) {
     return {
       name: t.shop.name,
       meta: `${t.shop.finishes[l.finish ?? 0]} · ${t.shop.configs[l.config ?? 0][0]}`,
-      image: SHOP.machine.gallery[0],
+      image: machineGallery(l.finish ?? 0, l.config ?? 0)[0],
     }
   }
   const a = SHOP.accessories.find((x) => x.id === l.id)!

@@ -2,13 +2,27 @@
 
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
-import { PARTNER_EMAIL, SHOP } from '@/lib/content'
+import { GOLDEN_STANDARD, machineGallery, PARTNER_EMAIL, SHOP } from '@/lib/content'
 import { cart, money, unitPrice } from '@/lib/cart'
 import { useCopy, useLang } from '@/lib/i18n'
 import { Qty } from './Cart'
 import { IconArrowUpRight, IconCheck, IconPlus, IconStar } from './icons'
 
 const M = SHOP.machine
+
+/**
+ * Main product photo that cross-fades when the variant changes: the old photo stays underneath
+ * while the new one fades in on top (layers are derived during render, no effect needed).
+ */
+function Crossfade({ src, alt }: { src: string; alt: string }) {
+  const [layers, setLayers] = useState([src])
+  const top = layers[layers.length - 1]
+  if (top !== src) setLayers([top, src])
+  return layers.map((l) => (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img key={l} src={l} alt={l === src ? alt : ''} className={l === src ? 'is-top' : ''} decoding="async" />
+  ))
+}
 
 /** Main product: gallery left, buy box right (sticky on desktop). */
 function BuyBox({ onAddVisible }: { onAddVisible: (v: boolean) => void }) {
@@ -22,6 +36,22 @@ function BuyBox({ onAddVisible }: { onAddVisible: (v: boolean) => void }) {
   const [justAdded, setJustAdded] = useState(false)
   const addRef = useRef<HTMLButtonElement>(null)
   const price = unitPrice({ id: M.id, config })
+  const gallery = machineGallery(finish, config)
+  const root = useRef<HTMLDivElement>(null)
+
+  // warm the cache with every variant once the buy box is near, so switching options is instant
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return
+        io.disconnect()
+        M.finishes.forEach((_, f) => M.configs.forEach((_, c) => machineGallery(f, c).forEach((src) => (new Image().src = src))))
+      },
+      { rootMargin: '100% 0px' },
+    )
+    io.observe(root.current!)
+    return () => io.disconnect()
+  }, [])
 
   useEffect(() => {
     // "gone" only once the button has scrolled up past the top, not while it is still below the fold
@@ -37,20 +67,20 @@ function BuyBox({ onAddVisible }: { onAddVisible: (v: boolean) => void }) {
   }
 
   return (
-    <div className="buy">
+    <div ref={root} className="buy">
       <div className="buy-gallery">
         <div className="buy-main caye-photo">
-          {M.gallery.map((src, i) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img key={src} src={src} alt={i === 0 ? t.name : ''} className={i === img ? 'is-on' : ''} loading="lazy" decoding="async" />
-          ))}
+          <Crossfade src={gallery[img]} alt={`${t.name}, ${t.finishes[finish]}, ${t.configs[config][0]}`} />
           <span className="buy-index mono">
-            {String(img + 1).padStart(2, '0')} / {String(M.gallery.length).padStart(2, '0')}
+            {String(img + 1).padStart(2, '0')} / {String(gallery.length).padStart(2, '0')}
+          </span>
+          <span className="buy-variant text-ui">
+            {t.variant}: {t.finishes[finish]} · {t.configs[config][0]}
           </span>
         </div>
         <div className="buy-thumbs" role="tablist">
-          {M.gallery.map((src, i) => (
-            <button key={src} role="tab" aria-selected={i === img} onClick={() => setImg(i)} aria-label={`${i + 1}`}>
+          {gallery.map((src, i) => (
+            <button key={i} role="tab" aria-selected={i === img} onClick={() => setImg(i)} aria-label={`${i + 1}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={src} alt="" loading="lazy" decoding="async" />
             </button>
@@ -158,21 +188,38 @@ function Accessories() {
   const t = useCopy().shop
   const { lang } = useLang()
   const [done, setDone] = useState<string | null>(null)
+  const [cat, setCat] = useState<(typeof SHOP.categories)[number]>('all')
+  const items = SHOP.accessories.filter((a) => cat === 'all' || a.cat === cat)
   return (
     <div className="acc">
       <div className="acc-head" data-reveal>
-        <h3 className="caye-title">{t.more}</h3>
+        <div>
+          <a href={GOLDEN_STANDARD.url[lang]} target="_blank" rel="noopener" className="acc-brand text-ui">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={GOLDEN_STANDARD.mark} alt="" />
+            {t.brand}
+          </a>
+          <h3 className="caye-title">{t.more}</h3>
+        </div>
         <p>{t.moreLead}</p>
       </div>
+      <div className="acc-filter text-ui" role="tablist">
+        {SHOP.categories.map((c) => (
+          <button key={c} role="tab" aria-selected={c === cat} onClick={() => setCat(c)}>
+            {t.cats[c]}
+            <span className="mono">{c === 'all' ? SHOP.accessories.length : SHOP.accessories.filter((a) => a.cat === c).length}</span>
+          </button>
+        ))}
+      </div>
       <ul className="acc-grid">
-        {SHOP.accessories.map((a) => {
+        {items.map((a) => {
           const [name, sub] = t.accessories[a.id]
           const badge = t.badge[a.id]
           return (
             <li key={a.id} className="product-card">
               <div className="product-media">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={a.image} alt={name} loading="lazy" decoding="async" />
+                <img src={a.image} alt={`${t.brand} ${name}`} loading="lazy" decoding="async" />
                 {badge && <span className="badge text-ui">{badge}</span>}
                 <button
                   className="quick-add text-ui"
@@ -188,6 +235,7 @@ function Accessories() {
               </div>
               <div className="product-meta">
                 <div>
+                  <span className="product-brand text-ui">{t.brand}</span>
                   <h4>{name}</h4>
                   <p className="text-ui">{sub}</p>
                 </div>
@@ -208,7 +256,7 @@ function StickyBuy({ show }: { show: boolean }) {
   return (
     <div className={`sticky-buy ${show ? 'is-on' : ''}`} inert={!show}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={M.gallery[0]} alt="" />
+      <img src={machineGallery(0, 1)[0]} alt="" />
       <div className="sticky-buy-name">
         <b>{t.name}</b>
         <span className="text-ui">

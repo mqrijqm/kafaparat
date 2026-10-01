@@ -29,7 +29,7 @@ function run(item) {
     `Use your built-in image generation tool to create exactly ONE image. Aspect ratio ${item.aspect ?? '3:2'}.`,
     `Subject: ${item.prompt}`,
     item.noStyle ? '' : `Style: ${style}`,
-    item.ref ? 'The attached image is the real product: keep its exact shape, proportions, colours and details faithful.' : '',
+    item.ref ? (item.refNote ?? 'The attached image is the real product: keep its exact shape, proportions, colours and details faithful.') : '',
     'Do NOT try to save, copy or move the file anywhere and do not run any shell commands. Just generate the image once, then reply with the single word DONE.',
   ].join('\n')
 

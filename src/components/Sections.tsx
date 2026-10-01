@@ -1,7 +1,7 @@
 'use client'
 
-import { ACCENTS, ATELIER_IMAGES, BREWS, FEATURES } from '@/lib/content'
-import { useCopy } from '@/lib/i18n'
+import { ACCENTS, ATELIER_IMAGES, BREWS, FEATURES, GOLDEN_STANDARD } from '@/lib/content'
+import { useCopy, useLang } from '@/lib/i18n'
 import { IconArrowRight } from './icons'
 
 /** Wraps units (µm, g, mm, s) so uppercase UI text leaves them alone. */
@@ -159,6 +159,7 @@ export function Start() {
 
 export function Footer() {
   const t = useCopy()
+  const { lang } = useLang()
   const f = t.footer
   return (
     <footer className="site-footer">
@@ -194,7 +195,11 @@ export function Footer() {
         </ul>
         <div className="footer-base text-ui">
           <span>{f.rights}</span>
-          <span className="mono">45.4642° N, 9.1900° E</span>
+          <a href={GOLDEN_STANDARD.url[lang]} target="_blank" rel="noopener" className="footer-gs">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={GOLDEN_STANDARD.mark} alt="" />
+            {t.gs.powered} Golden Standard
+          </a>
         </div>
       </div>
     </footer>
