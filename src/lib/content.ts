@@ -66,6 +66,9 @@ export const CAYE = {
   details: ['/media/caye-v-burrs.webp', '/media/caye-v-beans.webp', '/media/caye-v-inside.webp', '/media/caye-v-milk.webp'],
 }
 
+/** Golden Standard product page (coffee, hygiene) */
+const GS_PRODUCTS = 'https://www.goldenstandard.eu/proizvodi'
+
 /** Shop: one machine with options + accessories. Prices in EUR (placeholders until the real price list). */
 export const SHOP = {
   freeShipping: 150,
@@ -82,13 +85,13 @@ export const SHOP = {
   },
   // Golden Standard coffee, milk and hygiene (real product names from goldenstandard.eu, prices are placeholders)
   accessories: [
-    { id: 'gs-signature', cat: 'coffee', price: 29, image: '/media/gs-signature.webp' },
-    { id: 'gs-crema', cat: 'coffee', price: 27, image: '/media/gs-crema.webp' },
+    { id: 'gs-signature', cat: 'coffee', price: 29, image: '/media/gs-signature.webp', link: GS_PRODUCTS },
+    { id: 'gs-crema', cat: 'coffee', price: 27, image: '/media/gs-crema.webp', link: GS_PRODUCTS },
     { id: 'gs-milk', cat: 'milk', price: 18, image: '/media/gs-milk.webp' },
     { id: 'gs-oat', cat: 'milk', price: 24, image: '/media/gs-oat.webp' },
-    { id: 'gs-filter', cat: 'hygiene', price: 89, image: '/media/gs-filter.webp' },
-    { id: 'gs-tablets', cat: 'hygiene', price: 24, image: '/media/gs-tablets.webp' },
-  ] as { id: string; cat: 'coffee' | 'milk' | 'hygiene'; price: number; image: string }[],
+    { id: 'gs-filter', cat: 'hygiene', price: 89, image: '/media/gs-filter.webp', link: GS_PRODUCTS },
+    { id: 'gs-tablets', cat: 'hygiene', price: 24, image: '/media/gs-tablets.webp', link: GS_PRODUCTS },
+  ] as { id: string; cat: 'coffee' | 'milk' | 'hygiene'; price: number; image: string; link?: string }[],
   categories: ['all', 'coffee', 'milk', 'hygiene'] as const,
 }
 
@@ -106,7 +109,8 @@ export function machineGallery(finish: number, config: number) {
 }
 
 export const GOLDEN_STANDARD = {
-  url: { bs: 'https://goldenstandard.eu/bs', en: 'https://goldenstandard.eu/en' },
+  // the site picks the visitor's language itself; /bs would redirect to German
+  url: { bs: 'https://www.goldenstandard.eu/', en: 'https://www.goldenstandard.eu/en' },
   logo: '/brand/golden-standard.webp',
   mark: '/brand/golden-standard-mark.webp',
   brands: ['Marco Beverage Systems', 'CAYE Technology', 'Mr.Cafe', 'Lattiz'],
@@ -335,11 +339,12 @@ const bs = {
       'gs-crema': ['Barista Crema', 'Kafa u zrnu, 1 kg'],
       'gs-milk': ['Barista Premium Milk 3.8', 'Paket 6 × 1 l'],
       'gs-oat': ['Oat Barista', 'Paket 6 × 1 l'],
-      'gs-filter': ['Filter za vodu', 'Profesionalni uložak'],
-      'gs-tablets': ['Tablete za čišćenje', 'Za kafu i mlijeko'],
+      'gs-filter': ['Filter za vodu', 'Zamjena svakih 6 mjeseci'],
+      'gs-tablets': ['Tablete za čišćenje', '60 tableta'],
     } as Record<string, [string, string]>,
     badge: { 'gs-signature': 'Najprodavanije', 'gs-oat': 'Biljno' } as Record<string, string>,
     variant: 'Prikazano',
+    details: 'Na goldenstandard.eu',
   },
   gs: {
     eyebrow: 'Zvanično zastupstvo Golden Standard · HR, SI, BiH, CG',
@@ -607,11 +612,12 @@ const en: Copy = {
       'gs-crema': ['Barista Crema', 'Whole beans, 1 kg'],
       'gs-milk': ['Barista Premium Milk 3.8', 'Pack of 6 × 1 l'],
       'gs-oat': ['Oat Barista', 'Pack of 6 × 1 l'],
-      'gs-filter': ['Water filter', 'Professional cartridge'],
-      'gs-tablets': ['Cleaning tablets', 'For coffee and milk'],
+      'gs-filter': ['Water filter', 'Replace every 6 months'],
+      'gs-tablets': ['Cleaning tablets', '60 tablets'],
     },
     badge: { 'gs-signature': 'Bestseller', 'gs-oat': 'Plant-based' },
     variant: 'Shown',
+    details: 'On goldenstandard.eu',
   },
   gs: {
     eyebrow: 'Official Golden Standard representation · HR, SI, BiH, ME',

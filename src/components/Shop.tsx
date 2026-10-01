@@ -218,8 +218,15 @@ function Accessories() {
           return (
             <li key={a.id} className="product-card">
               <div className="product-media">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={a.image} alt={`${t.brand} ${name}`} loading="lazy" decoding="async" />
+                {a.link ? (
+                  <a href={a.link} target="_blank" rel="noopener" className="product-img-link" aria-label={`${t.brand} ${name} — ${t.details}`}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={a.image} alt={`${t.brand} ${name}`} loading="lazy" decoding="async" />
+                  </a>
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={a.image} alt={`${t.brand} ${name}`} loading="lazy" decoding="async" />
+                )}
                 {badge && <span className="badge text-ui">{badge}</span>}
                 <button
                   className="quick-add text-ui"
@@ -236,8 +243,22 @@ function Accessories() {
               <div className="product-meta">
                 <div>
                   <span className="product-brand text-ui">{t.brand}</span>
-                  <h4>{name}</h4>
+                  <h4>
+                    {a.link ? (
+                      <a href={a.link} target="_blank" rel="noopener">
+                        {name}
+                      </a>
+                    ) : (
+                      name
+                    )}
+                  </h4>
                   <p className="text-ui">{sub}</p>
+                  {a.link && (
+                    <a href={a.link} target="_blank" rel="noopener" className="product-ext text-ui">
+                      {t.details}
+                      <IconArrowUpRight />
+                    </a>
+                  )}
                 </div>
                 <span className="mono">{money(a.price, lang)}</span>
               </div>
