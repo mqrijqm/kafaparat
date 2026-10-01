@@ -1,7 +1,7 @@
 'use client'
 
 import { ACCENTS, ATELIER_IMAGES, BREWS, FEATURES, GOLDEN_STANDARD } from '@/lib/content'
-import { useCopy, useLang } from '@/lib/i18n'
+import { useCopy } from '@/lib/i18n'
 import { IconArrowRight } from './icons'
 
 /** Wraps units (µm, g, mm, s) so uppercase UI text leaves them alone. */
@@ -157,50 +157,38 @@ export function Start() {
   )
 }
 
+/** Golden Standard footer: brand + tagline, two link columns, regions and rights bottom-right. */
 export function Footer() {
   const t = useCopy()
-  const { lang } = useLang()
   const f = t.footer
+  const href = (h: string) => (h.startsWith('mailto:') ? h : GOLDEN_STANDARD.site + h)
   return (
     <footer className="site-footer">
-      <div className="container-x !px-0">
-        <div className="inner">
-          <div className="footer-cols">
-            {f.cols.map((c) => (
-              <div key={c.h}>
-                <h6 className="text-ui">{c.h}</h6>
-                <ul>
-                  {c.links.map((l) => (
-                    <li key={l}>
-                      <a href="#">{l}</a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+      <div className="footer-brand">
+        <a href={GOLDEN_STANDARD.site} target="_blank" rel="noopener" className="footer-logo">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={GOLDEN_STANDARD.mark} alt="" />
+          Golden Standard
+        </a>
+        <p className="text-ui">{f.tagline}</p>
+      </div>
+      {f.cols.map((c) => (
+        <div key={c.h} className="footer-col">
+          <h6 className="text-ui">{c.h}</h6>
+          <ul className="text-ui">
+            {c.links.map(([label, h]) => (
+              <li key={label}>
+                <a href={href(h)} {...(h.startsWith('mailto:') ? {} : { target: '_blank', rel: 'noopener' })}>
+                  {label}
+                </a>
+              </li>
             ))}
-          </div>
-          <div>
-            <h6 className="text-ui">{f.news.h}</h6>
-            <p className="footer-lead">{f.news.lead}</p>
-            <form className="newsletter text-ui">
-              <input type="email" placeholder={f.news.placeholder} aria-label={f.news.placeholder} />
-              <button type="submit">{f.news.submit}</button>
-            </form>
-          </div>
+          </ul>
         </div>
-        <ul className="trust-strip text-ui">
-          {f.trust.map((x) => (
-            <li key={x}>{x}</li>
-          ))}
-        </ul>
-        <div className="footer-base text-ui">
-          <span>{f.rights}</span>
-          <a href={GOLDEN_STANDARD.url[lang]} target="_blank" rel="noopener" className="footer-gs">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={GOLDEN_STANDARD.mark} alt="" />
-            {t.gs.powered} Golden Standard
-          </a>
-        </div>
+      ))}
+      <div className="footer-base text-ui">
+        <span>{f.regions}</span>
+        <span>{f.rights}</span>
       </div>
     </footer>
   )

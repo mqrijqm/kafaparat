@@ -21,7 +21,6 @@ export const LANGS = ['bs', 'en'] as const
 export type Lang = (typeof LANGS)[number]
 
 export const NAV_HREFS = ['#anatomy', '#materials', '#caye', '#shop'] as const
-export const PARTNER_HREF = '#partnership'
 export const PARTNER_EMAIL = 'partneri@kafaparat.ba'
 
 export const ANATOMY_PARTS = {
@@ -54,7 +53,7 @@ export const MATERIALS = {
   ] as { grams: number; accent: Accent; swatch: string; part: string }[],
 }
 
-/** CAYE Professional: the bar machine Kafaparat supplies to partners (section after the partnership band). */
+/** CAYE Professional: the bar machine supplied through Golden Standard. */
 export const CAYE = {
   logo: '/brand/caye-logo.svg',
   hero: '/media/caye-hero.webp',
@@ -85,12 +84,12 @@ export const SHOP = {
   },
   // Golden Standard coffee, milk and hygiene (real product names from goldenstandard.eu, prices are placeholders)
   accessories: [
-    { id: 'gs-signature', cat: 'coffee', price: 29, image: '/media/gs-signature.webp', link: GS_PRODUCTS },
-    { id: 'gs-crema', cat: 'coffee', price: 27, image: '/media/gs-crema.webp', link: GS_PRODUCTS },
+    { id: 'gs-signature', cat: 'coffee', price: 29, image: '/media/gs-signature.webp', link: `${GS_PRODUCTS}#kafa` },
+    { id: 'gs-crema', cat: 'coffee', price: 27, image: '/media/gs-crema.webp', link: `${GS_PRODUCTS}#kafa` },
     { id: 'gs-milk', cat: 'milk', price: 18, image: '/media/gs-milk.webp' },
     { id: 'gs-oat', cat: 'milk', price: 24, image: '/media/gs-oat.webp' },
-    { id: 'gs-filter', cat: 'hygiene', price: 89, image: '/media/gs-filter.webp', link: GS_PRODUCTS },
-    { id: 'gs-tablets', cat: 'hygiene', price: 24, image: '/media/gs-tablets.webp', link: GS_PRODUCTS },
+    { id: 'gs-filter', cat: 'hygiene', price: 89, image: '/media/gs-filter.webp', link: `${GS_PRODUCTS}#higijena` },
+    { id: 'gs-tablets', cat: 'hygiene', price: 24, image: '/media/gs-tablets.webp', link: `${GS_PRODUCTS}#higijena` },
   ] as { id: string; cat: 'coffee' | 'milk' | 'hygiene'; price: number; image: string; link?: string }[],
   categories: ['all', 'coffee', 'milk', 'hygiene'] as const,
 }
@@ -105,6 +104,7 @@ export function machineGallery(finish: number, config: number) {
 export const GOLDEN_STANDARD = {
   // the site picks the visitor's language itself; /bs would redirect to German
   url: { bs: 'https://www.goldenstandard.eu/', en: 'https://www.goldenstandard.eu/en' },
+  site: 'https://www.goldenstandard.eu',
   wordmark: '/brand/golden-standard-wordmark.webp',
   mark: '/brand/golden-standard-mark.webp',
 }
@@ -132,11 +132,11 @@ type FeatureCopy = { title: string; lead: string; bullets: string[]; spec: [stri
 
 const bs = {
   meta: {
-    title: 'Kafaparat — CAYE Smart X i keramički CPS mlin',
+    title: 'CAYE × Golden Standard — CAYE Smart X i keramički CPS mlin',
     description: 'Profesionalni CAYE aparati za kafu s ravnim keramičkim CPS žrvnjevima. Prodaja, instalacija i servis u BiH.',
   },
   nav: ['Anatomija', 'Materijali', 'CAYE', 'Prodavnica'],
-  partner: { short: 'Partnerstvo', long: 'Postanite partner' },
+  partner: 'Partner Golden Standarda',
   langLabel: 'Jezik',
   hero: {
     title: ['Precizan', 'instrument', 'za mljevenje'],
@@ -220,7 +220,7 @@ const bs = {
     brews: ['Džezva', 'Espresso', 'Moka', 'AeroPress', 'V60', 'Kalita wave', 'Chemex', 'Sifon', 'Clever', 'French press', 'Kupiranje', 'Cold brew'],
   },
   caye: {
-    eyebrow: 'Kafaparat × CAYE Professional',
+    eyebrow: 'CAYE Professional',
     title: ['Za šank', 'koji ne staje.'],
     lead: 'Keramičko srce koje ste upravo rastavili kuca u CAYE, profesionalnom superautomatu koji partnerima isporučujemo, postavljamo, podešavamo i servisiramo.',
     model: {
@@ -263,7 +263,7 @@ const bs = {
     },
     beans: {
       line: 'Od zrna do šoljice',
-      place: 'Kafaparat × CAYE, Sarajevo',
+      place: 'CAYE × Golden Standard',
     },
     cta: {
       title: 'CAYE na vašem šanku.',
@@ -276,8 +276,6 @@ const bs = {
     title: ['Ponesite srce', 'na svoj šank.'],
     name: 'CAYE Smart X',
     tagline: 'Profesionalni superautomat s keramičkim CPS mlinom',
-    rating: '4,9',
-    reviews: '128 recenzija',
     lease: 'ili od €{n} mjesečno, 36 rata bez kamate',
     finish: 'Završna obrada',
     finishes: ['Srebrna', 'Grafit'],
@@ -365,23 +363,32 @@ const bs = {
     view: 'Pogledaj korpu',
   },
   footer: {
+    tagline: 'Milk · Craft · Excellence',
     cols: [
-      { h: 'Prodavnica', links: ['CAYE Smart X', 'CPS žrvnjevi', 'Mlinski modul', 'Kafa u zrnu'] },
-      { h: 'Atelje', links: ['O nama', 'Radionica', 'Žurnal', 'Prodajna mjesta'] },
-      { h: 'Podrška', links: ['Njega', 'Garancija', 'Dostava', 'Kontakt'] },
-    ],
-    partner: {
-      h: 'Partnerstvo',
-      lead: 'Za kafiće, pržionice i hotele koji žele CAYE na svom šanku.',
-    },
-    trust: ['Besplatna dostava od €150', 'Plaćanje na rate', 'Servis za 48 sati'],
-    news: {
-      h: 'Bilješke iz ateljea',
-      lead: 'Vodiči za pripremu i nove serije, četiri puta godišnje.',
-      placeholder: 'E-mail adresa',
-      submit: 'Prijava',
-    },
-    rights: '© 2026 Kafaparat Atelje',
+      {
+        h: 'Sajt',
+        links: [
+          ['Sistem', '/sistem'],
+          ['Proizvodi', '/proizvodi'],
+          ['Academy', '/akademija'],
+          ['Certified', '/certified'],
+          ['Novosti', '/novosti'],
+          ['Događaji', '/dogadjaji'],
+          ['O nama', '/o-nama'],
+          ['Saradnja', '/partnerstvo'],
+        ],
+      },
+      {
+        h: 'Kontakt i pravno',
+        links: [
+          ['dario@goldenstandard.eu', 'mailto:dario@goldenstandard.eu'],
+          ['Privatnost', '/privatnost'],
+          ['Uslovi korištenja', '/uslovi'],
+        ],
+      },
+    ] as { h: string; links: [string, string][] }[],
+    regions: 'Hrvatska · Bosna i Hercegovina · Crna Gora',
+    rights: '© 2026 Golden Standard',
   },
 }
 
@@ -389,11 +396,11 @@ export type Copy = typeof bs
 
 const en: Copy = {
   meta: {
-    title: 'Kafaparat — CAYE Smart X and the ceramic CPS grinder',
+    title: 'CAYE × Golden Standard — CAYE Smart X and the ceramic CPS grinder',
     description: 'Professional CAYE coffee machines with flat ceramic CPS burrs. Sales, installation and service in Bosnia and Herzegovina.',
   },
   nav: ['Anatomy', 'Materials', 'CAYE', 'Shop'],
-  partner: { short: 'Partnership', long: 'Become a partner' },
+  partner: 'Golden Standard partner',
   langLabel: 'Language',
   hero: {
     title: ['Precision', 'grinding', 'instrument'],
@@ -477,7 +484,7 @@ const en: Copy = {
     brews: ['Turkish', 'Espresso', 'Moka pot', 'AeroPress', 'V60', 'Kalita wave', 'Chemex', 'Siphon', 'Clever', 'French press', 'Cupping', 'Cold brew'],
   },
   caye: {
-    eyebrow: 'Kafaparat × CAYE Professional',
+    eyebrow: 'CAYE Professional',
     title: ['For the bar', 'that never stops.'],
     lead: 'The ceramic heart you just took apart beats inside CAYE, a professional super-automatic we deliver, install, tune and service for our partners.',
     model: {
@@ -520,7 +527,7 @@ const en: Copy = {
     },
     beans: {
       line: 'From bean to cup',
-      place: 'Kafaparat × CAYE, Sarajevo',
+      place: 'CAYE × Golden Standard',
     },
     cta: {
       title: 'CAYE on your bar.',
@@ -533,8 +540,6 @@ const en: Copy = {
     title: ['Bring the heart', 'to your bar.'],
     name: 'CAYE Smart X',
     tagline: 'Professional super-automatic with a ceramic CPS grinder',
-    rating: '4.9',
-    reviews: '128 reviews',
     lease: 'or from €{n} a month, 36 interest-free instalments',
     finish: 'Finish',
     finishes: ['Silver', 'Graphite'],
@@ -622,23 +627,32 @@ const en: Copy = {
     view: 'View cart',
   },
   footer: {
+    tagline: 'Milk · Craft · Excellence',
     cols: [
-      { h: 'Shop', links: ['CAYE Smart X', 'CPS burrs', 'Grinding module', 'Coffee beans'] },
-      { h: 'Atelier', links: ['About', 'Workshop', 'Journal', 'Stockists'] },
-      { h: 'Support', links: ['Care guide', 'Warranty', 'Shipping', 'Contact'] },
+      {
+        h: 'Site',
+        links: [
+          ['System', '/sistem'],
+          ['Products', '/proizvodi'],
+          ['Academy', '/akademija'],
+          ['Certified', '/certified'],
+          ['News', '/novosti'],
+          ['Events', '/dogadjaji'],
+          ['About', '/o-nama'],
+          ['Partnership', '/partnerstvo'],
+        ],
+      },
+      {
+        h: 'Contact & legal',
+        links: [
+          ['dario@goldenstandard.eu', 'mailto:dario@goldenstandard.eu'],
+          ['Privacy', '/privatnost'],
+          ['Terms of use', '/uslovi'],
+        ],
+      },
     ],
-    partner: {
-      h: 'Partnership',
-      lead: 'For cafés, roasters and hotels who want CAYE on their bar.',
-    },
-    trust: ['Free delivery over €150', 'Pay in instalments', '48-hour service'],
-    news: {
-      h: 'Notes from the atelier',
-      lead: 'Brewing guides and new batches, four times a year.',
-      placeholder: 'Email address',
-      submit: 'Subscribe',
-    },
-    rights: '© 2026 Kafaparat Atelier',
+    regions: 'Croatia · Bosnia and Herzegovina · Montenegro',
+    rights: '© 2026 Golden Standard',
   },
 }
 

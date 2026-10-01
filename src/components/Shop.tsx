@@ -6,7 +6,7 @@ import { GOLDEN_STANDARD, machineGallery, PARTNER_EMAIL, SHOP } from '@/lib/cont
 import { cart, money, unitPrice } from '@/lib/cart'
 import { useCopy, useLang } from '@/lib/i18n'
 import { Qty } from './Cart'
-import { IconArrowUpRight, IconCheck, IconPlus, IconStar } from './icons'
+import { IconArrowUpRight, IconCheck, IconPlus } from './icons'
 
 const M = SHOP.machine
 
@@ -89,14 +89,6 @@ function BuyBox({ onAddVisible }: { onAddVisible: (v: boolean) => void }) {
       </div>
 
       <div className="buy-box">
-        <div className="buy-rating text-ui">
-          <span className="stars" aria-hidden>
-            {Array.from({ length: 5 }, (_, i) => (
-              <IconStar key={i} />
-            ))}
-          </span>
-          {t.rating} · {t.reviews}
-        </div>
         <h3>{t.name}</h3>
         <p className="buy-tagline">{t.tagline}</p>
         <div className="buy-price">

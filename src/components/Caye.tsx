@@ -228,20 +228,6 @@ function ModelStage() {
   )
 }
 
-export function PartnerBand() {
-  const f = useCopy().footer
-  return (
-    <section id="partnership" className="partner-band">
-      <span className="text-ui">{f.partner.h}</span>
-      <p>{f.partner.lead}</p>
-      <a href={`mailto:${PARTNER_EMAIL}`} className="btn-partner text-ui">
-        {PARTNER_EMAIL}
-        <IconArrowUpRight />
-      </a>
-    </section>
-  )
-}
-
 export function Caye() {
   const t = useCopy().caye
   const root = useRef<HTMLElement>(null)

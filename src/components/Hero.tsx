@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { useLenis } from 'lenis/react'
 import { cart } from '@/lib/cart'
-import { SHOP } from '@/lib/content'
+import { GOLDEN_STANDARD, SHOP } from '@/lib/content'
 import { useCopy, useLang } from '@/lib/i18n'
 import { IconArrowDown, IconCheck, IconPlus } from './icons'
 
@@ -139,7 +139,7 @@ export function HeadingLinks() {
       <div className="hallmark">
         <span>{t.hero.hallmark}</span>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/media/hallmark.webp" alt="Kafaparat" />
+        <img src={GOLDEN_STANDARD.mark} alt="Golden Standard" />
       </div>
     </div>
   )

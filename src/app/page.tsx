@@ -1,4 +1,4 @@
-import { Caye, PartnerBand } from '@/components/Caye'
+import { Caye } from '@/components/Caye'
 import { CartDrawer, CartFab, CartToast } from '@/components/Cart'
 import ClientExperience from '@/components/ClientExperience'
 import Header from '@/components/Header'
@@ -25,7 +25,6 @@ export default function Home() {
           <Start />
           {/* after the grinder story: opaque layer above the fixed WebGL engine */}
           <div className="after-story">
-            <PartnerBand />
             <Caye />
             <GoldenStandard />
             <Shop />

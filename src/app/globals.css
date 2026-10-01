@@ -24,9 +24,9 @@
   --bone: #e9e3d8;
   --accent: var(--brass);
 
-  --text-4xl: 3rem;
-  --text-3xl: 2.75rem;
-  --text-2xl: 2.25rem;
+  --text-4xl: 2.5rem;
+  --text-3xl: 2.25rem;
+  --text-2xl: 1.9rem;
   --text-l: 1.25rem;
   --text-xs: 0.875rem;
   --text-xxs: 0.8125rem;
@@ -44,9 +44,9 @@
 
 @media (min-width: 900px) {
   :root {
-    --text-4xl: 4.5rem;
-    --text-3xl: 4rem;
-    --text-2xl: 3rem;
+    --text-4xl: 3.5rem;
+    --text-3xl: 3rem;
+    --text-2xl: 2.5rem;
     --text-xxs: 0.75rem;
     --gutter: 4rem;
     --header-h: 4.5rem;
@@ -177,6 +177,56 @@ body {
   letter-spacing: -0.01em;
   line-height: 1;
   color: var(--fg-1);
+}
+.site-header .logo {
+  gap: 0.9rem;
+}
+.site-header .logo .caye-logo {
+  width: 5.5rem;
+}
+.logo-x {
+  font-size: 1.25rem;
+  color: var(--fg-4);
+}
+.logo-gs,
+.gs-partner img,
+.footer-logo img,
+.hallmark img {
+  flex: none;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+.logo-gs {
+  width: 2rem;
+  height: 2rem;
+}
+.gs-partner {
+  gap: 0.8rem;
+  color: var(--champagne);
+  transition: color 0.2s;
+}
+.gs-partner img {
+  width: 1.9rem;
+  height: 1.9rem;
+}
+.gs-partner:hover {
+  color: var(--fg-1);
+}
+@media (max-width: 899px) {
+  .site-header .logo {
+    gap: 0.45rem;
+  }
+  .site-header .logo .caye-logo {
+    width: 4.25rem;
+  }
+  .logo-gs,
+  .gs-partner img {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+  .site-header .gs-partner {
+    padding-right: 0;
+  }
 }
 .logo i {
   align-self: center;
@@ -537,11 +587,8 @@ body {
   }
 }
 .hallmark img {
-  width: 3rem;
-  height: 3rem;
-  border: 1px solid var(--line-strong);
-  padding: 2px;
-  object-fit: cover;
+  width: 2.75rem;
+  height: 2.75rem;
 }
 
 /* Anatomy / light chapters */
@@ -1018,115 +1065,63 @@ body.is-light .labels {
 .site-footer {
   position: relative;
   z-index: 3;
+  display: grid;
+  gap: 3rem;
+  min-height: 70svh;
+  padding: 5rem var(--gutter) 2.5rem;
   background: var(--bg-1);
-  padding: 1rem;
+  border-top: 1px solid var(--line);
 }
 @media (min-width: 900px) {
   .site-footer {
-    padding: 1.5rem;
+    grid-template-columns: 1.4fr 0.8fr 1fr 1.2fr;
+    grid-template-rows: auto 1fr auto;
+    padding: 6.5rem 6rem 4rem;
   }
 }
-.partner-band {
-  display: flex;
-  flex-direction: column;
+.footer-logo {
+  display: inline-flex;
   align-items: center;
-  gap: 1.75rem;
-  padding: 7rem var(--gutter) 5rem;
-  text-align: center;
-  scroll-margin-top: 2rem;
-}
-@media (min-width: 900px) {
-  .partner-band {
-    padding: 11rem var(--gutter) 7rem;
-  }
-}
-.partner-band > span {
-  color: var(--fg-4);
-}
-.partner-band p {
-  max-width: 44rem;
-  font-size: var(--text-3xl);
-  line-height: 1;
-  letter-spacing: -0.015em;
+  gap: 1.25rem;
+  font-size: 2rem;
   color: var(--fg-1);
-  text-wrap: balance;
 }
-.partner-band .btn-partner {
-  height: 3rem;
-  padding-inline: 1.25rem;
-  border: 1px solid var(--line-strong);
+.footer-logo img {
+  width: 4.5rem;
+  height: 4.5rem;
 }
-.site-footer .inner {
-  border-top: 1px solid var(--line);
-  padding-top: 3rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2.5rem;
-  justify-content: space-between;
-  padding-bottom: 2.5rem;
-}
-.footer-cols {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4rem;
+.footer-brand p {
+  margin-top: 2rem;
+  color: var(--fg-3);
 }
 .site-footer h6 {
-  color: var(--fg-5);
-  margin-bottom: 1rem;
+  margin-bottom: 1.75rem;
+  color: var(--champagne);
 }
-.site-footer li a {
-  font-size: 1.1rem;
-  color: var(--fg-3);
-  line-height: 1.9rem;
+.footer-col ul {
+  display: grid;
+  gap: 1.1rem;
+}
+.footer-col a {
+  color: var(--fg-2);
   transition: color 0.15s;
 }
-.site-footer li a:hover {
+.footer-col a:hover {
   color: var(--brass);
-}
-.footer-lead {
-  max-width: 20rem;
-  font-size: 1.1rem;
-  line-height: 1.4;
-  color: var(--fg-3);
-}
-.newsletter {
-  display: flex;
-  margin-top: 1.25rem;
-  border: 1px solid var(--line-strong);
-}
-.newsletter input {
-  height: 2.75rem;
-  width: 15rem;
-  padding-inline: 0.9rem;
-  background: transparent;
-  color: var(--fg-1);
-  font-size: var(--text-xxs);
-  letter-spacing: inherit;
-  outline: none;
-}
-.newsletter input::placeholder {
-  color: var(--fg-4);
-}
-.newsletter button {
-  height: 2.75rem;
-  padding-inline: 1rem;
-  border-left: 1px solid var(--line-strong);
-  color: var(--fg-2);
-  letter-spacing: inherit;
-  transition:
-    background 0.15s,
-    color 0.15s;
-}
-.newsletter button:hover {
-  background: var(--fg-2);
-  color: var(--bg-1);
 }
 .footer-base {
   display: flex;
-  justify-content: space-between;
-  padding-block: 1rem 0.5rem;
-  border-top: 1px solid var(--line);
-  color: var(--fg-5);
+  flex-direction: column;
+  gap: 0.9rem;
+  color: var(--fg-3);
+}
+@media (min-width: 900px) {
+  .footer-base {
+    grid-column: 4;
+    grid-row: 3;
+    align-items: flex-end;
+    text-align: right;
+  }
 }
 
 /* Units keep their case inside uppercase UI text (µm must not become MM) */
@@ -1283,7 +1278,7 @@ body.is-light .spec-card .head {
   color: var(--brass);
 }
 .caye-title {
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-size: clamp(2rem, 3.6vw, 3.25rem);
   line-height: 0.95;
 }
 .caye-title span {
@@ -1304,7 +1299,7 @@ body.is-light .spec-card .head {
   color: var(--fg-4);
 }
 .caye-intro h2 {
-  font-size: clamp(2.75rem, 6.5vw, 6rem);
+  font-size: clamp(2.25rem, 4.5vw, 4.25rem);
   line-height: 0.92;
   letter-spacing: -0.02em;
 }
@@ -1403,7 +1398,7 @@ body.is-light .spec-card .head {
   pointer-events: none;
 }
 .caye-finale h3 {
-  font-size: clamp(2.25rem, 4.5vw, 4rem);
+  font-size: clamp(1.9rem, 3.4vw, 3rem);
   line-height: 0.95;
 }
 .caye-finale p {
@@ -1639,7 +1634,7 @@ body.is-light .spec-card .head {
   text-align: center;
 }
 .caye-cta h3 {
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-size: clamp(2rem, 3.6vw, 3.25rem);
   line-height: 0.95;
 }
 .caye-cta p {
@@ -1684,7 +1679,7 @@ body.is-light .spec-card .head {
   color: var(--brass);
 }
 .shop-intro .caye-title {
-  font-size: clamp(2.75rem, 6.5vw, 6rem);
+  font-size: clamp(2.25rem, 4.5vw, 4.25rem);
   line-height: 0.92;
   letter-spacing: -0.02em;
 }
@@ -1850,8 +1845,7 @@ body.is-light .spec-card .head {
   height: 0.85rem;
 }
 .buy-box h3 {
-  margin-top: 1.25rem;
-  font-size: clamp(2.5rem, 4.5vw, 4rem);
+  font-size: clamp(2rem, 3.4vw, 3rem);
   line-height: 0.95;
 }
 .buy-tagline {
@@ -2619,7 +2613,7 @@ body.is-light .spec-card .head {
 }
 .gs h2 {
   font-weight: 300;
-  font-size: clamp(2.75rem, 6vw, 5.5rem);
+  font-size: clamp(2.25rem, 4.5vw, 4rem);
   line-height: 0.92;
   letter-spacing: -0.02em;
   color: var(--fg-1);

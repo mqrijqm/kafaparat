@@ -1,18 +1,22 @@
 'use client'
 
-import { LANGS, NAV_HREFS, PARTNER_HREF } from '@/lib/content'
+import { CAYE, GOLDEN_STANDARD, LANGS, NAV_HREFS } from '@/lib/content'
 import { useCopy, useLang } from '@/lib/i18n'
 import { CartButton } from './Cart'
-import { IconArrowUpRight } from './icons'
 
 export default function Header() {
   const t = useCopy()
   const { lang, setLang } = useLang()
   return (
     <header className="site-header">
-      <a href="#intro" className="logo cell" aria-label="Kafaparat">
-        kafaparat<i />
-        <small>No.1</small>
+      {/* CAYE × Golden Standard, both in gold */}
+      <a href="#intro" className="logo cell" aria-label="CAYE × Golden Standard">
+        <span className="caye-logo" style={{ ['--src' as string]: `url(${CAYE.logo})` }} />
+        <span className="logo-x" aria-hidden>
+          ×
+        </span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={GOLDEN_STANDARD.mark} alt="" className="logo-gs" />
       </a>
       <nav className="nav cell text-ui" aria-label="Main">
         {NAV_HREFS.map((href, i) => (
@@ -30,10 +34,10 @@ export default function Header() {
         ))}
       </div>
       <CartButton className="cell" />
-      <a href={PARTNER_HREF} className="btn-partner cell text-ui">
-        <span className="hide-sm">{t.partner.long}</span>
-        <span className="show-sm">{t.partner.short}</span>
-        <IconArrowUpRight />
+      <a href={GOLDEN_STANDARD.url[lang]} target="_blank" rel="noopener" className="gs-partner cell text-ui">
+        <span className="hide-sm">{t.partner}</span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={GOLDEN_STANDARD.mark} alt="Golden Standard" />
       </a>
     </header>
   )
