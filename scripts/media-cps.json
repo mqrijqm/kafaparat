@@ -1,0 +1,67 @@
+{
+  "style": "Ultra-realistic luxury product photography, like a high-end Swiss watch campaign. Ivory-white technical ceramic, black anodised aluminium and brushed steel, with warm champagne-gold rim light from the upper left, deep velvety espresso-brown shadows, fine film grain, crisp machined edges. No text, no letters, no numbers, no logos, no watermark.",
+  "items": [
+    {
+      "name": "hero-burr",
+      "aspect": "1:1",
+      "ref": "media-src/caye-ref/cps-ring.png",
+      "prompt": "Perfectly top-down orthographic view straight down the axis of a professional espresso machine's FLAT ceramic burr grinding head, one perfect circle centered on a pure black background, filling about 90% of the frame. From outside in: a black anodised housing ring with a very fine external gear-tooth edge, a thin black rubber gasket, then the ivory-white ceramic flat burr ring (like the attached reference) with dozens of radial cutting teeth and a few deeper feed grooves sweeping toward the centre, then a dark inner throat with a brushed steel rotor hub and three small screw heads at the exact centre. A light dusting of espresso grounds on the teeth. Strong radial symmetry, jewel-like, premium."
+    },
+    {
+      "name": "burr-macro",
+      "aspect": "1:1",
+      "ref": "media-src/caye-ref/cps-ring.png",
+      "prompt": "Extreme macro of a flat ivory-white ceramic coffee burr ring, like the attached reference, seen from a low three-quarter angle: sharp radial cutting teeth and deeper feed grooves in matte technical ceramic, a few espresso-fine coffee grounds resting on the teeth, subject centered, warm dark background."
+    },
+    {
+      "name": "dial-macro",
+      "aspect": "1:1",
+      "ref": "media-src/caye-ref/cps-housing.png",
+      "prompt": "Macro of the black anodised burr housing of a professional espresso grinder, like the attached reference: a fine external gear ring that a small motor uses to set the grind, machined grooves, and a sliver of ivory ceramic burr visible inside, centered circular composition, warm dark background."
+    },
+    {
+      "name": "cooling-fins",
+      "aspect": "1:1",
+      "ref": "media-src/caye-ref/cps-stack.png",
+      "prompt": "Exploded view floating in dark space, like the attached reference: two ivory-white flat ceramic burr rings hovering above a polished steel rotor carrier with three claw arms and a central bearing, a thin black gasket ring above them. Elegant, centered, technical."
+    },
+    {
+      "name": "grind-module",
+      "aspect": "1:1",
+      "ref": "media-src/caye-ref/cps-module.png",
+      "prompt": "Product shot of a professional espresso machine's dual grinder module, like the attached reference: two cylindrical burr housings with black rings, two brushed aluminium bean-feed cylinders behind them, a white plastic dosing funnel on the right, black chassis with small gold connectors, three-quarter top view on a dark warm surface."
+    },
+    {
+      "name": "shop-burrs",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/cps-pair.png",
+      "prompt": "E-commerce product photo: a matched pair of ivory-white flat ceramic coffee burrs (like the attached reference), one lying flat and the other leaning against it showing its radial teeth, on a warm dark stone plinth, centered with generous negative space."
+    },
+    {
+      "name": "shop-module",
+      "aspect": "4:5",
+      "ref": "media-src/caye-ref/cps-module.png",
+      "prompt": "E-commerce product photo of a professional espresso machine's dual grinder module cartridge like the attached reference, standing on a warm dark stone plinth, three-quarter view, centered with generous negative space."
+    },
+    {
+      "name": "shop-beans",
+      "aspect": "4:5",
+      "prompt": "E-commerce product photo: a matte kraft-brown 1 kg coffee bag with a folded top and a small brass clip, completely unlabeled and blank, standing on a warm dark stone plinth, a few roasted espresso beans scattered in front, centered with generous negative space."
+    },
+    {
+      "name": "shop-tablets",
+      "aspect": "4:5",
+      "prompt": "E-commerce product photo: a short frosted glass jar with a brushed steel lid, filled with small white espresso-machine cleaning tablets, a few tablets on the surface in front, warm dark stone plinth, centered with generous negative space, completely unlabeled."
+    },
+    {
+      "name": "shop-filter",
+      "aspect": "4:5",
+      "prompt": "E-commerce product photo: a slim white cylindrical water filter cartridge for a professional espresso machine, with a translucent top showing white resin beads and a blue screw cap, standing on a warm dark stone plinth, centered with generous negative space, completely unlabeled."
+    },
+    {
+      "name": "shop-jug",
+      "aspect": "4:5",
+      "prompt": "E-commerce product photo: an insulated brushed stainless-steel milk container with a black lid and a thin silicone suction tube coming out of the lid, for a super-automatic espresso machine, on a warm dark stone plinth, centered with generous negative space, completely unlabeled."
+    }
+  ]
+}

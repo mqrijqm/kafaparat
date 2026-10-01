@@ -2,6 +2,7 @@
 
 import { LANGS, NAV_HREFS, PARTNER_HREF } from '@/lib/content'
 import { useCopy, useLang } from '@/lib/i18n'
+import { CartButton } from './Cart'
 import { IconArrowUpRight } from './icons'
 
 export default function Header() {
@@ -28,6 +29,7 @@ export default function Header() {
           </button>
         ))}
       </div>
+      <CartButton className="cell" />
       <a href={PARTNER_HREF} className="btn-partner cell text-ui">
         <span className="hide-sm">{t.partner.long}</span>
         <span className="show-sm">{t.partner.short}</span>

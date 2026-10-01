@@ -118,18 +118,20 @@ export function buildChoreography() {
         ).fromTo(m.scale, { x: 1, y: 1, z: 1 }, { x: 0, y: 0, z: 0, duration: 0.14 * I.d, ease: 'power2.in' }, '<')
       })
     })
-    tl.fromTo(mz.bezel.rotation, { z: 0 }, { z: -2 * Math.PI, duration: 0.3 * I.d, ease: 'power2.inOut' }, I.t + 0.04 * I.d)
+    tl.fromTo(mz.inlet.rotation, { z: 0 }, { z: -2 * Math.PI, duration: 0.3 * I.d, ease: 'power2.inOut' }, I.t + 0.04 * I.d)
+    // exploded view along the shaft: every part lifts off its neighbour, the motor drops back
     const spread: Partial<Record<ModuleKey, number>> = {
-      bezel: 3.3,
-      cupRing: 2.72,
-      cup: 2.2,
-      outerBurr: 1.55,
-      dial: 0.18,
-      bearingA: -0.35,
-      bearingB: -1.75,
-      lid: -2.15,
-      hub: -2.55,
-      crank: -3.0,
+      inlet: 3.45,
+      adjustRing: 2.9,
+      housing: 2.35,
+      gasket: 1.95,
+      upperBurr: 1.55,
+      lowerBurr: 0.85,
+      carrier: 0.4,
+      bearing: -0.15,
+      driveGear: -0.7,
+      motor: -1.55,
+      base: -2.75,
     }
     Object.entries(spread).forEach(([k, z]) => {
       tl.fromTo(mods(k as ModuleKey), { z: g.baseZ[k as ModuleKey] }, { z, duration: 0.2 * I.d, ease: 'power2.inOut' }, I.t + 0.06 * I.d)
@@ -162,7 +164,7 @@ export function buildChoreography() {
       .to(stage.lens, { grid: 1, duration: 0.1 * A.d }, A.t + 0.9 * A.d)
 
     // MATERIALS — parts slide out with their material, then everything reassembles and spins
-    const out: ModuleKey[] = ['cup', 'outerBurr', 'dial', 'carrier', 'bearingA', 'lid']
+    const out: ModuleKey[] = ['inlet', 'upperBurr', 'adjustRing', 'carrier', 'housing', 'driveGear']
     tl.to(Z.position, { z: V(20, -15), duration: 0.25 * M.d, ease: 'power2.inOut' }, M.t)
       .to(Z.rotation, { x: 45 * DEG, duration: 0.25 * M.d, ease: 'power2.inOut' }, M.t)
       .to([ringBg, ringFgSvg], { opacity: 0.001, duration: 0.06 * M.d }, M.t + 0.02 * M.d)

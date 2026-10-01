@@ -1,8 +1,10 @@
 import { Caye, PartnerBand } from '@/components/Caye'
+import { CartDrawer, CartFab, CartToast } from '@/components/Cart'
 import ClientExperience from '@/components/ClientExperience'
 import Header from '@/components/Header'
 import { HeadingLinks, Hero } from '@/components/Hero'
 import { Anatomy, Atelier, Features, Footer, Materials, Start } from '@/components/Sections'
+import { Shop } from '@/components/Shop'
 
 export default function Home() {
   return (
@@ -24,11 +26,15 @@ export default function Home() {
           <div className="after-story">
             <PartnerBand />
             <Caye />
+            <Shop />
           </div>
         </main>
         <Footer />
       </div>
       <HeadingLinks />
+      <CartFab />
+      <CartToast />
+      <CartDrawer />
     </>
   )
 }

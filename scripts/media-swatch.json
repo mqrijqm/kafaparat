@@ -1,0 +1,7 @@
+{
+  "style": "Seamless material close-up texture swatch, flat even soft light, no object edges, fills the whole frame. No text, no logos.",
+  "items": [
+    { "name": "swatch-ceramic", "aspect": "1:1", "prompt": "Matte ivory-white technical zirconia ceramic surface, extremely fine grain, very subtle warm tint." },
+    { "name": "swatch-copper", "aspect": "1:1", "prompt": "Tightly wound fine copper motor winding wire, parallel glossy copper strands, warm reflections." }
+  ]
+}

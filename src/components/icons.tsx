@@ -35,3 +35,24 @@ export const IconCheck = (p: P) => (
     <path d="M5 12.5l4.5 4.5L19 7.5" />
   </svg>
 )
+export const IconMinus = (p: P) => (
+  <svg {...base} {...p}>
+    <path d="M5 12h14" />
+  </svg>
+)
+export const IconClose = (p: P) => (
+  <svg {...base} {...p}>
+    <path d="M6 6l12 12M18 6L6 18" />
+  </svg>
+)
+export const IconBag = (p: P) => (
+  <svg {...base} {...p}>
+    <path d="M5 8h14l-1 12H6L5 8z" />
+    <path d="M9 8V6.5a3 3 0 016 0V8" />
+  </svg>
+)
+export const IconStar = (p: P) => (
+  <svg {...base} fill="currentColor" stroke="none" {...p}>
+    <path d="M12 3.5l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 17l-5.4 3 1.2-6-4.5-4.2 6.1-.7z" />
+  </svg>
+)

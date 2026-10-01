@@ -145,7 +145,7 @@ function ModelStage() {
           const stops = [
             { f: F.hoppers, dist: 3.1, yaw: -0.45, pitch: 0.42, lift: 0 },
             { f: F.screen, dist: 2.3, yaw: 0.2, pitch: 0.08, lift: 0 },
-            { f: F.burrs, dist: 2.6, yaw: 0.3, pitch: 0.6, lift: 1 },
+            { f: F.burrs, dist: 2.1, yaw: 0.3, pitch: 0.42, lift: 1 },
             { f: F.spout, dist: 2.4, yaw: -0.55, pitch: 0.02, lift: 0 },
           ]
           const MOVE = 0.055 // travel between stops (timeline units, whole block = 1)

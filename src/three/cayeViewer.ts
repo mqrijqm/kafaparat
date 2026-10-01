@@ -82,13 +82,15 @@ export function createCayeViewer(canvas: HTMLCanvasElement, lowTier: boolean) {
     baseY.forEach((y, o) => (o.position.y = y + up))
     // hoppers slide up and back like a drawer, uncovering the burrs
     caye.parts.hoppers.position.y += state.lift * 0.3
-    caye.parts.hoppers.position.z = -state.lift * 1.0
-    caye.parts.burrs.children.forEach((b, i) => (b.rotation.y = (i ? -1 : 1) * state.spin))
+    caye.parts.hoppers.position.z = -state.lift * 1.1
+    // only the driven lower burr turns; the upper burr assembly rises off it (exploded view)
+    caye.spinners.forEach((b, i) => (b.rotation.z = (i ? -1 : 1) * state.spin))
+    caye.uppers.forEach((u) => (u.position.z = u.userData.baseZ + state.lift * 0.15))
 
     // cup drops onto the grid, coffee rises, the two threads fall then let go
     cup.group.scale.setScalar(Math.max(state.cup, EPS))
     cup.group.position.y = cupY + (1 - state.cup) * 0.12
-    const level = state.fill * 0.085
+    const level = state.fill * 0.075
     cup.liquid.scale.y = Math.max(level, EPS)
     const surface = cup.liquidBase + level
     const top = caye.cup.streamTop - state.stop * (caye.cup.streamTop - surface)

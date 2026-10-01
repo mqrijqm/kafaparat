@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { useLenis } from 'lenis/react'
+import { cart } from '@/lib/cart'
+import { SHOP } from '@/lib/content'
 import { useCopy, useLang } from '@/lib/i18n'
 import { IconArrowDown, IconCheck, IconPlus } from './icons'
 
@@ -116,7 +118,10 @@ export function HeadingLinks() {
       <div className="group">
         <div className="price-pill mono">
           {t.hero.price}
-          <button aria-label={t.hero.add} onClick={() => setAdded(true)}>
+          <button aria-label={t.hero.add} onClick={() => {
+              cart.add({ id: SHOP.machine.id, finish: 0, config: 1 })
+              setAdded(true)
+            }}>
             {added ? <IconCheck className="w-4 h-4" /> : <IconPlus className="w-4 h-4" />}
           </button>
         </div>

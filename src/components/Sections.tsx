@@ -187,6 +187,11 @@ export function Footer() {
             </form>
           </div>
         </div>
+        <ul className="trust-strip text-ui">
+          {f.trust.map((x) => (
+            <li key={x}>{x}</li>
+          ))}
+        </ul>
         <div className="footer-base text-ui">
           <span>{f.rights}</span>
           <span className="mono">45.4642° N, 9.1900° E</span>

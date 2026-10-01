@@ -1,41 +1,27 @@
 import * as THREE from 'three'
-import { conicalBurr, gear } from './geometry'
+import { annulus, faceTicks, gear } from './geometry'
 import { partMaterial } from './materials'
 
 /*
-  CAYE professional super-automatic espresso machine, procedurally modelled at compact display scale.
-  Front faces +Z; angular shells, brewing hardware, tray, drawers, and twin hoppers are separate outlined parts.
+  CAYE Smart X professional super-automatic, procedurally modelled after the official film.
+  Units: 1 ≈ 330 mm (the machine is 430 mm wide). Front faces +Z, floor at y = -0.95.
+  Silhouette: two chamfered die-cast side shells with a dark triangular inset, a wide touchscreen
+  tilted back over an open brewing cavity, two black brew units with chrome skirts, a drip tray
+  over two drawers, and a black hopper deck on top. Under the deck sit the two CPS grinders:
+  flat ceramic burr pairs in a black housing with an external adjustment gear.
+  Every distinct part is its own mesh, so the outline pass draws it as a separate line.
 */
 
 export type Caye = {
   root: THREE.Group
   parts: Record<string, THREE.Object3D>
+  /** Lower (driven) ceramic burr of each grinder: the viewer turns these around their local Z */
+  spinners: THREE.Object3D[]
+  /** Upper burr assemblies: they rise off the lower burr when the hoppers lift */
+  uppers: THREE.Object3D[]
   /** Espresso cup on the drip tray + the two coffee threads, animated by the viewer */
   cup: { group: THREE.Group; liquid: THREE.Mesh; streams: THREE.Mesh[]; streamTop: number; liquidBase: number }
 }
-
-/** Espresso cup + saucer (lathe profiles), handle and a liquid disc that fills it. */
-function buildCup() {
-  const group = new THREE.Group()
-  group.name = 'cup'
-  const lathe = (pts: [number, number][], name: string) =>
-    mesh(new THREE.LatheGeometry(pts.map(([x, y]) => new THREE.Vector2(x, y)), 32), name)
-  const saucer = lathe([[0, 0], [0.15, 0.004], [0.165, 0.02], [0.155, 0.022], [0.07, 0.012], [0, 0.012]], 'saucer')
-  // cup wall: outside up, lip, inside down
-  const cup = lathe([[0, 0.012], [0.06, 0.012], [0.07, 0.03], [0.09, 0.1], [0.098, 0.135], [0.09, 0.135], [0.083, 0.1], [0.064, 0.036], [0, 0.034]], 'cup')
-  const handle = mesh(new THREE.TorusGeometry(0.035, 0.009, 8, 16, Math.PI * 1.2), 'cup-handle')
-  handle.rotation.z = -Math.PI * 0.6
-  handle.position.set(0.105, 0.085, 0)
-  // liquid: unit-height disc growing from the cup floor
-  const liquidGeo = new THREE.CylinderGeometry(0.086, 0.066, 1, 32)
-  liquidGeo.translate(0, 0.5, 0)
-  const liquid = mesh(liquidGeo, 'espresso')
-  liquid.position.y = 0.036
-  liquid.scale.y = 0.0001 // empty until the viewer pours (also keeps the cup's bounding box honest)
-  group.add(saucer, cup, handle, liquid)
-  return { group, liquid }
-}
-
 
 function mesh(geometry: THREE.BufferGeometry, name: string) {
   geometry.computeVertexNormals()
@@ -44,383 +30,293 @@ function mesh(geometry: THREE.BufferGeometry, name: string) {
   return result
 }
 
-function box(
-  width: number,
-  height: number,
-  depth: number,
-  name: string,
-) {
-  return mesh(new THREE.BoxGeometry(width, height, depth), name)
+function box(w: number, h: number, d: number, name: string, x = 0, y = 0, z = 0) {
+  const m = mesh(new THREE.BoxGeometry(w, h, d), name)
+  m.position.set(x, y, z)
+  return m
 }
 
-function sideShellGeometry(width: number) {
-  const shape = new THREE.Shape()
+function cyl(rTop: number, rBottom: number, h: number, name: string, x = 0, y = 0, z = 0, seg = 20) {
+  const m = mesh(new THREE.CylinderGeometry(rTop, rBottom, h, seg), name)
+  m.position.set(x, y, z)
+  return m
+}
 
-  shape.moveTo(-0.38, 0.48)
-  shape.lineTo(0.63, 0.73)
-  shape.lineTo(0.78, 0.63)
-  shape.lineTo(0.78, -0.57)
-  shape.lineTo(0.61, -0.73)
-  shape.lineTo(0.42, -0.73)
-  shape.lineTo(0.32, -0.62)
-  shape.lineTo(-0.19, -0.61)
-  shape.lineTo(-0.38, -0.43)
-  shape.closePath()
-
-  const geometry = new THREE.ExtrudeGeometry(shape, {
-    depth: width,
-    bevelEnabled: true,
+/** Extrudes a profile drawn in the side plane (shape x = world z, shape y = world y), `thick` along X, centred on x = 0. */
+function sideExtrude(pts: [number, number][], thick: number, bevel = 0, holes: [number, number][][] = []) {
+  const shape = new THREE.Shape(pts.map(([z, y]) => new THREE.Vector2(z, y)))
+  holes.forEach((h) => shape.holes.push(new THREE.Path(h.map(([z, y]) => new THREE.Vector2(z, y)))))
+  const g = new THREE.ExtrudeGeometry(shape, {
+    depth: thick,
+    bevelEnabled: bevel > 0,
+    bevelSize: bevel,
+    bevelThickness: bevel,
     bevelSegments: 1,
-    bevelSize: 0.025,
-    bevelThickness: 0.025,
     curveSegments: 1,
-    steps: 1,
   })
-
-  geometry.translate(0, 0, -width * 0.5)
-  geometry.rotateY(Math.PI * 0.5)
-  return geometry
+  g.rotateY(-Math.PI / 2) // shape x -> world z, extrusion -> world -x
+  g.translate(thick / 2, 0, 0)
+  return g
 }
 
-function frontShapeGeometry(
-  width: number,
-  height: number,
-  depth: number,
-) {
-  const shape = new THREE.Shape()
+// Side shell profile (z, y): chamfered top corners, front edge folding back into a foot,
+// and the undercut between front and rear feet seen in the film.
+const SIDE: [number, number][] = [
+  [-0.74, -0.95],
+  [-0.54, -0.95],
+  [-0.44, -0.82],
+  [0.26, -0.82],
+  [0.36, -0.95],
+  [0.56, -0.95],
+  [0.67, -0.52],
+  [0.67, 0.46],
+  [0.52, 0.63],
+  [-0.62, 0.63],
+  [-0.74, 0.5],
+]
+// The dark triangle: wide along the top, pointing down toward the front foot
+const TRI: [number, number][] = [
+  [-0.5, 0.44],
+  [0.44, 0.44],
+  [0.36, -0.56],
+]
+const TRI_IN: [number, number][] = [
+  [-0.36, 0.4],
+  [0.4, 0.4],
+  [0.34, -0.44],
+]
 
-  shape.moveTo(-width * 0.44, -height * 0.5)
-  shape.lineTo(width * 0.44, -height * 0.5)
-  shape.lineTo(width * 0.5, -height * 0.34)
-  shape.lineTo(width * 0.47, height * 0.5)
-  shape.lineTo(-width * 0.47, height * 0.5)
-  shape.lineTo(-width * 0.5, -height * 0.34)
-  shape.closePath()
+const SHELL_X = 0.585 // centre of each side shell
+const SHELL_T = 0.11
 
-  const geometry = new THREE.ExtrudeGeometry(shape, {
-    depth,
-    bevelEnabled: true,
-    bevelSegments: 1,
-    bevelSize: 0.025,
-    bevelThickness: 0.025,
-    curveSegments: 1,
-    steps: 1,
-  })
-
-  geometry.translate(0, 0, -depth * 0.5)
-  return geometry
+function buildSides(group: THREE.Group) {
+  for (const s of [-1, 1]) {
+    const shell = mesh(sideExtrude(SIDE, SHELL_T, 0.02), `side-shell-${s}`)
+    shell.position.x = s * SHELL_X
+    group.add(shell)
+    const face = s * (SHELL_X + SHELL_T / 2 + 0.02)
+    // raised chamfered rim around the triangle, then the dark glass inset inside it
+    const rim = mesh(sideExtrude(TRI, 0.014, 0, [TRI_IN]), `side-rim-${s}`)
+    rim.position.x = face + s * 0.007
+    const inset = mesh(sideExtrude(TRI_IN, 0.006), `side-inset-${s}`)
+    inset.position.x = face + s * 0.002
+    group.add(rim, inset)
+    // facet creases from the triangle out to the shell corners (die-cast chamfer lines)
+    const crease = (a: [number, number], b: [number, number], name: string) => {
+      const len = Math.hypot(b[0] - a[0], b[1] - a[1])
+      const m = box(0.006, len, 0.012, name)
+      m.rotation.x = Math.atan2(b[0] - a[0], b[1] - a[1])
+      m.position.set(face + s * 0.003, (a[1] + b[1]) / 2, (a[0] + b[0]) / 2)
+      group.add(m)
+    }
+    crease(TRI[1], [0.62, 0.52], `crease-a-${s}`)
+    crease(TRI[2], [0.58, -0.6], `crease-b-${s}`)
+    crease(TRI[0], [-0.66, 0.56], `crease-c-${s}`)
+  }
 }
 
-function sideTriangleGeometry(inset: number) {
-  const frontTop = new THREE.Vector2(-0.27 + inset, 0.32 - inset)
-  const rearTop = new THREE.Vector2(0.51 - inset, 0.39 - inset)
-  const frontBottom = new THREE.Vector2(-0.22 + inset, -0.39 + inset)
+/** One CPS grinder: two flat ceramic burr rings, the upper one in a black housing with the adjustment gear. Axis = local Z. */
+function buildGrinder(name: string) {
+  const set = new THREE.Group()
+  set.name = name
+  set.rotation.x = -Math.PI / 2 // local Z = world up
 
-  const shape = new THREE.Shape()
-  shape.moveTo(frontTop.x, frontTop.y)
-  shape.lineTo(rearTop.x, rearTop.y)
-  shape.lineTo(frontBottom.x, frontBottom.y)
-  shape.closePath()
+  const shaft = mesh(annulus(0, 0.022, 0.09), `${name}-shaft`)
+  shaft.position.z = -0.02
+  const carrier = mesh(annulus(0.03, 0.135, 0.014), `${name}-carrier`)
+  carrier.position.z = 0.0
 
-  const geometry = new THREE.ShapeGeometry(shape)
-  geometry.rotateY(Math.PI * 0.5)
-  return geometry
+  // lower burr: driven by the motor, teeth face up
+  const lower = new THREE.Group()
+  lower.name = `${name}-lower`
+  lower.position.z = 0.019
+  lower.add(mesh(annulus(0.055, 0.13, 0.022), `${name}-lower-burr`))
+  const lowerTeeth = mesh(faceTicks(0.065, 0.125, 18, 0.006, 0.016), `${name}-lower-teeth`)
+  lowerTeeth.position.z = 0.013
+  lower.add(lowerTeeth)
+
+  // upper burr assembly: stationary burr (teeth down) inside the housing + gear ring
+  const upper = new THREE.Group()
+  upper.name = `${name}-upper`
+  upper.userData.baseZ = 0.05
+  upper.position.z = 0.05
+  const upperTeeth = mesh(faceTicks(0.065, 0.125, 18, 0.006, 0.016), `${name}-upper-teeth`)
+  upperTeeth.position.z = -0.013
+  upperTeeth.rotation.z = Math.PI / 18
+  const housing = mesh(annulus(0.138, 0.158, 0.06), `${name}-housing`)
+  housing.position.z = 0.01
+  const ring = mesh(gear(0.158, 0.176, 44, 0.022, 0.15), `${name}-gear`)
+  ring.position.z = 0.022
+  const throat = mesh(annulus(0.05, 0.075, 0.03), `${name}-throat`)
+  throat.position.z = 0.04
+  upper.add(mesh(annulus(0.055, 0.13, 0.022), `${name}-upper-burr`), upperTeeth, housing, ring, throat)
+
+  set.add(shaft, carrier, lower, upper)
+  return { set, lower, upper }
 }
 
-function sideTriangleFrameGeometry() {
-  const shape = new THREE.Shape()
-
-  shape.moveTo(-0.30, 0.36)
-  shape.lineTo(0.56, 0.44)
-  shape.lineTo(-0.25, -0.45)
-  shape.closePath()
-
-  const hole = new THREE.Path()
-  hole.moveTo(-0.24, 0.29)
-  hole.lineTo(-0.19, -0.35)
-  hole.lineTo(0.45, 0.37)
-  hole.closePath()
-  shape.holes.push(hole)
-
-  const geometry = new THREE.ShapeGeometry(shape)
-  geometry.rotateY(Math.PI * 0.5)
-  return geometry
+/** Espresso cup + saucer (lathe profiles), handle and a liquid disc that fills it. */
+function buildCup() {
+  const group = new THREE.Group()
+  group.name = 'cup'
+  const lathe = (pts: [number, number][], name: string) =>
+    mesh(new THREE.LatheGeometry(pts.map(([x, y]) => new THREE.Vector2(x, y)), 32), name)
+  const saucer = lathe([[0, 0], [0.13, 0.004], [0.142, 0.018], [0.133, 0.02], [0.06, 0.011], [0, 0.011]], 'saucer')
+  const cup = lathe([[0, 0.011], [0.052, 0.011], [0.06, 0.027], [0.077, 0.09], [0.084, 0.12], [0.077, 0.12], [0.071, 0.09], [0.055, 0.032], [0, 0.03]], 'cup')
+  const handle = mesh(new THREE.TorusGeometry(0.03, 0.008, 8, 16, Math.PI * 1.2), 'cup-handle')
+  handle.rotation.z = -Math.PI * 0.6
+  handle.position.set(0.09, 0.076, 0)
+  const liquidGeo = new THREE.CylinderGeometry(0.074, 0.057, 1, 32)
+  liquidGeo.translate(0, 0.5, 0)
+  const liquid = mesh(liquidGeo, 'espresso')
+  liquid.position.y = 0.032
+  liquid.scale.y = 0.0001
+  group.add(saucer, cup, handle, liquid)
+  return { group, liquid }
 }
 
-function addSidePanel(
-  group: THREE.Group,
-  side: number,
-) {
-  const inset = mesh(sideTriangleGeometry(0.025), `side-inset-${side}`)
-  inset.position.x = side * 0.8
-  group.add(inset)
-
-  const frame = mesh(sideTriangleFrameGeometry(), `side-frame-${side}`)
-  frame.position.x = side * 0.806
-  group.add(frame)
-}
-
-function addWand(
-  group: THREE.Group,
-  x: number,
-  name: string,
-) {
-  const collar = mesh(
-    new THREE.CylinderGeometry(0.065, 0.065, 0.09, 20),
-    `${name}-collar`,
-  )
-  collar.position.set(x, 0.23, 0.83)
-  group.add(collar)
-
-  const shaft = mesh(
-    new THREE.CylinderGeometry(0.026, 0.026, 0.54, 16),
-    `${name}-shaft`,
-  )
-  shaft.position.set(x, -0.04, 0.84)
-  group.add(shaft)
-
-  const tip = mesh(
-    new THREE.CylinderGeometry(0.038, 0.028, 0.09, 16),
-    `${name}-tip`,
-  )
-  tip.position.set(x, -0.34, 0.84)
-  group.add(tip)
-}
+// Key heights
+const HEAD_BOTTOM = 0.12
+const TRAY_TOP = -0.375
+const PAD_TOP = TRAY_TOP + 0.02
+const SPOUT_X = 0.17
+const SPOUT_Z = 0.4
+const NOZZLE_TIP = HEAD_BOTTOM - 0.29
 
 export function buildCaye(): Caye {
   const root = new THREE.Group()
   root.name = 'caye'
 
-  const body = new THREE.Group()
-  const sidePanels = new THREE.Group()
-  const head = new THREE.Group()
-  const screen = new THREE.Group()
-  const spout = new THREE.Group()
-  const wands = new THREE.Group()
-  const tray = new THREE.Group()
-  const drawers = new THREE.Group()
-  const hoppers = new THREE.Group()
+  const names = ['body', 'sidePanels', 'head', 'screen', 'spout', 'wands', 'tray', 'drawers', 'hoppers', 'burrs'] as const
+  const parts = Object.fromEntries(
+    names.map((n) => {
+      const g = new THREE.Group()
+      g.name = n
+      root.add(g)
+      return [n, g]
+    }),
+  ) as Record<(typeof names)[number], THREE.Group>
 
-  body.name = 'body'
-  sidePanels.name = 'sidePanels'
-  head.name = 'head'
-  screen.name = 'screen'
-  spout.name = 'spout'
-  wands.name = 'wands'
-  tray.name = 'tray'
-  drawers.name = 'drawers'
-  hoppers.name = 'hoppers'
-
-  root.add(
-    body,
-    sidePanels,
-    head,
-    screen,
-    spout,
-    wands,
-    tray,
-    drawers,
-    hoppers,
+  // ── body: rear block (cavity back wall = its front face) + recessed plinth
+  const inner = (SHELL_X - SHELL_T / 2) * 2
+  parts.body.add(
+    box(inner, 1.43, 0.76, 'body-core', 0, -0.095, -0.36),
+    box(inner - 0.06, 0.13, 1.0, 'plinth', 0, -0.885, -0.12),
+    // dark back panel of the brewing cavity
+    box(inner - 0.08, HEAD_BOTTOM - TRAY_TOP - 0.02, 0.02, 'cavity-panel', 0, (HEAD_BOTTOM + TRAY_TOP) / 2, 0.03),
   )
 
-  const bodyCore = box(1.25, 1.31, 1.12, 'body-core')
-  bodyCore.position.set(0, -0.01, -0.13)
-  body.add(bodyCore)
+  buildSides(parts.sidePanels)
 
-  const recessedFront = box(1.13, 0.86, 0.055, 'front-recess')
-  recessedFront.position.set(0, -0.08, 0.455)
-  body.add(recessedFront)
-
-  const recessedBase = box(1.12, 0.16, 1.19, 'recessed-base')
-  recessedBase.position.set(0, -0.73, -0.11)
-  body.add(recessedBase)
-
-  const leftShell = mesh(sideShellGeometry(0.14), 'left-shell')
-  leftShell.position.x = -0.69
-  body.add(leftShell)
-
-  const rightShell = mesh(sideShellGeometry(0.14), 'right-shell')
-  rightShell.position.x = 0.69
-  body.add(rightShell)
-
-  addSidePanel(sidePanels, -1)
-  addSidePanel(sidePanels, 1)
-
-  const headBar = mesh(
-    frontShapeGeometry(1.55, 0.43, 0.36),
-    'upper-head-bar',
+  // ── head over the cavity
+  parts.head.add(
+    box(inner, 0.5, 0.58, 'head-block', 0, (HEAD_BOTTOM + 0.62) / 2, 0.29),
+    box(inner - 0.04, 0.03, 0.56, 'head-underside', 0, HEAD_BOTTOM - 0.015, 0.3),
   )
-  headBar.position.set(0, 0.46, 0.57)
-  head.add(headBar)
+  const logo = box(0.16, 0.022, 0.01, 'logo-plate', 0, HEAD_BOTTOM + 0.035, 0.665)
+  logo.rotation.x = -0.18
+  parts.head.add(logo)
 
-  const headLower = mesh(
-    frontShapeGeometry(1.39, 0.12, 0.08),
-    'head-lower-fascia',
-  )
-  headLower.position.set(0, 0.245, 0.775)
-  head.add(headLower)
+  // ── touchscreen: silver bezel, black glass, a grid of drink icons; tilted back like the film
+  const screenTilt = new THREE.Group()
+  screenTilt.position.set(0, HEAD_BOTTOM + 0.04, 0.62)
+  screenTilt.rotation.x = -0.18
+  parts.screen.add(screenTilt)
+  const SH = 0.44
+  screenTilt.add(box(1.1, SH, 0.05, 'screen-bezel', 0, SH / 2 + 0.02, 0))
+  screenTilt.add(box(1.0, SH - 0.07, 0.016, 'screen-glass', 0, SH / 2 + 0.02, 0.031))
+  for (let r = 0; r < 3; r++)
+    for (let c = 0; c < 6; c++) screenTilt.add(box(0.042, 0.042, 0.005, `icon-${r}-${c}`, -0.3 + c * 0.12, 0.14 + r * 0.095, 0.041))
+  screenTilt.add(box(0.86, 0.006, 0.004, 'screen-status-bar', 0, SH - 0.035, 0.041))
 
-  const logoStrip = box(0.49, 0.075, 0.025, 'logo-strip')
-  logoStrip.position.set(0, 0.245, 0.825)
-  head.add(logoStrip)
-
-  const display = box(0.72, 0.225, 0.028, 'touchscreen')
-  display.position.set(0, 0.49, 0.775)
-  screen.add(display)
-
-  const spoutColumn = mesh(
-    new THREE.CylinderGeometry(0.13, 0.18, 0.42, 4),
-    'spout-column',
-  )
-  spoutColumn.rotation.y = Math.PI * 0.25
-  spoutColumn.scale.z = 0.72
-  spoutColumn.position.set(0, 0.02, 0.69)
-  spout.add(spoutColumn)
-
-  const brewDisc = mesh(
-    new THREE.CylinderGeometry(0.185, 0.185, 0.075, 24),
-    'brew-disc',
-  )
-  brewDisc.position.set(0, -0.22, 0.7)
-  spout.add(brewDisc)
-
-  const brewRing = mesh(
-    new THREE.TorusGeometry(0.155, 0.025, 8, 24),
-    'brew-ring',
-  )
-  brewRing.rotation.x = Math.PI * 0.5
-  brewRing.position.set(0, -0.265, 0.7)
-  spout.add(brewRing)
-
-  const leftNozzle = mesh(
-    new THREE.CylinderGeometry(0.018, 0.012, 0.11, 12),
-    'left-nozzle',
-  )
-  leftNozzle.rotation.z = -0.15
-  leftNozzle.position.set(-0.055, -0.335, 0.72)
-  spout.add(leftNozzle)
-
-  const rightNozzle = mesh(
-    new THREE.CylinderGeometry(0.018, 0.012, 0.11, 12),
-    'right-nozzle',
-  )
-  rightNozzle.rotation.z = 0.15
-  rightNozzle.position.set(0.055, -0.335, 0.72)
-  spout.add(rightNozzle)
-
-  // lifted so an espresso cup fits between the nozzles and the drip grid
-  spout.position.y = 0.16
-
-  addWand(wands, -0.48, 'left-wand')
-  addWand(wands, 0.48, 'right-wand')
-
-  const trayBody = box(1.28, 0.15, 0.59, 'drip-tray')
-  trayBody.position.set(0, -0.54, 0.66)
-  tray.add(trayBody)
-
-  const trayPlate = box(1.16, 0.025, 0.48, 'drip-grid-plate')
-  trayPlate.position.set(0, -0.452, 0.66)
-  tray.add(trayPlate)
-
-  for (let index = 0; index < 6; index += 1) {
-    const slot = box(0.045, 0.012, 0.38, `tray-slot-${index + 1}`)
-    slot.position.set(-0.375 + index * 0.15, -0.433, 0.66)
-    tray.add(slot)
+  // ── two brew units: chrome column, black head, chrome skirt, twin nozzles
+  for (const s of [-1, 1]) {
+    const x = s * SPOUT_X
+    const id = s < 0 ? 'left' : 'right'
+    const y0 = HEAD_BOTTOM
+    parts.spout.add(
+      cyl(0.072, 0.072, 0.03, `${id}-mount`, x, y0 - 0.015, SPOUT_Z),
+      cyl(0.048, 0.048, 0.15, `${id}-column`, x, y0 - 0.105, SPOUT_Z),
+      cyl(0.055, 0.082, 0.07, `${id}-brew-head`, x, y0 - 0.215, SPOUT_Z),
+      cyl(0.094, 0.094, 0.018, `${id}-skirt`, x, y0 - 0.259, SPOUT_Z, 24),
+    )
+    for (const n of [-1, 1]) {
+      const nz = cyl(0.013, 0.009, 0.04, `${id}-nozzle-${n}`, x + n * 0.032, y0 - 0.27, SPOUT_Z)
+      parts.spout.add(nz)
+    }
+    // cup pad on the drip grid under each unit
+    parts.tray.add(box(0.26, 0.02, 0.24, `${id}-cup-pad`, x, TRAY_TOP + 0.01, SPOUT_Z))
   }
 
-  const leftDrawer = box(0.61, 0.23, 0.48, 'left-drawer')
-  leftDrawer.position.set(-0.32, -0.735, 0.59)
-  drawers.add(leftDrawer)
-
-  const rightDrawer = box(0.61, 0.23, 0.48, 'right-drawer')
-  rightDrawer.position.set(0.32, -0.735, 0.59)
-  drawers.add(rightDrawer)
-
-  const topTray = box(1.19, 0.09, 0.81, 'top-lid-tray')
-  topTray.position.set(0, 0.72, -0.18)
-  hoppers.add(topTray)
-
-  const leftHopper = mesh(
-    new THREE.CylinderGeometry(0.48, 0.42, 0.35, 4),
-    'left-hopper',
-  )
-  leftHopper.rotation.y = Math.PI * 0.25
-  leftHopper.scale.set(0.72, 1, 0.82)
-  leftHopper.position.set(-0.34, 0.91, -0.22)
-  hoppers.add(leftHopper)
-
-  const rightHopper = mesh(
-    new THREE.CylinderGeometry(0.48, 0.42, 0.35, 4),
-    'right-hopper',
-  )
-  rightHopper.rotation.y = Math.PI * 0.25
-  rightHopper.scale.set(0.72, 1, 0.82)
-  rightHopper.position.set(0.34, 0.91, -0.22)
-  hoppers.add(rightHopper)
-
-  const leftLid = box(0.61, 0.07, 0.67, 'left-hopper-lid')
-  leftLid.position.set(-0.34, 1.115, -0.22)
-  hoppers.add(leftLid)
-
-  const rightLid = box(0.61, 0.07, 0.67, 'right-hopper-lid')
-  rightLid.position.set(0.34, 1.115, -0.22)
-  hoppers.add(rightLid)
-
-  // Twin grinders under the hoppers: hidden by the lid tray, revealed when the hoppers lift
-  const burrs = new THREE.Group()
-  burrs.name = 'burrs'
-  root.add(burrs)
-  for (const x of [-0.34, 0.34]) {
-    const set = new THREE.Group()
-    set.position.set(x, 0.655, -0.22)
-    const ring = mesh(gear(0.17, 0.2, 24, 0.03, 0.12), `${x < 0 ? 'left' : 'right'}-outer-burr`)
-    ring.rotation.x = -Math.PI / 2
-    const cone = mesh(conicalBurr(0.11, 0.12, 7), `${x < 0 ? 'left' : 'right'}-inner-burr`)
-    cone.rotation.x = -Math.PI / 2 // tip up
-    cone.position.y = 0.05
-    set.add(ring, cone)
-    burrs.add(set)
+  // ── hot water / milk wands at the cavity edges
+  for (const s of [-1, 1]) {
+    const x = s * 0.44
+    parts.wands.add(
+      cyl(0.03, 0.03, 0.04, `wand-collar-${s}`, x, HEAD_BOTTOM - 0.02, 0.5, 14),
+      cyl(0.013, 0.013, 0.36, `wand-${s}`, x, HEAD_BOTTOM - 0.2, 0.5, 10),
+      cyl(0.02, 0.016, 0.05, `wand-tip-${s}`, x, HEAD_BOTTOM - 0.4, 0.5, 12),
+    )
   }
 
-  // Espresso cup on the grid under the spout (hidden until the viewer brings it in)
+  // ── drip tray with a grille, over two drawers
+  parts.tray.add(box(inner + 0.02, 0.1, 0.68, 'drip-tray', 0, TRAY_TOP - 0.05, 0.39))
+  for (let i = 0; i < 9; i++) parts.tray.add(box(inner - 0.1, 0.006, 0.016, `grille-${i}`, 0, TRAY_TOP + 0.003, 0.12 + i * 0.065))
+  for (const s of [-1, 1]) {
+    parts.drawers.add(box(inner / 2 - 0.02, 0.3, 0.5, `drawer-${s}`, (s * inner) / 4, -0.62, 0.36))
+    parts.drawers.add(box(0.18, 0.012, 0.012, `drawer-grip-${s}`, (s * inner) / 4, -0.53, 0.615))
+  }
+
+  // ── hopper deck: black lid tray + two trapezoid bean hoppers with lids (lift off to show the grinders)
+  const DECK_Z = -0.3
+  parts.hoppers.add(box(inner + 0.06, 0.14, 0.86, 'hopper-deck', 0, 0.7, DECK_Z))
+  for (const s of [-1, 1]) {
+    const x = s * 0.255
+    // boxy black hopper, slightly tapered toward the deck, lid flush with its top
+    const hop = mesh(new THREE.CylinderGeometry(0.33, 0.29, 0.2, 4, 1), `hopper-${s}`)
+    hop.rotation.y = Math.PI / 4
+    hop.scale.set(1, 1, 1.45)
+    hop.position.set(x, 0.87, DECK_Z)
+    const lid = box(0.47, 0.04, 0.68, `hopper-lid-${s}`, x, 0.99, DECK_Z)
+    const tab = box(0.14, 0.025, 0.035, `hopper-tab-${s}`, x, 0.985, DECK_Z + 0.355)
+    parts.hoppers.add(hop, lid, tab)
+  }
+
+  // ── twin CPS grinders, hidden inside the deck until the hoppers lift
+  const spinners: THREE.Object3D[] = []
+  const uppers: THREE.Object3D[] = []
+  for (const s of [-1, 1]) {
+    const g = buildGrinder(s < 0 ? 'left-grinder' : 'right-grinder')
+    g.set.position.set(s * 0.255, 0.645, DECK_Z)
+    parts.burrs.add(g.set)
+    spinners.push(g.lower)
+    uppers.push(g.upper)
+  }
+
+  // ── espresso cup under the left brew unit (hidden until the viewer brings it in)
   const cupParts = buildCup()
-  cupParts.group.position.set(0, -0.427, 0.7)
+  cupParts.group.position.set(-SPOUT_X, PAD_TOP, SPOUT_Z)
   root.add(cupParts.group)
-  // two coffee threads from the nozzle tips; unit length, hanging down from their top
-  const streamTop = -0.335 + 0.16 - 0.055 // nozzle tip, spout lifted
-  const streams = [-0.045, 0.045].map((x, i) => {
-    const g = new THREE.CylinderGeometry(0.006, 0.006, 1, 8)
+  const streams = [-0.028, 0.028].map((dx, i) => {
+    const g = new THREE.CylinderGeometry(0.0055, 0.0055, 1, 8)
     g.translate(0, -0.5, 0)
     const m = mesh(g, `stream-${i}`)
-    m.position.set(x, streamTop, 0.72)
+    m.position.set(-SPOUT_X + dx, NOZZLE_TIP, SPOUT_Z)
     m.scale.y = 0.0001
     root.add(m)
     return m
   })
 
+  // centre the whole machine on its bounding box (cup and streams are tiny at this point)
   root.updateMatrixWorld(true)
-
-  const bounds = new THREE.Box3().setFromObject(root)
-  const centre = bounds.getCenter(new THREE.Vector3())
+  const centre = new THREE.Box3().setFromObject(root).getCenter(new THREE.Vector3())
   root.position.sub(centre)
   root.updateMatrixWorld(true)
-
-  const parts: Record<string, THREE.Object3D> = {
-    body,
-    sidePanels,
-    head,
-    screen,
-    spout,
-    wands,
-    tray,
-    drawers,
-    hoppers,
-    burrs,
-  }
 
   return {
     root,
     parts,
-    cup: { group: cupParts.group, liquid: cupParts.liquid, streams, streamTop, liquidBase: -0.427 + 0.036 },
+    spinners,
+    uppers,
+    cup: { group: cupParts.group, liquid: cupParts.liquid, streams, streamTop: NOZZLE_TIP, liquidBase: PAD_TOP + 0.032 },
   }
 }

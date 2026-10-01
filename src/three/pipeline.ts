@@ -70,12 +70,16 @@ export function createPipeline() {
       const s = stage.spin
       // idle mechanics, always running (like the reference's time-based loops)
       const sp = grinder.spinners
-      sp.innerBurr.rotation.z -= delta * 0.35 * s
-      sp.carrierGear.rotation.z += delta * 0.2 * s
-      sp.bearingA.rotation.z -= delta * 0.5 * s
-      sp.bearingB.rotation.z += delta * 0.5 * s
-      grinder.modules.spring.scale.z = 1 + Math.sin(t * 2.2) * 0.12 * s
-      grinder.modules.crank.rotation.z = -t * 0.18 * s
+      // lower burr, its rotor and the drive gear share one shaft; the upper burr never turns
+      const turn = delta * 0.35 * s
+      sp.lowerBurr.rotation.z -= turn
+      sp.carrier.rotation.z -= turn
+      sp.driveGear.rotation.z -= turn
+      sp.bearing.rotation.z += delta * 0.5 * s
+      // the stepper nudges the grind setting back and forth; its pinion turns 0.97/0.13× faster
+      const set = Math.sin(t * 0.5) * 0.12 * s
+      sp.adjustRing.rotation.z = set
+      sp.pinion.rotation.z = (-set * 0.97) / 0.13
 
       // light lives inside Z (rotates with the model), aimed at the world origin
       Z.updateMatrixWorld()

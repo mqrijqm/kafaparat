@@ -20,14 +20,14 @@ export const RING: Accent[] = ['brass', 'champagne', 'copper', 'sand', 'sage', '
 export const LANGS = ['bs', 'en'] as const
 export type Lang = (typeof LANGS)[number]
 
-export const NAV_HREFS = ['#anatomy', '#materials', '#atelier', '#caye'] as const
+export const NAV_HREFS = ['#anatomy', '#materials', '#caye', '#shop'] as const
 export const PARTNER_HREF = '#partnership'
 export const PARTNER_EMAIL = 'partneri@kafaparat.ba'
 
 export const ANATOMY_PARTS = {
   // part = key of a grinder module (see three/grinder.ts)
-  left: ['crank', 'bearingB', 'body', 'spring', 'carrier'],
-  right: ['bezel', 'cup', 'outerBurr', 'innerBurr', 'dial', 'lid'],
+  left: ['base', 'motor', 'driveGear', 'bearing', 'carrier'],
+  right: ['inlet', 'adjustRing', 'housing', 'upperBurr', 'lowerBurr', 'chute'],
 }
 
 export type Feature = { id: string; accent: Accent; image: string }
@@ -44,13 +44,13 @@ export const FEATURES: Feature[] = [
 ]
 
 export const MATERIALS = {
-  total: 612,
+  total: 1454,
   items: [
-    { grams: 238, accent: 'pewter', swatch: '/media/swatch-steel.webp', part: 'outerBurr' },
-    { grams: 196, accent: 'stone', swatch: '/media/swatch-graphite.webp', part: 'body' },
-    { grams: 102, accent: 'brass', swatch: '/media/swatch-brass.webp', part: 'dial' },
-    { grams: 42, accent: 'bone', swatch: '/media/swatch-steel.webp', part: 'bearingA' },
-    { grams: 34, accent: 'copper', swatch: '/media/swatch-walnut.webp', part: 'crank' },
+    { grams: 524, accent: 'copper', swatch: '/media/swatch-copper.webp', part: 'motor' },
+    { grams: 412, accent: 'pewter', swatch: '/media/swatch-graphite.webp', part: 'housing' },
+    { grams: 268, accent: 'stone', swatch: '/media/swatch-steel.webp', part: 'carrier' },
+    { grams: 186, accent: 'bone', swatch: '/media/swatch-ceramic.webp', part: 'upperBurr' },
+    { grams: 64, accent: 'sand', swatch: '/media/swatch-graphite.webp', part: 'inlet' },
   ] as { grams: number; accent: Accent; swatch: string; part: string }[],
 }
 
@@ -64,6 +64,31 @@ export const CAYE = {
   spacesVideo: '/media/caye-double.mp4',
   spacesPoster: '/media/caye-double-poster.webp',
   details: ['/media/caye-v-burrs.webp', '/media/caye-v-beans.webp', '/media/caye-v-inside.webp', '/media/caye-v-milk.webp'],
+}
+
+/** Shop: one machine with options + accessories. Prices in EUR (placeholders until the real price list). */
+export const SHOP = {
+  freeShipping: 150,
+  machine: {
+    id: 'caye-smart-x',
+    price: 8950,
+    lease: 249,
+    gallery: ['/media/caye-hero.webp', '/media/caye-v-inside.webp', '/media/caye-v-burrs.webp', '/media/caye-pour.webp'],
+    finishes: [
+      { id: 'silver', swatch: 'linear-gradient(135deg,#e9e6e1,#9a9894)' },
+      { id: 'graphite', swatch: 'linear-gradient(135deg,#55514c,#1d1b19)' },
+    ],
+    // extra price per configuration (single / twin grinder)
+    configs: [0, 900],
+  },
+  accessories: [
+    { id: 'cps-burrs', price: 189, image: '/media/shop-burrs.webp' },
+    { id: 'grind-module', price: 690, image: '/media/shop-module.webp' },
+    { id: 'beans', price: 32, image: '/media/shop-beans.webp' },
+    { id: 'milk-jug', price: 129, image: '/media/shop-jug.webp' },
+    { id: 'water-filter', price: 45, image: '/media/shop-filter.webp' },
+    { id: 'tablets', price: 24, image: '/media/shop-tablets.webp' },
+  ],
 }
 
 export const ATELIER_IMAGES = ['/media/crema-swirl.webp', '/media/crema-grain.webp', '/media/burr-top.webp']
@@ -89,45 +114,45 @@ type FeatureCopy = { title: string; lead: string; bullets: string[]; spec: [stri
 
 const bs = {
   meta: {
-    title: 'Kafaparat No.1 — Precizni ručni mlin',
-    description: 'Precizni ručni mlin za kafu od čelika, mesinga i oraha. Četrdeset i jedan dio, jedan pokret.',
+    title: 'Kafaparat — CAYE Smart X i keramički CPS mlin',
+    description: 'Profesionalni CAYE aparati za kafu s ravnim keramičkim CPS žrvnjevima. Prodaja, instalacija i servis u BiH.',
   },
-  nav: ['Anatomija', 'Materijali', 'Atelje', 'CAYE'],
+  nav: ['Anatomija', 'Materijali', 'CAYE', 'Prodavnica'],
   partner: { short: 'Partnerstvo', long: 'Postanite partner' },
   langLabel: 'Jezik',
   hero: {
     title: ['Precizan', 'instrument', 'za mljevenje'],
-    lead: 'Ručni mlin od čelika, mesinga i oraha, podešen za',
-    words: ['espresso', 'pour-over', 'džezvu', 'cold brew', 'svako zrno'],
-    price: 'No.1 — €340',
-    add: 'Dodaj u rezervaciju',
+    lead: 'Keramičko CPS srce CAYE aparata, podešeno za',
+    words: ['espresso', 'ristretto', 'lungo', 'flat white', 'svako zrno'],
+    price: 'CAYE Smart X — €8.950',
+    add: 'Dodaj u korpu',
     discover: 'Otkrij',
-    hallmark: 'Ručno žigosano',
+    hallmark: 'Ovlašteni CAYE partner',
   },
   anatomy: {
-    title: ['Četrdeset i jedan dio.', 'Jedan pokret.'],
-    lead: 'Svaki dio je mašinski obrađen, ručno završen i zamjenjiv. Ništa zalijepljeno, ništa skriveno.',
-    left: ['ručica', 'ležajevi', 'drška', 'opruga', 'nosač'],
-    right: ['prsten', 'posuda', 'vanjski žrvanj', 'unutrašnji žrvanj', 'skala', 'poklopac'],
+    title: ['Dvanaest modula.', 'Jedan rez.'],
+    lead: 'Od ulaza zrna do izlaza mljevenja: keramika gdje reže, čelik gdje nosi, aluminij gdje hladi. Svaki modul je zamjenjiv.',
+    left: ['nosač', 'motor', 'pogonski zupčanik', 'ležaj', 'rotor'],
+    right: ['ulaz zrna', 'prsten za podešavanje', 'kućište', 'gornji žrvanj', 'donji žrvanj', 'izlaz mljevenja'],
   },
   features: {
     burrs: {
-      title: '48 mm žrvnjevi',
-      lead: 'Heptagonalni konusni žrvnjevi od kaljenog nehrđajućeg čelika, za savršeno ujednačenu česticu.',
-      bullets: ['Heptagonalna geometrija', 'Kaljeno na 60 HRC', 'Gotovo bez zadržavanja'],
-      spec: [['žrvanj', '48 mm konusni'], ['čelik', '420 kaljeni'], ['rez', 'heptagonalni'], ['zadržavanje', '< 0,1 g']],
+      title: 'Keramički CPS',
+      lead: 'Dva ravna žrvnja od tehničke keramike drže istu veličinu čestice od prve do desethiljadite šoljice. Constant Particle Size.',
+      bullets: ['Ravni keramički par', 'Ne grije zrno', 'Ista čestica, svaki put'],
+      spec: [['žrvanj', '64 mm ravni'], ['materijal', 'cirkonij keramika'], ['rez', 'CPS radijalni'], ['vijek', '300 000 šoljica']],
     },
     dial: {
-      title: 'Fina skala',
-      lead: 'Vanjski mesingani prsten pomjera žrvanj 12,5 mikrona po kliku. Osjetite ga, pa mu vjerujte.',
-      bullets: ['12,5 µm po kliku', 'Vanjsko podešavanje', 'Gravirani indeks'],
-      spec: [['korak', '12,5 µm'], ['raspon', '0 — 1500 µm'], ['prsten', 'puni mesing'], ['klikovi', '120 / krug']],
+      title: 'Podešavanje s ekrana',
+      lead: 'Mali koračni motor okreće zupčasti prsten oko kućišta i pomjera gornji žrvanj po 5 mikrona. Postavka se mijenja dodirom, ne ključem.',
+      bullets: ['5 µm po koraku', 'Koračni motor', 'Profil za svako zrno'],
+      spec: [['korak', '5 µm'], ['raspon', '150 — 1200 µm'], ['pogon', 'koračni motor'], ['profili', '2 × spremnik']],
     },
     spectrum: {
       title: 'Svako mljevenje',
-      lead: 'Od praha za džezvu do krupnog zrna za cold brew, jednom rukom i jednim prstenom.',
-      bullets: ['Od džezve do cold brewa', 'Ponovljive postavke', 'Ujednačena čestica'],
-      spec: [['džezva', '100 µm'], ['espresso', '250 µm'], ['filter', '650 µm'], ['cold brew', '1300 µm']],
+      lead: 'Od ristretta do dugog filtera, isti keramički par i jedan dodir na ekranu.',
+      bullets: ['Od ristretta do filtera', 'Ponovljive postavke', 'Ujednačena čestica'],
+      spec: [['ristretto', '180 µm'], ['espresso', '250 µm'], ['lungo', '400 µm'], ['filter', '650 µm']],
     },
     drive: {
       title: 'Tihi pogon',
@@ -162,13 +187,13 @@ const bs = {
   } as Record<string, FeatureCopy>,
   materials: {
     title: ['Pet materijala.', 'Ništa više.'],
-    lead: 'Čelik gdje reže, mesing gdje dodirujete, orah gdje držite. Svaki gram ima razlog.',
-    names: ['Čelik', 'Aluminij', 'Mesing', 'Keramika', 'Orah'],
+    lead: 'Bakar gdje pokreće, aluminij gdje hladi, čelik gdje nosi, keramika gdje reže. Svaki gram ima razlog.',
+    names: ['Bakar', 'Aluminij', 'Čelik', 'Keramika', 'Polimer'],
     total: 'Ukupna težina',
   },
   atelier: {
-    title: ['Sporo napravljeno.', 'U malim serijama.'],
-    lead: 'Tokaren, narezan i sklopljen u jednoj radionici, rukama četiri osobe. Svaki mlin nosi žig ruku koje su ga završile.',
+    title: ['Kalibrirano rukom.', 'Prije vašeg šanka.'],
+    lead: 'Svaki CAYE koji isporučimo prolazi kroz našu radionicu u Sarajevu: žrvnjevi, doza i temperatura podese se za vaše zrno, pa tek onda idu na šank.',
     captions: ['Krema', 'Vrtlog', 'Srce mlina'],
   },
   start: {
@@ -179,7 +204,7 @@ const bs = {
   caye: {
     eyebrow: 'Kafaparat × CAYE Professional',
     title: ['Za šank', 'koji ne staje.'],
-    lead: 'Mlin ostaje jutarnji ritual. Za gužvu od stotinu šoljica partnerima isporučujemo CAYE, profesionalni superautomat koji postavljamo, podešavamo i servisiramo.',
+    lead: 'Keramičko srce koje ste upravo rastavili kuca u CAYE, profesionalnom superautomatu koji partnerima isporučujemo, postavljamo, podešavamo i servisiramo.',
     model: {
       left: [
         ['Dva spremnika', 'Dvije kafe u zrnu, dva profila prženja, jedan dodir.'],
@@ -228,16 +253,99 @@ const bs = {
       button: 'Zatražite ponudu',
     },
   },
+  shop: {
+    eyebrow: 'Prodavnica',
+    title: ['Ponesite srce', 'na svoj šank.'],
+    name: 'CAYE Smart X',
+    tagline: 'Profesionalni superautomat s keramičkim CPS mlinom',
+    rating: '4,9',
+    reviews: '128 recenzija',
+    lease: 'ili od €{n} mjesečno, 36 rata bez kamate',
+    finish: 'Završna obrada',
+    finishes: ['Srebrna', 'Grafit'],
+    config: 'Mlinovi',
+    configs: [
+      ['Jedan spremnik', '1 × CPS mlin'],
+      ['Dva spremnika', '2 × CPS mlin'],
+    ],
+    qty: 'Količina',
+    add: 'Dodaj u korpu',
+    added: 'Dodano',
+    quote: 'Zatražite ponudu',
+    stock: 'Na stanju · isporuka i instalacija za 5 – 7 dana',
+    perks: ['Besplatna dostava i instalacija u BiH', '5 godina garancije na CPS žrvnjeve', 'Obuka osoblja uključena'],
+    tabs: [
+      {
+        h: 'Specifikacije',
+        rows: [
+          ['Mlin', '2 × 64 mm keramički CPS'],
+          ['Kapacitet', '350 šoljica / sat'],
+          ['Vaga za prah', '± 0,1 g'],
+          ['Širina', '430 mm'],
+          ['Napajanje', '400 V · 6,8 kW'],
+        ],
+      },
+      {
+        h: 'U kutiji',
+        rows: [
+          ['Aparat', 'CAYE Smart X'],
+          ['Mlijeko', 'Posuda 4 l + crijevo'],
+          ['Voda', 'Filter s ugradnjom'],
+          ['Njega', '100 tableta za čišćenje'],
+        ],
+      },
+      {
+        h: 'Dostava i povrat',
+        rows: [
+          ['Dostava', 'Besplatno u BiH'],
+          ['Instalacija', 'Naš tehničar, isti dan'],
+          ['Povrat', '30 dana'],
+          ['Servis', 'Dolazak za 48 sati'],
+        ],
+      },
+    ],
+    more: 'Dodaci i potrošni materijal',
+    moreLead: 'Sve što mašini treba da radi kao prvog dana.',
+    quickAdd: 'Brzo dodaj',
+    accessories: {
+      'cps-burrs': ['CPS keramički žrvnjevi', 'Par, 64 mm'],
+      'grind-module': ['Mlinski modul', 'Zamjena za 60 sekundi'],
+      beans: ['Kafaparat espresso', 'Kafa u zrnu, 1 kg'],
+      'milk-jug': ['Posuda za mlijeko', 'Izolirana, 4 l'],
+      'water-filter': ['Filter za vodu', 'Za 6 000 l'],
+      tablets: ['Tablete za čišćenje', '100 komada'],
+    } as Record<string, [string, string]>,
+    badge: { 'cps-burrs': 'Novo', beans: 'Najprodavanije' } as Record<string, string>,
+  },
+  cart: {
+    title: 'Korpa',
+    open: 'Otvori korpu',
+    close: 'Zatvori',
+    empty: 'Korpa je još prazna.',
+    browse: 'Pogledajte prodavnicu',
+    subtotal: 'Međuzbir',
+    shipping: 'Dostava',
+    free: 'Besplatno',
+    shippingFee: 'Računa se na plaćanju',
+    freeLeft: 'Još €{n} do besplatne dostave',
+    freeDone: 'Ostvarili ste besplatnu dostavu',
+    checkout: 'Na plaćanje',
+    note: 'PDV uključen. Plaćanje karticom, virmanom ili na rate.',
+    remove: 'Ukloni',
+    toast: 'Dodano u korpu',
+    view: 'Pogledaj korpu',
+  },
   footer: {
     cols: [
-      { h: 'Proizvod', links: ['Kafaparat No.1', 'Putna futrola', 'Rezervni žrvnjevi', 'Poklon kartica'] },
+      { h: 'Prodavnica', links: ['CAYE Smart X', 'CPS žrvnjevi', 'Mlinski modul', 'Kafa u zrnu'] },
       { h: 'Atelje', links: ['O nama', 'Radionica', 'Žurnal', 'Prodajna mjesta'] },
       { h: 'Podrška', links: ['Njega', 'Garancija', 'Dostava', 'Kontakt'] },
     ],
     partner: {
       h: 'Partnerstvo',
-      lead: 'Za kafiće, pržionice i hotele koji žele Kafaparat na svom šanku.',
+      lead: 'Za kafiće, pržionice i hotele koji žele CAYE na svom šanku.',
     },
+    trust: ['Besplatna dostava od €150', 'Plaćanje na rate', 'Servis za 48 sati'],
     news: {
       h: 'Bilješke iz ateljea',
       lead: 'Vodiči za pripremu i nove serije, četiri puta godišnje.',
@@ -252,45 +360,45 @@ export type Copy = typeof bs
 
 const en: Copy = {
   meta: {
-    title: 'Kafaparat No.1 — Precision hand grinder',
-    description: 'A precision hand coffee grinder machined from steel, brass and walnut. Forty-one parts, one gesture.',
+    title: 'Kafaparat — CAYE Smart X and the ceramic CPS grinder',
+    description: 'Professional CAYE coffee machines with flat ceramic CPS burrs. Sales, installation and service in Bosnia and Herzegovina.',
   },
-  nav: ['Anatomy', 'Materials', 'Atelier', 'CAYE'],
+  nav: ['Anatomy', 'Materials', 'CAYE', 'Shop'],
   partner: { short: 'Partnership', long: 'Become a partner' },
   langLabel: 'Language',
   hero: {
     title: ['Precision', 'grinding', 'instrument'],
-    lead: 'A hand grinder machined from steel, brass and walnut, tuned for',
-    words: ['espresso', 'pour-over', 'moka', 'cold brew', 'every bean'],
-    price: 'No.1 — €340',
-    add: 'Add to reservation',
+    lead: 'The ceramic CPS heart of every CAYE machine, tuned for',
+    words: ['espresso', 'ristretto', 'lungo', 'flat white', 'every bean'],
+    price: 'CAYE Smart X — €8,950',
+    add: 'Add to cart',
     discover: 'Discover',
-    hallmark: 'Hallmarked by hand',
+    hallmark: 'Authorised CAYE partner',
   },
   anatomy: {
-    title: ['Forty-one parts.', 'One gesture.'],
-    lead: 'Every component is machined, hand-finished and replaceable. Nothing glued, nothing hidden.',
-    left: ['crank', 'bearings', 'grip', 'spring', 'carrier'],
-    right: ['bezel', 'catch cup', 'outer burr', 'inner burr', 'dial', 'lid'],
+    title: ['Twelve modules.', 'One cut.'],
+    lead: 'From bean inlet to grounds outlet: ceramic where it cuts, steel where it carries, aluminium where it cools. Every module is replaceable.',
+    left: ['mounting plate', 'motor', 'drive gear', 'bearing', 'rotor'],
+    right: ['bean inlet', 'adjustment ring', 'housing', 'upper burr', 'lower burr', 'grounds outlet'],
   },
   features: {
     burrs: {
-      title: '48 mm burrs',
-      lead: 'Heptagonal conical burrs, cut from hardened stainless steel for a razor-even particle.',
-      bullets: ['Heptagonal geometry', 'Hardened to 60 HRC', 'Near-zero retention'],
-      spec: [['burr', '48 mm conical'], ['steel', '420 hardened'], ['cut', 'heptagonal'], ['retention', '< 0.1 g']],
+      title: 'Ceramic CPS',
+      lead: 'Two flat burrs of technical ceramic hold the same particle size from the first cup to the ten-thousandth. Constant Particle Size.',
+      bullets: ['Flat ceramic pair', 'Never heats the bean', 'Same particle, every time'],
+      spec: [['burr', '64 mm flat'], ['material', 'zirconia ceramic'], ['cut', 'CPS radial'], ['lifetime', '300,000 cups']],
     },
     dial: {
-      title: 'Stepless dial',
-      lead: 'An external brass ring moves the burr 12.5 microns per click. Feel it, then trust it.',
-      bullets: ['12.5 µm per click', 'External adjustment', 'Engraved index'],
-      spec: [['step', '12.5 µm'], ['range', '0 — 1500 µm'], ['ring', 'solid brass'], ['clicks', '120 / turn']],
+      title: 'Set from the screen',
+      lead: 'A small stepper motor turns the gear ring around the housing and moves the upper burr 5 microns at a time. The setting changes with a touch, not a wrench.',
+      bullets: ['5 µm per step', 'Stepper motor', 'A profile for every bean'],
+      spec: [['step', '5 µm'], ['range', '150 — 1200 µm'], ['drive', 'stepper motor'], ['profiles', '2 × hopper']],
     },
     spectrum: {
       title: 'Every grind',
-      lead: 'From powder-fine Turkish to cold brew gravel, with one hand and one ring.',
-      bullets: ['Turkish to cold brew', 'Repeatable settings', 'Uniform particle'],
-      spec: [['turkish', '100 µm'], ['espresso', '250 µm'], ['filter', '650 µm'], ['cold brew', '1300 µm']],
+      lead: 'From ristretto to a long filter, the same ceramic pair and one touch on the screen.',
+      bullets: ['Ristretto to filter', 'Repeatable settings', 'Uniform particle'],
+      spec: [['ristretto', '180 µm'], ['espresso', '250 µm'], ['lungo', '400 µm'], ['filter', '650 µm']],
     },
     drive: {
       title: 'Quiet drive',
@@ -325,13 +433,13 @@ const en: Copy = {
   },
   materials: {
     title: ['Five materials.', 'Nothing else.'],
-    lead: 'Steel where it cuts, brass where you touch, walnut where you hold. Every gram has a reason.',
-    names: ['Steel', 'Aluminium', 'Brass', 'Ceramic', 'Walnut'],
+    lead: 'Copper where it drives, aluminium where it cools, steel where it carries, ceramic where it cuts. Every gram has a reason.',
+    names: ['Copper', 'Aluminium', 'Steel', 'Ceramic', 'Polymer'],
     total: 'Total weight',
   },
   atelier: {
-    title: ['Made slowly.', 'In small batches.'],
-    lead: 'Turned, knurled and assembled by four people in one workshop. Every grinder is hallmarked by the hands that finished it.',
+    title: ['Calibrated by hand.', 'Before your bar.'],
+    lead: 'Every CAYE we deliver passes through our Sarajevo workshop: burrs, dose and temperature are set for your bean before it ever reaches the bar.',
     captions: ['Crema', 'Swirl', 'The heart of it'],
   },
   start: {
@@ -342,7 +450,7 @@ const en: Copy = {
   caye: {
     eyebrow: 'Kafaparat × CAYE Professional',
     title: ['For the bar', 'that never stops.'],
-    lead: 'The grinder stays the morning ritual. For a rush of a hundred cups we supply partners with CAYE, a professional super-automatic we install, tune and service.',
+    lead: 'The ceramic heart you just took apart beats inside CAYE, a professional super-automatic we deliver, install, tune and service for our partners.',
     model: {
       left: [
         ['Twin hoppers', 'Two beans, two roast profiles, one touch.'],
@@ -391,16 +499,99 @@ const en: Copy = {
       button: 'Request a quote',
     },
   },
+  shop: {
+    eyebrow: 'Shop',
+    title: ['Bring the heart', 'to your bar.'],
+    name: 'CAYE Smart X',
+    tagline: 'Professional super-automatic with a ceramic CPS grinder',
+    rating: '4.9',
+    reviews: '128 reviews',
+    lease: 'or from €{n} a month, 36 interest-free instalments',
+    finish: 'Finish',
+    finishes: ['Silver', 'Graphite'],
+    config: 'Grinders',
+    configs: [
+      ['Single hopper', '1 × CPS grinder'],
+      ['Twin hopper', '2 × CPS grinder'],
+    ],
+    qty: 'Quantity',
+    add: 'Add to cart',
+    added: 'Added',
+    quote: 'Request a quote',
+    stock: 'In stock · delivered and installed in 5 – 7 days',
+    perks: ['Free delivery and installation in BiH', '5-year warranty on the CPS burrs', 'Staff training included'],
+    tabs: [
+      {
+        h: 'Specifications',
+        rows: [
+          ['Grinder', '2 × 64 mm ceramic CPS'],
+          ['Capacity', '350 cups / hour'],
+          ['Powder scale', '± 0.1 g'],
+          ['Width', '430 mm'],
+          ['Power', '400 V · 6.8 kW'],
+        ],
+      },
+      {
+        h: 'In the box',
+        rows: [
+          ['Machine', 'CAYE Smart X'],
+          ['Milk', '4 l container + hose'],
+          ['Water', 'Filter, fitted'],
+          ['Care', '100 cleaning tablets'],
+        ],
+      },
+      {
+        h: 'Delivery & returns',
+        rows: [
+          ['Delivery', 'Free in BiH'],
+          ['Installation', 'Our technician, same day'],
+          ['Returns', '30 days'],
+          ['Service', 'On site within 48 hours'],
+        ],
+      },
+    ],
+    more: 'Accessories & consumables',
+    moreLead: 'Everything the machine needs to run like day one.',
+    quickAdd: 'Quick add',
+    accessories: {
+      'cps-burrs': ['CPS ceramic burrs', 'Pair, 64 mm'],
+      'grind-module': ['Grinding module', 'Swapped in 60 seconds'],
+      beans: ['Kafaparat espresso', 'Whole beans, 1 kg'],
+      'milk-jug': ['Milk container', 'Insulated, 4 l'],
+      'water-filter': ['Water filter', 'Good for 6,000 l'],
+      tablets: ['Cleaning tablets', '100 pieces'],
+    },
+    badge: { 'cps-burrs': 'New', beans: 'Bestseller' },
+  },
+  cart: {
+    title: 'Cart',
+    open: 'Open cart',
+    close: 'Close',
+    empty: 'Your cart is still empty.',
+    browse: 'Browse the shop',
+    subtotal: 'Subtotal',
+    shipping: 'Delivery',
+    free: 'Free',
+    shippingFee: 'Calculated at checkout',
+    freeLeft: '€{n} more for free delivery',
+    freeDone: 'You have free delivery',
+    checkout: 'Checkout',
+    note: 'VAT included. Pay by card, bank transfer or in instalments.',
+    remove: 'Remove',
+    toast: 'Added to cart',
+    view: 'View cart',
+  },
   footer: {
     cols: [
-      { h: 'Product', links: ['Kafaparat No.1', 'Travel roll', 'Spare burrs', 'Gift card'] },
+      { h: 'Shop', links: ['CAYE Smart X', 'CPS burrs', 'Grinding module', 'Coffee beans'] },
       { h: 'Atelier', links: ['About', 'Workshop', 'Journal', 'Stockists'] },
       { h: 'Support', links: ['Care guide', 'Warranty', 'Shipping', 'Contact'] },
     ],
     partner: {
       h: 'Partnership',
-      lead: 'For cafés, roasters and hotels who want Kafaparat on their bar.',
+      lead: 'For cafés, roasters and hotels who want CAYE on their bar.',
     },
+    trust: ['Free delivery over €150', 'Pay in instalments', '48-hour service'],
     news: {
       h: 'Notes from the atelier',
       lead: 'Brewing guides and new batches, four times a year.',
