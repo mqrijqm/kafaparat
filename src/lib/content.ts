@@ -86,11 +86,11 @@ export const SHOP = {
   accessories: [
     { id: 'gs-signature', cat: 'coffee', price: 29, image: '/media/gs-signature.webp', link: `${GS_PRODUCTS}#kafa` },
     { id: 'gs-crema', cat: 'coffee', price: 27, image: '/media/gs-crema.webp', link: `${GS_PRODUCTS}#kafa` },
-    { id: 'gs-milk', cat: 'milk', price: 18, image: '/media/gs-milk.webp' },
-    { id: 'gs-oat', cat: 'milk', price: 24, image: '/media/gs-oat.webp' },
+    { id: 'gs-milk', cat: 'milk', price: 18, image: '/media/gs-milk.webp', hover: '/media/gs-milk-gold.webp', link: `${GS_PRODUCTS}#mlijeko` },
+    { id: 'gs-oat', cat: 'milk', price: 24, image: '/media/gs-oat.webp', link: `${GS_PRODUCTS}#mlijeko` },
     { id: 'gs-filter', cat: 'hygiene', price: 89, image: '/media/gs-filter.webp', link: `${GS_PRODUCTS}#higijena` },
     { id: 'gs-tablets', cat: 'hygiene', price: 24, image: '/media/gs-tablets.webp', link: `${GS_PRODUCTS}#higijena` },
-  ] as { id: string; cat: 'coffee' | 'milk' | 'hygiene'; price: number; image: string; link?: string }[],
+  ] as { id: string; cat: 'coffee' | 'milk' | 'hygiene'; price: number; image: string; hover?: string; link: string }[],
   categories: ['all', 'coffee', 'milk', 'hygiene'] as const,
 }
 
@@ -335,7 +335,6 @@ const bs = {
     } as Record<string, [string, string]>,
     badge: { 'gs-signature': 'Najprodavanije', 'gs-oat': 'Biljno' } as Record<string, string>,
     variant: 'Prikazano',
-    details: 'Na goldenstandard.eu',
   },
   gs: {
     eyebrow: 'Zvanično zastupstvo · HR, SI, BiH, CG',
@@ -599,7 +598,6 @@ const en: Copy = {
     },
     badge: { 'gs-signature': 'Bestseller', 'gs-oat': 'Plant-based' },
     variant: 'Shown',
-    details: 'On goldenstandard.eu',
   },
   gs: {
     eyebrow: 'Official representation · HR, SI, BiH, ME',

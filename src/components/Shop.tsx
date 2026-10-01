@@ -206,20 +206,20 @@ function Accessories() {
       </div>
       <ul className="acc-grid">
         {items.map((a) => {
-          const [name, sub] = t.accessories[a.id]
+          const [name] = t.accessories[a.id]
           const badge = t.badge[a.id]
           return (
             <li key={a.id} className="product-card">
               <div className="product-media">
-                {a.link ? (
-                  <a href={a.link} target="_blank" rel="noopener" className="product-img-link" aria-label={`${t.brand} ${name} — ${t.details}`}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={a.image} alt={`${t.brand} ${name}`} loading="lazy" decoding="async" />
-                  </a>
-                ) : (
-                  // eslint-disable-next-line @next/next/no-img-element
+                <a href={a.link} target="_blank" rel="noopener" className="product-img-link" aria-label={`${t.brand} ${name} — goldenstandard.eu`}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={a.image} alt={`${t.brand} ${name}`} loading="lazy" decoding="async" />
-                )}
+                  {a.hover && (
+                    // second pack of the same product, shown on hover
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={a.hover} alt="" className="product-hover" loading="lazy" decoding="async" />
+                  )}
+                </a>
                 {badge && <span className="badge text-ui">{badge}</span>}
                 <button
                   className="quick-add text-ui"
@@ -233,28 +233,13 @@ function Accessories() {
                   {done === a.id ? t.added : t.quickAdd}
                 </button>
               </div>
-              <div className="product-meta">
+              <a href={a.link} target="_blank" rel="noopener" className="product-meta">
                 <div>
                   <span className="product-brand text-ui">{t.brand}</span>
-                  <h4>
-                    {a.link ? (
-                      <a href={a.link} target="_blank" rel="noopener">
-                        {name}
-                      </a>
-                    ) : (
-                      name
-                    )}
-                  </h4>
-                  <p className="text-ui">{sub}</p>
-                  {a.link && (
-                    <a href={a.link} target="_blank" rel="noopener" className="product-ext text-ui">
-                      {t.details}
-                      <IconArrowUpRight />
-                    </a>
-                  )}
+                  <h4>{name}</h4>
                 </div>
                 <span className="mono">{money(a.price, lang)}</span>
-              </div>
+              </a>
             </li>
           )
         })}
