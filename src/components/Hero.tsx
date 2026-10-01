@@ -119,7 +119,7 @@ export function HeadingLinks() {
         <div className="price-pill mono">
           {t.hero.price}
           <button aria-label={t.hero.add} onClick={() => {
-              cart.add({ id: SHOP.machine.id, finish: 0, config: 1 })
+              cart.add({ id: SHOP.machine.id, finish: 0, config: 0 })
               setAdded(true)
             }}>
             {added ? <IconCheck className="w-4 h-4" /> : <IconPlus className="w-4 h-4" />}

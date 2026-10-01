@@ -95,25 +95,18 @@ export const SHOP = {
   categories: ['all', 'coffee', 'milk', 'hygiene'] as const,
 }
 
-/**
- * Product photos for the chosen finish + hopper configuration: three angles of that exact machine,
- * then one shared close-up (the burrs are the same in every version).
- */
+/** Product photos for the chosen finish + hopper configuration: five views of that exact machine. */
 export function machineGallery(finish: number, config: number) {
   const f = SHOP.machine.finishes[finish]?.id ?? 'silver'
   const h = config === 0 ? 1 : 2
-  return [
-    ...(['3q', 'side', 'back'] as const).map((v) => `/media/smartx-${f}-${h}-${v}.webp`),
-    '/media/caye-v-burrs.webp',
-  ]
+  return (['3q', 'front', 'side', 'top', 'back'] as const).map((v) => `/media/smartx-${f}-${h}-${v}.webp`)
 }
 
 export const GOLDEN_STANDARD = {
   // the site picks the visitor's language itself; /bs would redirect to German
   url: { bs: 'https://www.goldenstandard.eu/', en: 'https://www.goldenstandard.eu/en' },
-  logo: '/brand/golden-standard.webp',
+  wordmark: '/brand/golden-standard-wordmark.webp',
   mark: '/brand/golden-standard-mark.webp',
-  brands: ['Marco Beverage Systems', 'CAYE Technology', 'Mr.Cafe', 'Lattiz'],
 }
 
 export const ATELIER_IMAGES = ['/media/crema-swirl.webp', '/media/crema-grain.webp', '/media/burr-top.webp']
@@ -347,26 +340,10 @@ const bs = {
     details: 'Na goldenstandard.eu',
   },
   gs: {
-    eyebrow: 'Zvanično zastupstvo Golden Standard · HR, SI, BiH, CG',
+    eyebrow: 'Zvanično zastupstvo · HR, SI, BiH, CG',
     title: ['Zlatni standard', 'u svakoj šoljici.'],
-    lead: 'Aparat, kafa, mlijeko i higijena na ovom sajtu dolaze iz Golden Standard sistema: regionalnog B2B sistema za ugostiteljstvo koji partneru donosi opremu, kalibraciju i obuku tima, bez početnog ulaganja u mašinu.',
-    pillars: [
-      ['Kafa', 'Signature Roast i Barista Crema, u zrnu, kalibrirane na vašem mlinu.'],
-      ['Mlijeko', 'Barista Premium Milk 3.8, Low Fat Milk 1.0 i Oat Barista, kalibrirani na FoaMasteru.'],
-      ['Oprema', 'CAYE Smart X, Mr.Cafe FoaMaster, Marco MilkPal i Lattiz Advance.'],
-      ['Higijena', 'Golden Standard filter za vodu i tablete za čišćenje kafe i mlijeka.'],
-      ['Akademija', 'Obuka tima, standardizirani recepti i Certified oznaka.'],
-    ],
-    machines: [
-      ['Smart X', 'super-automatski espresso'],
-      ['Smart X Master', 'dva kuhala, dva izlaza'],
-    ],
-    faq: {
-      q: 'Čiju opremu Golden Standard zvanično zastupa?',
-      a: 'Zvanični smo distributer opreme Marco Beverage Systems, CAYE Technology i Mr.Cafe za Hrvatsku, Sloveniju, Bosnu i Hercegovinu i Crnu Goru. Lattiz isporučujemo kroz Viro Plus d.o.o., službenog distributera za Hrvatsku i Sloveniju.',
-    },
-    claim: 'Isti rezultat u svakoj smjeni i na svakoj lokaciji.',
-    cta: 'Posjetite goldenstandard.eu',
+    lead: 'CAYE aparati, kafa, mlijeko i higijena na ovom sajtu dolaze kroz Golden Standard sistem.',
+    cta: 'goldenstandard.eu',
     powered: 'Pokreće',
   },
   cart: {
@@ -620,26 +597,10 @@ const en: Copy = {
     details: 'On goldenstandard.eu',
   },
   gs: {
-    eyebrow: 'Official Golden Standard representation · HR, SI, BiH, ME',
+    eyebrow: 'Official representation · HR, SI, BiH, ME',
     title: ['The gold standard', 'in every cup.'],
-    lead: 'The machine, coffee, milk and hygiene on this site come from the Golden Standard system: a regional B2B system for hospitality that gives partners the equipment, calibration and team training, with no upfront investment in the machine.',
-    pillars: [
-      ['Coffee', 'Signature Roast and Barista Crema, whole beans, calibrated on your grinder.'],
-      ['Milk', 'Barista Premium Milk 3.8, Low Fat Milk 1.0 and Oat Barista, calibrated on FoaMaster.'],
-      ['Equipment', 'CAYE Smart X, Mr.Cafe FoaMaster, Marco MilkPal and Lattiz Advance.'],
-      ['Hygiene', 'Golden Standard water filter and cleaning tablets for coffee and milk.'],
-      ['Academy', 'Team training, standardised recipes and the Certified mark.'],
-    ],
-    machines: [
-      ['Smart X', 'super-automatic espresso'],
-      ['Smart X Master', 'two boilers, two outlets'],
-    ],
-    faq: {
-      q: 'Whose equipment does Golden Standard officially represent?',
-      a: 'We are the official distributor of Marco Beverage Systems, CAYE Technology and Mr.Cafe equipment for Croatia, Slovenia, Bosnia and Herzegovina and Montenegro. Lattiz is supplied through Viro Plus d.o.o., the official distributor for Croatia and Slovenia.',
-    },
-    claim: 'The same result in every shift and at every location.',
-    cta: 'Visit goldenstandard.eu',
+    lead: 'The CAYE machines, coffee, milk and hygiene on this site come through the Golden Standard system.',
+    cta: 'goldenstandard.eu',
     powered: 'Powered by',
   },
   cart: {

@@ -1,0 +1,13 @@
+{
+  "style": "",
+  "items": [
+    {
+      "name": "smartx-silver-1-3q",
+      "aspect": "4:5",
+      "ref": "media-src/smartx-silver-2-3q.png",
+      "noStyle": true,
+      "refNote": "The attached image shows the real CAYE Smart X machine: keep its exact body shape, proportions and details (angular die-cast side frame with the triangular inset, tilted touchscreen, brew spouts, drip tray). Only change what the prompt asks for.",
+      "prompt": "CAYE Smart X. Three-quarter front view from the left, a glass of espresso under the spout. The die-cast side frame and body are brushed SILVER aluminium. IMPORTANT: this version has ONLY ONE bean hopper: a single compact rectangular hopper of smoked clear plastic filled with coffee beans and a black lid, about HALF the width of the machine top, centered on the top deck. The rest of the flat black top deck to the left and right of it is EMPTY. There must not be two hoppers and not one wide hopper. Style: Photorealistic premium product photography, seamless warm golden-amber studio backdrop with a soft gradient, soft reflective floor, one warm key light from the upper left, crisp edges, the machine large and centered filling about 80% of the frame height, no people, no extra props, no added text, no watermark."
+    }
+  ]
+}

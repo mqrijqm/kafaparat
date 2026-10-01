@@ -1,0 +1,13 @@
+{
+  "style": "",
+  "items": [
+    {
+      "name": "smartx-graphite-2-3q",
+      "aspect": "4:5",
+      "ref": "media-src/smartx-graphite-2-front.png",
+      "noStyle": true,
+      "refNote": "The attached image shows the real CAYE Smart X machine: keep its exact body shape, proportions and details (angular die-cast side frame with the triangular inset, tilted touchscreen, brew spouts, drip tray). Only change what the prompt asks for.",
+      "prompt": "CAYE Smart X, the same machine as the reference image. Three-quarter front view from the left, a glass of espresso under the spout, same framing and size as the reference. The die-cast side frame and body are dark GRAPHITE / anthracite metallic (dark grey, satin); the black glass front and chrome spouts stay the same. On top there are TWO identical bean hoppers side by side (two lids, two bean containers), exactly like the reference. Style: Photorealistic premium product photography, seamless warm golden-amber studio backdrop with a soft gradient, soft reflective floor, one warm key light from the upper left, crisp edges, the machine large and centered filling about 80% of the frame height, no people, no extra props, no added text, no watermark."
+    }
+  ]
+}

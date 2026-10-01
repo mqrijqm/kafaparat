@@ -30,7 +30,7 @@ function BuyBox({ onAddVisible }: { onAddVisible: (v: boolean) => void }) {
   const { lang } = useLang()
   const [img, setImg] = useState(0)
   const [finish, setFinish] = useState(0)
-  const [config, setConfig] = useState(1)
+  const [config, setConfig] = useState(0) // single hopper is the primary version
   const [qty, setQty] = useState(1)
   const [tab, setTab] = useState(0)
   const [justAdded, setJustAdded] = useState(false)
@@ -171,10 +171,11 @@ function BuyBox({ onAddVisible }: { onAddVisible: (v: boolean) => void }) {
             ))}
           </div>
           <dl className="tab-panel mono" role="tabpanel">
-            {t.tabs[tab].rows.map(([k, v]) => (
+            {t.tabs[tab].rows.map(([k, v], i) => (
               <div key={k}>
                 <dt>{k}</dt>
-                <dd>{v}</dd>
+                {/* the grinder count follows the chosen hopper configuration */}
+                <dd>{tab === 0 && i === 0 ? v.replace(/^\d ×/, `${config + 1} ×`) : v}</dd>
               </div>
             ))}
           </dl>
@@ -277,7 +278,7 @@ function StickyBuy({ show }: { show: boolean }) {
   return (
     <div className={`sticky-buy ${show ? 'is-on' : ''}`} inert={!show}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={machineGallery(0, 1)[0]} alt="" />
+      <img src={machineGallery(0, 0)[0]} alt="" />
       <div className="sticky-buy-name">
         <b>{t.name}</b>
         <span className="text-ui">
@@ -286,7 +287,7 @@ function StickyBuy({ show }: { show: boolean }) {
         </span>
       </div>
       <span className="mono sticky-buy-price">{money(M.price, lang)}</span>
-      <button className="btn-solid text-ui" onClick={() => cart.add({ id: M.id, finish: 0, config: 1 })}>
+      <button className="btn-solid text-ui" onClick={() => cart.add({ id: M.id, finish: 0, config: 0 })}>
         <IconPlus />
         {t.add}
       </button>
